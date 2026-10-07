@@ -1,0 +1,56 @@
+[
+ {
+  "who": "Judith S.",
+  "loc": "Phoenixville, PA",
+  "date": "Aug 31, 2026",
+  "text": "Great experience with motorcycle inspection. Great availability for appointment. Fast service!"
+ },
+ {
+  "who": "Dark Storm C.",
+  "loc": "Oaks, PA",
+  "date": "Mar 22, 2026",
+  "text": "My F150 Truck's engine was making a ticking noise. They could've raked me over the coals, but they found a faulty spark plug. Survey says: Five Stars and TWO THUMBS UP!"
+ },
+ {
+  "who": "Kristen S.",
+  "loc": "HUNTINGDON VALLEY, PA",
+  "date": "Mar 5, 2026",
+  "text": "Happy to have found the team at Diverse Auto Works. They keep you in the loop about what is going on with your car and get you back on the road safely without trying to scam you into unnecessary work for an up charge. Quality work, fair pricing, consistent and friendly, but most importantly honest. Joe and Ariel are great to work with. Highly recommend if you need a dependable local shop you can trust!"
+ },
+ {
+  "who": "Fabiana M.",
+  "loc": "Philadelphia, PA",
+  "date": "Mar 21, 2024",
+  "text": "Amazing people! They have fed me donuts, bagels and cookies. Love them so much for helping me with car problems. Ariel is my favorite love Fabi"
+ },
+ {
+  "who": "Curtis H.",
+  "loc": "Philadelphia, PA",
+  "date": "Jun 7, 2022",
+  "text": "These guys are awesome Ariel is fantastic! If you want an honest automotive group and a break here and there on service go see Joe and the crew!"
+ },
+ {
+  "who": "Bill C.",
+  "loc": "PA, PA",
+  "date": "Dec 7, 2022",
+  "text": "Great experience yesterday with this group! I was traveling on business on a rainy day and my alternator died. They responded quickly, got the part and replaced it in hours--allowing me to salvage the rest of my business day--at a reasonable price. Truly appreciate their accommodating my situation and helping me get back on the road so quickly!"
+ },
+ {
+  "who": "D C.",
+  "loc": "Valley Forge, PA",
+  "date": "Jan 12, 2022",
+  "text": "I have been bringing my cars to Diverse Autoworks for many years. Joe and his team are awesome, upfront and honest. The facility and waiting areas are very clean and accommodating.",
+  "reply": {
+   "who": "Joe W.",
+   "role": "Business Owner",
+   "date": "Jan 12, 2022",
+   "text": "Thank you so much for this review! We have loved working with you and hope you know how much we appreciate your business!"
+  }
+ },
+ {
+  "who": "François M.",
+  "loc": "Bryn Mawr, PA",
+  "date": "Jul 28, 2020",
+  "text": "My first experience with Diverse Autoworks came after a car accident. The insurance company requested that I get an estimate on the repair through them. They were friendly, professional, and efficient. The car, sadly, ended up a total loss, but I started using them for routine work afterwards. They're timely, and it's reasonably easy to get an appointment for oil changes, etc. Their prices are very reasonable, and it's clear they're treating their customers in an honest way. Thumbs up."
+ }
+]
