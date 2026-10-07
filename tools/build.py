@@ -319,8 +319,8 @@ def header(lang, key):
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
     names = {"en": "English", "es": "Español"}
-    sw = (f'<details class="lang" data-lang-menu><summary aria-label="{u["lang_label"]}: {names[lang]}"><span lang="{lang}">{names[lang]}</span></summary>'
-          f'<a href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}">{names[other]}</a></details>')
+    sw = (f'<a class="lang" href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}" '
+          f'aria-label="{u["lang_label"]}: {names[other]}">{names[other]}</a>')
     return f'''<header class="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>

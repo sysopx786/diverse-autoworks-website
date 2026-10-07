@@ -15,7 +15,7 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
 
 ## Header, call bar, rating icons (Oct 7, 2026)
-- Language switch is one dropdown (`<details>`): shows the current language in full ("English" / "Español"); the other opens below it. Closes on outside click or Esc.
+- Language switch is a single button (no dropdown): it shows the OTHER language ("Español" on the English site, "English" on the Spanish site) and one click goes to the same page in that language.
 - Mobile sticky bottom bar removed (Oct 7, 2026). Phone stays in the header and every page's text.
 - Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.

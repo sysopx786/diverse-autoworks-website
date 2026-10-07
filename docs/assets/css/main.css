@@ -459,15 +459,9 @@ details.q .a p{margin:0}
 .logo-card{background:#0F1012;padding:14px 22px;border:0;border-radius:10px;box-sizing:border-box;height:auto}
 @media (max-width:640px){.brand-logo{height:50px}}
 
-/* language dropdown */
-.lang{position:relative;display:block;border:0;overflow:visible}
-.lang summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid rgba(255,255,255,.3);border-radius:4px;font-family:var(--head);font-weight:700;font-size:1.1rem;color:#fff;background:transparent;white-space:nowrap}
-.lang summary::-webkit-details-marker{display:none}
-.lang summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .15s}
-.lang[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
-.lang summary:hover{background:rgba(255,255,255,.12)}
-.lang a{position:absolute;right:0;top:calc(100% + 6px);z-index:120;display:block;min-width:100%;box-sizing:border-box;padding:12px 16px;background:var(--ink);border:1px solid rgba(255,255,255,.3);border-radius:4px;font-family:var(--head);font-weight:700;font-size:1.1rem;line-height:1.1;color:#fff;text-decoration:none;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.45)}
-.lang a:hover,.lang a:focus-visible{background:var(--sign-fill);color:#fff}
+/* language toggle button (shows the OTHER language; click switches) */
+.lang{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;box-sizing:border-box;border:1px solid rgba(255,255,255,.3);border-radius:4px;font-family:var(--head);font-weight:700;font-size:1.1rem;line-height:1;color:#fff;background:transparent;text-decoration:none;white-space:nowrap}
+.lang:hover,.lang:focus-visible{background:rgba(255,255,255,.12);color:#fff}
 .rt-card h2 .rt-cx{display:inline-block;height:24px;width:auto;vertical-align:middle;margin-right:10px}
 .rt-card h2 .src-yelp{vertical-align:middle;margin-right:10px}
 

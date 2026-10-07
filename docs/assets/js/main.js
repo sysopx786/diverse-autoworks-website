@@ -190,10 +190,3 @@
     });
   });
 })();
-
-(function () {
-  var d = document.querySelector("[data-lang-menu]");
-  if (!d) return;
-  document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && d.open) { d.open = false; var s = d.querySelector("summary"); if (s) s.focus(); } });
-})();
