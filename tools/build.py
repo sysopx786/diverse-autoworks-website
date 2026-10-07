@@ -389,12 +389,12 @@ def motorcycle_block(lang, key):
 </div>'''
 
 
-def review_html(lang, r, big=False):
+def review_html(lang, r, big=False, key="reviews"):
     u = UI[lang]
     who = L(r["who"], lang)
     date = L(r["date"], lang)
     orig = f'<span class="rev-orig">{PAGES["reviews"]["orig_es"]["es"]}</span>' if lang == "es" else ""
-    ic = {"CARFAX": '<img class="src-ic src-cx" src="' + asset(lang, "reviews", "img/carfax.png") + '" width="64" height="14" alt="CARFAX">',
+    ic = {"CARFAX": '<img class="src-ic src-cx" src="' + asset(lang, key, "img/carfax.png") + '" width="64" height="14" alt="CARFAX">',
           "Yelp": '<span class="src-ic src-yelp">Yelp</span>'}.get(r["src"], "")
     cite = (f'<div class="who"><b>{esc(who)}</b>{esc(date)}<br><span class="src-row">{ic}<a href="{r["url"]}" rel="noopener" target="_blank">{u["source"]}: {r["src"]}</a></span>{("<br>" + orig) if orig else ""}</div>')
     q = f'<blockquote lang="en">“{esc(r["q"])}”</blockquote>'
@@ -534,10 +534,10 @@ def page_home(lang):
 
     # reviews (lead + three)
     rev = REVIEWS
-    lq, lc = review_html(lang, rev[0])
+    lq, lc = review_html(lang, rev[0], key=key)
     others = []
     for r in rev[1:4]:
-        q, c = review_html(lang, r)
+        q, c = review_html(lang, r, key=key)
         others.append(f"<li>{q}{c}</li>")
     themes = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in THEMES)
     reviews = f'''<section class="sec sec-paper" id="reviews"><div class="wrap">
