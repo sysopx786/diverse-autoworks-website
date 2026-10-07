@@ -15,7 +15,8 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
 
 ## Header, call bar, rating icons (Oct 7, 2026)
-- Language switch is a single button (no dropdown): it shows the OTHER language ("Español" on the English site, "English" on the Spanish site) and one click goes to the same page in that language.
+- Language switch is one round flag button (no dropdown) that shows the OTHER language: Spain flag + ES on the English site, US flag + EN on the Spanish site. One click opens the same page in that language. Art is `flag_svg()` in `tools/build.py`; styles are the `.lang` block in `main.css`.
+- Reviews page in Spanish (Oct 7, 2026): all Google, CARFAX and Yelp reviews plus the featured quotes are translated. Translations live in `tools/reviews_es.py`, matched by position to the source lists; `build.py` asserts the counts, so adding a review to a JSON file fails the build until its Spanish line is added. The Spanish is a draft: have a native speaker review it.
 - Mobile sticky bottom bar removed (Oct 7, 2026). Phone stays in the header and every page's text.
 - Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.

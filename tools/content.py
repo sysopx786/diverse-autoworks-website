@@ -495,7 +495,7 @@ PAGES = {
         "lead": t("A few excerpts from public reviews. They are a selection, not the full record. Read the complete reviews on each platform.",
                   "Algunos extractos de reseñas públicas. Son una selección, no el registro completo. Lea las reseñas completas en cada plataforma."),
         "orig": t("Excerpt from the original review", "Extracto de la reseña original"),
-        "orig_es": t("", "Reseña original en inglés"),
+        "orig_es": t("", "Traducido del inglés"),
         "more": t("Read the full reviews", "Lea las reseñas completas"),
     },
     "faq": {

@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from content import *  # noqa
 from notary import NOTARY  # noqa
 import graphics as G
+import reviews_es as RES
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -310,6 +311,18 @@ def head_tags(lang, key, title, desc, extra_ld=""):
     return "\n".join(out)
 
 
+def flag_svg(code):
+    """Round-button flag art: US flag for English, Spain flag for Spanish. Decorative (the link carries the label)."""
+    if code == "es":
+        art = '<rect width="44" height="44" fill="#c60b1e"/><rect y="11" width="44" height="22" fill="#ffc400"/>'
+    else:
+        h = 44 / 13
+        stripes = "".join(f'<rect y="{i * h:.2f}" width="44" height="{h:.2f}" fill="#b22234"/>' for i in range(0, 13, 2))
+        stars = "".join(f'<circle cx="{4 + c * 5.2:.1f}" cy="{4 + r * 5.6:.1f}" r="1" fill="#fff"/>' for r in range(4) for c in range(5))
+        art = f'<rect width="44" height="44" fill="#fff"/>{stripes}<rect width="26" height="{7 * h:.2f}" fill="#3c3b6e"/>{stars}'
+    return f'<svg class="lang-flag" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true" focusable="false">{art}</svg>'
+
+
 def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
@@ -320,7 +333,7 @@ def header(lang, key):
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
     names = {"en": "English", "es": "Español"}
     sw = (f'<a class="lang" href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}" '
-          f'aria-label="{u["lang_label"]}: {names[other]}">{names[other]}</a>')
+          f'aria-label="{u["lang_label"]}: {names[other]}" title="{names[other]}">{flag_svg(other)}<span class="lang-code" aria-hidden="true">{other.upper()}</span></a>')
     return f'''<header class="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
@@ -392,7 +405,7 @@ def review_html(lang, r, big=False, key="reviews"):
     ic = {"CARFAX": '<img class="src-ic src-cx" src="' + asset(lang, key, "img/carfax.png") + '" width="64" height="14" alt="CARFAX">',
           "Yelp": '<span class="src-ic src-yelp">Yelp</span>'}.get(r["src"], "")
     cite = (f'<div class="who"><b>{esc(who)}</b>{esc(date)}<br><span class="src-row">{ic}<a href="{r["url"]}" rel="noopener" target="_blank">{u["source"]}: {r["src"]}</a></span>{("<br>" + orig) if orig else ""}</div>')
-    q = f'<blockquote lang="en">“{esc(r["q"])}”</blockquote>'
+    q = f'<blockquote lang="es">“{esc(RES.FEATURED[REVIEWS.index(r)])}”</blockquote>' if lang == "es" else f'<blockquote lang="en">“{esc(r["q"])}”</blockquote>'
     return q, cite
 
 
@@ -677,12 +690,14 @@ def google_html(lang):
     data = _j.load(open(_o.path.join(_o.path.dirname(__file__), "google_reviews.json"), encoding="utf-8"))
     shown = [r for r in data if r["text"] and not r["hold"]]
     blank = sum(1 for r in data if not r["text"])
+    assert len(shown) == len(RES.GOOGLE), "google_reviews.json changed: update reviews_es.GOOGLE"
+    es = lang == "es"
     items = "".join(
-        f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["age"])}<br><span class="src-row"><img class="src-ic src-g" src="{asset(lang, "reviews", "img/google-g.png")}" width="22" height="22" alt="Google">Google</span></div><div class="g-rate" role="img" aria-label="{r["stars"]} of 5 stars"><span class="g-stars" style="--p:{r["stars"]*20}%">★★★★★</span></div></li>' for r in shown)
+        f'<li><blockquote lang="{lang}">“{esc(RES.GOOGLE[i] if es else r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(RES.age_es(r["age"]) if es else r["age"])}<br><span class="src-row"><img class="src-ic src-g" src="{asset(lang, "reviews", "img/google-g.png")}" width="22" height="22" alt="Google">Google</span></div><div class="g-rate" role="img" aria-label="{r["stars"]} {"de 5 estrellas" if es else "of 5 stars"}"><span class="g-stars" style="--p:{r["stars"]*20}%">★★★★★</span></div></li>' for i, r in enumerate(shown))
     if lang == "en":
         h, p = "Reviews from Google", f"Written Google reviews, newest first, as captured on {L(RATINGS_ASOF, lang)}. {blank} more customers left a star rating with no text. Ages such as “2 months ago” are as of that date."
     else:
-        h, p = "Reseñas de Google", f"Reseñas escritas de Google, de la más nueva a la más antigua, según se capturaron el {L(RATINGS_ASOF, lang)}. {blank} clientes más dejaron solo una calificación con estrellas. Las antigüedades como “2 months ago” corresponden a esa fecha. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Reseñas de Google", f"Reseñas escritas de Google, de la más nueva a la más antigua, según se capturaron el {L(RATINGS_ASOF, lang)}. {blank} clientes más dejaron solo una calificación con estrellas. Las antigüedades como “hace 2 meses” corresponden a esa fecha. Las reseñas se tradujeron del inglés; los textos originales están en Google."
     return f'<div class="sec-head" style="margin-top:44px"><h2 class="g-h"><img class="g-logo" src="{asset(lang, "reviews", "img/google-g.png")}" width="44" height="44" alt="">{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{items}</ul>'
 
 
@@ -694,13 +709,15 @@ def _jload(name):
     return _j.load(open(_o.path.join(_o.path.dirname(__file__), name), encoding="utf-8"))
 
 
-def _car_who(w):
+def _car_who(w, lang="en"):
     parts = []
     for tok in w.split():
         if tok.upper() == "OWNER":
             parts.append("owner"); continue
         keep = any(c.isdigit() for c in tok) or "/" in tok or all(len(x) <= 3 for x in tok.split("-"))
         parts.append("Fe" if tok == "FE" else (tok if keep else tok.title()))
+    if lang == "es" and parts and parts[-1] == "owner":
+        return "Propietario del vehículo: " + " ".join(parts[:-1])
     return " ".join(parts)
 
 
@@ -720,31 +737,33 @@ def _yelp_date(lang, d):
 def carfax_html(lang):
     data = _jload("carfax_reviews.json")
     ic = f'<img class="src-ic src-cx" src="{asset(lang, "reviews", "img/carfax.png")}" width="64" height="14" alt="CARFAX">'
+    assert len(data) == len(RES.CARFAX), "carfax_reviews.json changed: update reviews_es.CARFAX"
     items = "".join(
-        f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(_car_who(r["who"]))}</b>{esc(_car_date(lang, r["date"]))}<br><span class="src-row">{ic}<span class="vs">{"Verified Service" if lang == "en" else "Servicio verificado"}</span></span></div></li>'
-        for r in data)
+        f'<li><blockquote lang="{lang}">“{esc(RES.CARFAX[i] if lang == "es" else r["text"])}”</blockquote><div class="who"><b>{esc(_car_who(r["who"], lang))}</b>{esc(_car_date(lang, r["date"]))}<br><span class="src-row">{ic}<span class="vs">{"Verified Service" if lang == "en" else "Servicio verificado"}</span></span></div></li>'
+        for i, r in enumerate(data))
     if lang == "en":
         h, p = "All CARFAX reviews", f"All {len(data)} written CARFAX reviews as supplied, newest-first order as on the CARFAX page. CARFAX shows an overall 5.0 from 61 verified reviews; it did not give a star count for each review, so none is shown here."
     else:
-        h, p = "Todas las reseñas de CARFAX", f"Las {len(data)} reseñas escritas de CARFAX, tal como se recibieron, en el orden de la página de CARFAX. CARFAX muestra 5.0 en total con 61 reseñas verificadas; no indicó las estrellas de cada reseña, así que aquí no se muestra ninguna. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Todas las reseñas de CARFAX", f"Las {len(data)} reseñas escritas de CARFAX, tal como se recibieron, en el orden de la página de CARFAX. CARFAX muestra 5.0 en total con 61 reseñas verificadas; no indicó las estrellas de cada reseña, así que aquí no se muestra ninguna. Las reseñas se tradujeron del inglés; los textos originales están en CARFAX."
     return f'<div class="sec-head" style="margin-top:44px"><h2>{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{items}</ul>'
 
 
 def yelp_html(lang):
     data = _jload("yelp_reviews.json")
     ic = '<span class="src-ic src-yelp">Yelp</span>'
+    assert len(data) == len(RES.YELP), "yelp_reviews.json changed: update reviews_es.YELP"
     out = []
-    for r in data:
+    for i, r in enumerate(data):
         rep = ""
         if r.get("reply"):
             q = r["reply"]
             lab = "Business owner reply" if lang == "en" else "Respuesta del propietario"
-            rep = f'<div class="owner-reply"><b>{lab}: {esc(q["who"])}, {esc(_yelp_date(lang, q["date"]))}</b><p lang="en">{esc(q["text"])}</p></div>'
-        out.append(f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["loc"])} · {esc(_yelp_date(lang, r["date"]))}<br><span class="src-row">{ic}</span></div>{rep}</li>')
+            rep = f'<div class="owner-reply"><b>{lab}: {esc(q["who"])}, {esc(_yelp_date(lang, q["date"]))}</b><p lang="{lang}">{esc(RES.YELP_REPLY[i] if lang == "es" else q["text"])}</p></div>'
+        out.append(f'<li><blockquote lang="{lang}">“{esc(RES.YELP[i] if lang == "es" else r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["loc"])} · {esc(_yelp_date(lang, r["date"]))}<br><span class="src-row">{ic}</span></div>{rep}</li>')
     if lang == "en":
         h, p = "All Yelp reviews", f"Yelp shows 10 reviews. The supplied copy has {len(data)} with text, shown here as supplied; Yelp did not give a reliable overall score or a star count per review, so none is shown."
     else:
-        h, p = "Todas las reseñas de Yelp", f"Yelp muestra 10 reseñas. El texto recibido tiene {len(data)} con comentario, que se muestran tal cual; Yelp no dio una calificación general confiable ni las estrellas de cada reseña, así que no se muestra ninguna. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Todas las reseñas de Yelp", f"Yelp muestra 10 reseñas. El texto recibido tiene {len(data)} con comentario, que se muestran tal cual; Yelp no dio una calificación general confiable ni las estrellas de cada reseña, así que no se muestra ninguna. Las reseñas se tradujeron del inglés; los textos originales están en Yelp."
     return f'<div class="sec-head" style="margin-top:44px"><h2>{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{"".join(out)}</ul>'
 
 
