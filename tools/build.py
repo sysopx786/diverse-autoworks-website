@@ -547,6 +547,7 @@ def page_home(lang):
 <div class="panel panel-fleet on-dark">{G.icon("van", 64)}<h2>{esc(L(svc_by_id("fleet")["title"], lang))}</h2><p>{esc(L(P["fleet_p"], lang))}</p>
 <a class="btn btn-sign" href="{href(lang, key, lang, "fleet")}">{u["fleet_btn"]}</a></div>
 <div class="panel panel-notary">{G.icon("seal", 64)}<h2>{esc(L(svc_by_id("notary")["title"], lang))}</h2><p>{esc(L(P["notary_p"], lang))}</p>
+<img class="panel-photo" src="{asset(lang, key, "img/notary-signing.webp")}" width="1168" height="880" alt="{esc(L(NOTARY["photo_alt"], lang), quote=True)}" loading="lazy" decoding="async">
 <a class="btn btn-navy" href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_btn"]}</a></div></section>'''
 
     # close

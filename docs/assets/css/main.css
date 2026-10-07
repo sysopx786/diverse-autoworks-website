@@ -262,6 +262,7 @@ ul,ol{margin:0;padding:0}
 .panel-notary{background:var(--sign-fill);color:#fff}
 .panel-notary .ic{color:#fff}
 .panel-notary p{color:#fff}
+.panel-photo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:50% 35%;margin:6px 0 14px;border:1px solid rgba(255,255,255,.35)}
 .panel-notary .btn-navy{background:var(--ink)}
 .panel-notary .btn-navy:hover{background:var(--navy)}
 @media (max-width:820px){.duo{grid-template-columns:1fr}}
