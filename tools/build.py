@@ -551,7 +551,7 @@ def page_home(lang):
     duo = f'''<section class="duo" aria-label="{u["nav"]["fleet"]} / {L(svc_by_id("notary")["title"], lang)}">
 <div class="panel panel-fleet on-dark">{G.icon("van", 64)}<h2>{esc(L(svc_by_id("fleet")["title"], lang))}</h2><p>{esc(L(P["fleet_p"], lang))}</p>
 <a class="btn btn-sign" href="{href(lang, key, lang, "fleet")}">{u["fleet_btn"]}</a></div>
-<div class="panel panel-notary">{G.icon("seal", 64)}<h2>{esc(L(svc_by_id("notary")["title"], lang))}</h2><p>{esc(L(P["notary_p"], lang))}</p>
+<div class="panel panel-notary">{img(lang, key, "notary", "panel-img")}{G.icon("seal", 64)}<h2>{esc(L(svc_by_id("notary")["title"], lang))}</h2><p>{esc(L(P["notary_p"], lang))}</p>
 <a class="btn btn-navy" href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_btn"]}</a></div></section>'''
 
     # close
@@ -813,7 +813,7 @@ def page_contact(lang):
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap contact-grid"><div>{cards}</div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key)}</div></div></section>
-<section class="sec sec-white" id="notary"><div class="wrap two-col"><div><h2>{esc(L(P["notary_h"], lang))}</h2><p style="font-size:1.2rem">{esc(L(P["notary_p"], lang))}</p></div>
+<section class="sec sec-white" id="notary"><div class="wrap two-col"><div>{img(lang, key, "notary", "fig-img")}<h2>{esc(L(P["notary_h"], lang))}</h2><p style="font-size:1.2rem">{esc(L(P["notary_p"], lang))}</p></div>
 <div>{faq_list(lang, nc)}</div></div></section>
 <section class="sec sec-concrete"><div class="wrap">{mapbox}</div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
