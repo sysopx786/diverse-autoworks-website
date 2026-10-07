@@ -308,10 +308,9 @@ def header(lang, key):
     for k in ("services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
-    sw = (f'<div class="lang" role="group" aria-label="{u["lang_label"]}">'
-          + (f'<span aria-current="true" lang="en">EN</span>' if lang == "en" else f'<a href="{href(lang, key, "en", key)}" lang="en" hreflang="en" aria-label="EN: English">EN</a>')
-          + (f'<span aria-current="true" lang="es">ES</span>' if lang == "es" else f'<a href="{href(lang, key, "es", key)}" lang="es" hreflang="es" aria-label="ES: Español">ES</a>')
-          + "</div>")
+    names = {"en": "English", "es": "Español"}
+    sw = (f'<details class="lang" data-lang-menu><summary aria-label="{u["lang_label"]}: {names[lang]}"><span lang="{lang}">{names[lang]}</span></summary>'
+          f'<a href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}">{names[other]}</a></details>')
     return f'''<header class="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
@@ -337,8 +336,7 @@ def footer(lang, key):
 
 def callbar(lang):
     u = UI[lang]
-    return (f'<aside class="callbar on-dark" aria-label="Quick contact"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call_short"]}</a>'
-            f'<a class="btn btn-line" href="CONTACT_HREF">{u["request"]}</a></aside>')
+    return (f'<aside class="callbar on-dark" aria-label="Quick contact"><a class="btn btn-sign" href="CONTACT_HREF">{u["request"]}</a></aside>')
 
 
 def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
@@ -655,6 +653,10 @@ def ratings_html(lang):
         g_logo = ('<img class="g-logo" src="' + asset(lang, "reviews", "img/google-g.png") + '" width="36" height="36" alt="Google">') if r["name"] == "Google" else ""
         if r["name"] == "Google":
             avg = avg + '<div class="g-stars" role="img" aria-label="4.9 out of 5 stars">★★★★★</div>'
+        if r["name"] == "CARFAX":
+            g_logo = '<img class="rt-cx" src="' + asset(lang, "reviews", "img/carfax.png") + '" width="116" height="25" alt="">'
+        elif r["name"] == "Yelp":
+            g_logo = '<span class="src-ic src-yelp" aria-hidden="true">Yelp</span>'
         cards.append(f'<li class="rt-card"><h2>{g_logo}{r["name"]}</h2>{avg}<p>{esc(L(r["line"], lang))}</p>{bars}{link}</li>')
     asof = L({"en": "Ratings as shown on each site on", "es": "Calificaciones tal como se mostraban en cada sitio el"}, lang) if False else (
         "Ratings as shown on each site on " if lang == "en" else "Calificaciones tal como se mostraban en cada sitio el ")
