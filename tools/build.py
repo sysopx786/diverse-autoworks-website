@@ -831,9 +831,10 @@ def notary_sections(lang):
 <circle cx="430" cy="390" r="30" fill="none" stroke="#26282C" stroke-width="1.5" opacity=".6"/><circle cx="430" cy="390" r="23" fill="none" stroke="#26282C" stroke-width="1" stroke-dasharray="1 3" opacity=".6"/>
 <text x="430" y="394" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#26282C" opacity=".75">{e(N["doc_notary"])}</text></svg>"""
     return f"""<section class="sec sec-white nt" id="notary" aria-labelledby="nt-h"><div class="wrap">
-<div class="nt-intro"><p class="nt-eyebrow">{e(N["eyebrow"])}</p><h2 id="nt-h">{e(N["h2"])}</h2><p class="nt-lede">{e(N["lede"])}</p>
+<div class="nt-intro"><div class="nt-intro-txt"><p class="nt-eyebrow">{e(N["eyebrow"])}</p><h2 id="nt-h">{e(N["h2"])}</h2><p class="nt-lede">{e(N["lede"])}</p>
 <div class="nt-cta"><a class="btn btn-navy" href="{TEL}">{call}</a><a class="btn btn-line" href="#notary-process">{e(N["cta_how"])}</a><a class="btn btn-line" href="{MAIL}">{u["email_us"]}</a></div>
 <ul class="nt-chips">{chips}</ul></div>
+<figure class="nt-photo"><img src="{asset(lang, "contact", "img/notary-signing.webp")}" width="1168" height="880" alt="{esc(L(N["photo_alt"], lang), quote=True)}" loading="lazy" decoding="async"></figure></div>
 <h3 class="nt-sh"><span class="nt-sec">§ 01</span>{e(N["s1_h"])}</h3><p class="nt-sp">{e(N["s1_p"])}</p>
 <div class="nt-cards">{cards}</div></div></section>
 <section class="sec sec-paper nt" id="notary-process" aria-labelledby="nt-h2"><div class="wrap">

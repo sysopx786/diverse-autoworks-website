@@ -144,6 +144,8 @@ NOTARY = {
         t("Crossing out, writing over or correcting entries on the title", "Tachar, escribir encima o corregir datos en el título"),
     ],
     # text inside the title illustration (SVG)
+    "photo_alt": t("A notary public at a desk guiding a client as she signs a document, with a notary stamp and journal on the desk",
+                   "Una notaria en su escritorio guiando a una clienta mientras firma un documento, con un sello notarial y un libro de registro sobre el escritorio"),
     "doc_aria": t("Illustration of a vehicle title with the seller signature block highlighted: sign only in front of the notary",
                   "Ilustración de un título de vehículo con el recuadro de firma del vendedor resaltado: firme solo frente al notario"),
     "doc_top": t("CERTIFICATE OF TITLE · ILLUSTRATION", "CERTIFICADO DE TÍTULO · ILUSTRACIÓN"),
