@@ -517,6 +517,7 @@ def page_home(lang):
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
 <div class="board">{"".join(tiles)}</div>
 <p class="board-foot"><a class="link-arrow" href="{href(lang, key, lang, "services")}">{u["all_services"]}</a></p>
+{img(lang, key, "about-mechanic", "fig-img fig-wide fig-band")}
 </div></section>'''
 
     # motorcycle
@@ -536,8 +537,8 @@ def page_home(lang):
         others.append(f"<li>{q}{c}</li>")
     themes = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in THEMES)
     reviews = f'''<section class="sec sec-paper" id="reviews"><div class="wrap">
-<div class="sec-head"><h2>{esc(L(P["rev_h"], lang))}</h2><p>{esc(L(P["rev_p"], lang))}</p></div>
-<ul class="themes">{themes}</ul>
+<div class="rev-top"><div><div class="sec-head"><h2>{esc(L(P["rev_h"], lang))}</h2><p>{esc(L(P["rev_p"], lang))}</p></div>
+<ul class="themes">{themes}</ul></div>{img(lang, key, "about-hands", "fig-img rev-img")}</div>
 <div class="revs"><figure class="lead-quote">{lq}<figcaption>{lc}</figcaption></figure><ul class="qlist">{"".join(others)}</ul></div>
 <div class="rev-more"><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div>
 </div></section>'''
