@@ -189,6 +189,14 @@ def asset(cur_lang, cur_key, name):
     return "../" * depth(cur_lang, cur_key) + "assets/" + name
 
 
+def img(lang, key, name, cls="", eager=False, alt=None):
+    d = IMAGES[name]
+    a = esc(L(d["alt"], lang), quote=True) if alt is None else alt
+    c = f' class="{cls}"' if cls else ""
+    return (f'<img{c} src="{asset(lang, key, "img/" + d["file"])}" width="{d["w"]}" height="{d["h"]}" '
+            f'alt="{a}" loading="{"eager" if eager else "lazy"}" decoding="async">')
+
+
 def abs_url(lang, key):
     p = path_of(lang, key)
     return SITE_URL + "/" + (p + "/" if p else "")
@@ -509,7 +517,7 @@ def page_home(lang):
     tiles = []
     for sid in HOME_CARDS:
         s = svc_by_id(sid)
-        tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{G.icon(s["icon"], 52)}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
+        tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{img(lang, key, SVC_IMG[sid], "tile-img")}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
     board = f'''<section class="sec sec-white" id="services"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
 <div class="board">{"".join(tiles)}</div>
@@ -520,6 +528,7 @@ def page_home(lang):
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a></p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 </div></section>'''
 
@@ -574,7 +583,7 @@ def page_services(lang):
             if s.get("page"):
                 acts.append(f'<a href="{learn_href(lang, key, s["id"])}">{u["svc_details"]}</a>')
             acts.append(f'<a href="{href(lang, key, lang, "faq", anchor=s["faq"])}">{u["faq_related"]}</a>')
-            blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div><p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
+            blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div>{img(lang, key, SVC_IMG[s["id"]], "svc-img") if s["id"] in SVC_IMG else ""}<p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
         groups.append(f'<section class="svc-group" id="g-{gid}"><h2>{esc(L(gtitle, lang))}</h2>{"".join(blocks)}</section>')
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''<section class="sec sec-paper"><div class="wrap svc-layout">
 <nav aria-label="{u["svc_index"]}"><ul class="svc-index">{"".join(idx)}</ul></nav><div>{"".join(groups)}</div></div></section>'''
@@ -594,12 +603,13 @@ def page_inspections(lang):
 <div class="split"><div><h3>{esc(L(P["safety_h"], lang))}</h3><p>{esc(L(P["safety_p"], lang))}</p></div><div><h3>{esc(L(P["emis_h"], lang))}</h3><p>{esc(L(P["emis_p"], lang))}</p></div></div>
 </div></section>
 <section class="sec sec-white"><div class="wrap two-col">
-<div><h2>{esc(L(P["types_h"], lang))}</h2><ul class="vtypes">{types}</ul>
+<div><h2>{esc(L(P["types_h"], lang))}</h2>{img(lang, key, "svc-inspections", "fig-img")}<ul class="vtypes">{types}</ul>
 <div class="callout"><h3>{esc(L(P["price_h"], lang))}</h3><p>{esc(L(P["price_p"], lang))}</p></div>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
 <div><h2>{esc(L(ins["title"], lang))}</h2>{faq_list(lang, ins)}</div></div></section>
 <section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 <p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
@@ -617,7 +627,7 @@ def page_fleet(lang):
     fc = faq_cat_by_id("fleet")
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap two-col">
-<div><h2>{esc(L(P["tell_h"], lang))}</h2><ul class="checklist">{tell}</ul>
+<div>{img(lang, key, "svc-fleet", "fig-img")}<h2>{esc(L(P["tell_h"], lang))}</h2><ul class="checklist">{tell}</ul>
 <div class="callout" style="margin-top:28px"><h3>{esc(L(P["terms_h"], lang))}</h3><p>{esc(L(P["terms_p"], lang))}</p></div>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key, fleet=True)}</div></div></section>
@@ -636,6 +646,7 @@ def page_about(lang):
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
 <p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="320" height="168" alt="Diverse Auto Works logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
+<section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
 <ul class="themes">{themes}</ul><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
