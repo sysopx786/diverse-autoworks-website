@@ -317,10 +317,11 @@ def header(lang, key):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
+    rvh = href(lang, key, lang, "reviews")
     rv = (f'<div class="nav-rev" role="group" aria-label="{u["rev_on"]}"><p class="nav-rev-h">{u["rev_on"]}</p>'
-          f'<a class="rv rv-g" href="{DIRECTIONS}" rel="noopener" target="_blank"><img src="{asset(lang, key, "img/google-g.png")}" width="22" height="22" alt=""><span>Google <em>{u["rev_label"]}</em></span></a>'
-          f'<a class="rv rv-y" href="{YELP_URL}" rel="noopener" target="_blank"><span>Yelp <em>{u["rev_label"]}</em></span></a>'
-          f'<a class="rv rv-c" href="{CARFAX_URL}" rel="noopener" target="_blank" aria-label="CARFAX {u["rev_label"]}"><img src="{asset(lang, key, "img/carfax.png")}" width="66" height="14" alt=""><span><em>{u["rev_label"]}</em></span></a></div>')
+          f'<a class="rv rv-g" href="{rvh}"><img src="{asset(lang, key, "img/google-g.png")}" width="22" height="22" alt=""><span>Google <em>{u["rev_label"]}</em></span></a>'
+          f'<a class="rv rv-y" href="{rvh}"><span>Yelp <em>{u["rev_label"]}</em></span></a>'
+          f'<a class="rv rv-c" href="{rvh}" aria-label="CARFAX {u["rev_label"]}"><img src="{asset(lang, key, "img/carfax.png")}" width="66" height="14" alt=""><span><em>{u["rev_label"]}</em></span></a></div>')
     names = {"en": "English", "es": "Español"}
     sw = (f'<details class="lang" data-lang-menu><summary aria-label="{u["lang_label"]}: {names[lang]}"><span lang="{lang}">{names[lang]}</span></summary>'
           f'<a href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}">{names[other]}</a></details>')
