@@ -480,18 +480,6 @@ details.q .a p{margin:0}
 @media (max-width:900px){.gallery{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.gallery{grid-template-columns:1fr}}
 
-/* mobile menu: notary link + review links in each platform's brand colours */
-.nav-mob,.nav-rev{display:none}
-@media (max-width:1180px){
-  .nav-mob{display:block}
-  .nav-rev{display:grid;gap:8px;margin-top:14px}
-  .nav-rev-h{margin:0 0 2px;font-family:var(--head);font-weight:700;font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mist)}
-  .nav .rv{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 16px;border:0;border-radius:6px;color:#fff;font-family:var(--head);font-weight:700;font-size:1.35rem;text-decoration:none}
-  .nav .rv em{font-style:normal;font-weight:600}
-  .nav .rv:hover,.nav .rv:focus-visible{color:#fff;filter:brightness(1.12)}
-  .nav .rv-g{background:#1A73E8}
-  .nav .rv-g img{background:#fff;border-radius:4px;padding:2px;width:26px;height:26px}
-  .nav .rv-y{background:#D32323}
-  .nav .rv-c{background:#000;border:1px solid rgba(255,255,255,.35)}
-  .nav .rv-c img{width:66px;height:auto;flex:none}
-}
+/* mobile menu: notary link (mobile only) */
+.nav-mob{display:none}
+@media (max-width:1180px){.nav-mob{display:block}}

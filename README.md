@@ -17,5 +17,5 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 ## Header, call bar, rating icons (Oct 7, 2026)
 - Language switch is one dropdown (`<details>`): shows the current language in full ("English" / "Español"); the other opens below it. Closes on outside click or Esc.
 - Mobile sticky bottom bar removed (Oct 7, 2026). Phone stays in the header and every page's text.
-- Mobile menu adds Notary Services and Google / Yelp / CARFAX review links in each brand's colours (Google blue, Yelp red, CARFAX black). All three link to the site's /reviews/ page.
+- Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.
