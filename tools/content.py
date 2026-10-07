@@ -637,3 +637,34 @@ ASK_FAQ_CATS = [
 
 SERVICES.extend(ASK_SERVICES)
 GROUPS.append(ASK_GROUP)
+
+
+# ---------------------------------------------------------------------------
+# Illustrative images (AI-generated; alt text says so). file, width, height.
+# ---------------------------------------------------------------------------
+def _im(file, w, h, en, es):
+    return {"file": file, "w": w, "h": h,
+            "alt": t("Illustration: " + en, "Ilustración: " + es)}
+
+IMAGES = {
+    "svc-inspections": _im("svc-inspections.webp", 800, 603, "blueprint-style drawing of a vehicle inspection", "dibujo tipo plano de una inspección vehicular"),
+    "svc-oil": _im("svc-oil.webp", 800, 603, "oil filter", "filtro de aceite"),
+    "svc-brakes": _im("svc-brakes.webp", 800, 603, "brake rotor", "disco de freno"),
+    "svc-tires": _im("svc-tires.webp", 800, 603, "tire", "neumático"),
+    "svc-engine": _im("svc-engine.webp", 800, 603, "blueprint-style drawing of an engine", "dibujo tipo plano de un motor"),
+    "svc-suspension": _im("svc-suspension.webp", 800, 603, "suspension strut", "amortiguador de la suspensión"),
+    "svc-ac": _im("svc-ac.webp", 800, 603, "A/C compressor", "compresor del aire acondicionado"),
+    "svc-fleet": _im("svc-fleet.webp", 800, 603, "white work van", "camioneta de trabajo blanca"),
+    "svc-battery": _im("svc-battery.webp", 800, 603, "battery and alternator", "batería y alternador"),
+    "svc-drivetrain": _im("svc-drivetrain.webp", 800, 603, "transmission and axle", "transmisión y eje"),
+    "moto": _im("moto.webp", 1200, 671, "motorcycle", "motocicleta"),
+    "about-storefront": _im("about-storefront.webp", 1000, 753, "auto shop storefront with sign (not the actual building)", "fachada de un taller con letrero (no es el edificio real)"),
+    "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior (not the actual shop)", "interior de un taller (no es el taller real)"),
+    "about-mechanic": _im("about-mechanic.webp", 1200, 671, "mechanic working on an SUV", "mecánico trabajando en una camioneta SUV"),
+    "about-hands": _im("about-hands.webp", 800, 603, "hands using a torque wrench", "manos usando una llave de torque"),
+}
+# Services that reuse another service's image on /services/
+SVC_IMG = {"inspections": "svc-inspections", "maintenance": "svc-oil", "engine": "svc-engine",
+           "battery": "svc-battery", "drivetrain": "svc-drivetrain", "brakes": "svc-brakes",
+           "tires": "svc-tires", "rotation": "svc-tires", "suspension": "svc-suspension",
+           "ac": "svc-ac", "fleet": "svc-fleet", "electrical": "svc-battery"}
