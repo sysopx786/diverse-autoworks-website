@@ -2,6 +2,10 @@
 
 Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixville, PA.
 
+## Links
+- Public (GitHub Pages): https://sysopx786.github.io/diverse-autoworks-website/
+- Private preview (Claude artifact, owner access only): https://claude.ai/artifact/9Zd66Fr1JT8dMqqUMcFHsL
+
 - `docs/` is the built site. GitHub Pages: Settings > Pages > Deploy from branch > `main` / `/docs`.
 - `tools/content.py` holds all copy (EN + ES). `tools/build.py` builds the site into `docs/`.
 - Rebuild: `python3 tools/build.py`
