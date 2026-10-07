@@ -661,6 +661,7 @@ IMAGES = {
     "about-storefront": _im("about-storefront.webp", 1000, 753, "auto shop storefront with sign", "fachada de un taller con letrero"),
     "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior", "interior de un taller"),
     "about-mechanic": _im("about-mechanic.webp", 1200, 671, "mechanic working on an SUV", "mecánico trabajando en una camioneta SUV"),
+    "notary": _im("notary.webp", 1000, 753, "notary guiding a client signing a document at a desk", "notaria guiando a una clienta que firma un documento en un escritorio"),
     "about-hands": _im("about-hands.webp", 800, 603, "hands using a torque wrench", "manos usando una llave de torque"),
 }
 # Services that reuse another service's image on /services/
