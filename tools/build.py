@@ -65,7 +65,6 @@ UI = {
         "moto_init": "Tap a numbered point to see which items PennDOT lists.", "moto_sel": "Selected:",
         "moto_listed": "listed by PennDOT among the items covered in a motorcycle safety inspection.",
         "moto_aria": "Motorcycle diagram with the PennDOT-listed inspection items marked",
-        "img_note": "Images on this site are AI-generated illustrations. They are not photos of our shop or customers.",
         "moto_caveat": "An inspection evaluates the required safety components; it is not the same as a complete engine-service appointment.",
         "faq_search": "Search the questions", "faq_search_ph": "Search, for example brakes or notary", "faq_all": "All", "faq_count": "{n} questions",
         "faq_none_h": "No question matches that.", "faq_none_p": f"Call {PHONE} and we will answer it.",
@@ -122,7 +121,6 @@ UI = {
         "moto_init": "Toque un punto numerado para ver los elementos que enumera PennDOT.", "moto_sel": "Seleccionado:",
         "moto_listed": "PennDOT lo enumera entre los elementos que cubre una inspección de seguridad de motocicletas.",
         "moto_aria": "Diagrama de una motocicleta con los elementos de inspección enumerados por PennDOT",
-        "img_note": "Las imágenes de este sitio son ilustraciones generadas con IA. No son fotos de nuestro taller ni de clientes.",
         "moto_caveat": "Una inspección evalúa los componentes de seguridad requeridos; no es lo mismo que una cita completa de servicio del motor.",
         "faq_search": "Buscar entre las preguntas", "faq_search_ph": "Busque, por ejemplo, frenos o notario", "faq_all": "Todas", "faq_count": "{n} preguntas",
         "faq_none_h": "Ninguna pregunta coincide.", "faq_none_p": f"Llame al {PHONE} y se la responderemos.",
@@ -648,7 +646,7 @@ def page_about(lang):
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
 <p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="320" height="168" alt="Diverse Auto Works logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
-<section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul><p class="gallery-note">{u["img_note"]}</p></div></section>
+<section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
 <ul class="themes">{themes}</ul><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)

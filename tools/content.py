@@ -644,7 +644,7 @@ GROUPS.append(ASK_GROUP)
 # ---------------------------------------------------------------------------
 def _im(file, w, h, en, es):
     return {"file": file, "w": w, "h": h,
-            "alt": t("Illustration: " + en, "Ilustración: " + es)}
+            "alt": t(en[0].upper() + en[1:], es[0].upper() + es[1:])}
 
 IMAGES = {
     "svc-inspections": _im("svc-inspections.webp", 800, 603, "blueprint-style drawing of a vehicle inspection", "dibujo tipo plano de una inspección vehicular"),
@@ -658,8 +658,8 @@ IMAGES = {
     "svc-battery": _im("svc-battery.webp", 800, 603, "battery and alternator", "batería y alternador"),
     "svc-drivetrain": _im("svc-drivetrain.webp", 800, 603, "transmission and axle", "transmisión y eje"),
     "moto": _im("moto.webp", 1200, 671, "motorcycle", "motocicleta"),
-    "about-storefront": _im("about-storefront.webp", 1000, 753, "auto shop storefront with sign (not the actual building)", "fachada de un taller con letrero (no es el edificio real)"),
-    "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior (not the actual shop)", "interior de un taller (no es el taller real)"),
+    "about-storefront": _im("about-storefront.webp", 1000, 753, "auto shop storefront with sign", "fachada de un taller con letrero"),
+    "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior", "interior de un taller"),
     "about-mechanic": _im("about-mechanic.webp", 1200, 671, "mechanic working on an SUV", "mecánico trabajando en una camioneta SUV"),
     "about-hands": _im("about-hands.webp", 800, 603, "hands using a torque wrench", "manos usando una llave de torque"),
 }
