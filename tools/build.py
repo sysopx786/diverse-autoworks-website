@@ -21,6 +21,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from content import *  # noqa
+from notary import NOTARY  # noqa
 import graphics as G
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
@@ -251,7 +252,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -791,11 +792,77 @@ def page_faq(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body, extra_ld=ld)
 
 
+def notary_sections(lang):
+    """Redesigned notary block on the Contact page (anchor #notary). Copy lives in tools/notary.py."""
+    N = NOTARY
+    u = UI[lang]
+
+    def e(d):
+        return esc(L(d, lang))
+
+    call = f"Llame al {PHONE}" if lang == "es" else f"Call {PHONE}"
+    chips = "".join(f"<li>{e(c)}</li>" for c in N["chips"])
+    cards = "".join(f'<div class="nt-card">{G.icon(ic, 34)}<h4>{e(h)}</h4><p>{e(p)}</p></div>' for ic, h, p in N["cards"])
+    steps = "".join(f'<li class="nt-step"><span class="nt-n" aria-hidden="true">{i:02d}</span><h4>{e(h)}</h4><p>{e(p)}</p></li>'
+                    for i, (h, p) in enumerate(N["steps"], 1))
+    rules = "".join(
+        f'<div class="nt-rule"><dt>{e(dt)}<small>{e(sm)}</small></dt><dd>{"".join(f"<p>{e(x)}</p>" for x in ps)}</dd></div>'
+        for dt, sm, ps in N["rules"])
+    note = e(N["note"])
+    for i, (url, label) in enumerate(N["note_links"], 1):
+        note = note.replace(f"[[{i}]]", f'<a href="{url}" rel="noopener" target="_blank">{e(label)}</a>')
+    bring = "".join(f"<li>{e(x)}</li>" for x in N["bring"])
+    avoid = "".join(f"<li>{e(x)}</li>" for x in N["avoid"])
+    faq = "".join(
+        f'<details class="q"><summary>{e(q)}</summary><div class="a">{"".join(f"<p>{e(x)}</p>" for x in ans)}</div></details>'
+        for q, ans in N["faq"])
+    doc = f"""<svg class="nt-doc" viewBox="0 0 520 440" role="img" aria-label="{esc(L(N["doc_aria"], lang), quote=True)}">
+<rect x="40" y="14" width="440" height="412" fill="#fff" stroke="#CDCED0"/><rect x="40" y="14" width="440" height="44" fill="#26282C"/>
+<text x="62" y="42" font-size="12" letter-spacing="2" fill="#fff">{e(N["doc_top"])}</text>
+<g fill="#E6E6E7"><rect x="62" y="80" width="190" height="8"/><rect x="62" y="100" width="260" height="8"/><rect x="62" y="120" width="150" height="8"/><rect x="330" y="80" width="130" height="8"/><rect x="330" y="100" width="100" height="8"/></g>
+<text x="62" y="170" font-size="11" letter-spacing="2" fill="#5B5F66">{e(N["doc_assign"])}</text>
+<rect x="62" y="182" width="396" height="86" fill="#FDECEA" stroke="#B3201B" stroke-width="1.5"/>
+<text x="76" y="204" font-size="11" letter-spacing="1.2" fill="#B3201B">{e(N["doc_seller"])}</text>
+<path d="M78 246 q16 -26 30 -4 t28 -2 t26 2 t26 -4" fill="none" stroke="#26282C" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="3 4" opacity=".55"/>
+<line x1="76" y1="254" x2="440" y2="254" stroke="#B3201B" stroke-width="1"/>
+<rect x="62" y="284" width="190" height="52" fill="#fff" stroke="#CDCED0"/><text x="74" y="304" font-size="10.5" letter-spacing="1.2" fill="#5B5F66">{e(N["doc_odo"])}</text>
+<rect x="268" y="284" width="190" height="52" fill="#fff" stroke="#CDCED0"/><text x="280" y="304" font-size="10.5" letter-spacing="1.2" fill="#5B5F66">{e(N["doc_buyer"])}</text>
+<g fill="#E6E6E7"><rect x="62" y="356" width="396" height="8"/><rect x="62" y="376" width="300" height="8"/></g>
+<circle cx="430" cy="390" r="30" fill="none" stroke="#26282C" stroke-width="1.5" opacity=".6"/><circle cx="430" cy="390" r="23" fill="none" stroke="#26282C" stroke-width="1" stroke-dasharray="1 3" opacity=".6"/>
+<text x="430" y="394" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#26282C" opacity=".75">{e(N["doc_notary"])}</text></svg>"""
+    return f"""<section class="sec sec-white nt" id="notary" aria-labelledby="nt-h"><div class="wrap">
+<div class="nt-intro"><p class="nt-eyebrow">{e(N["eyebrow"])}</p><h2 id="nt-h">{e(N["h2"])}</h2><p class="nt-lede">{e(N["lede"])}</p>
+<div class="nt-cta"><a class="btn btn-navy" href="{TEL}">{call}</a><a class="btn btn-line" href="#notary-process">{e(N["cta_how"])}</a><a class="btn btn-line" href="{MAIL}">{u["email_us"]}</a></div>
+<ul class="nt-chips">{chips}</ul></div>
+<h3 class="nt-sh"><span class="nt-sec">§ 01</span>{e(N["s1_h"])}</h3><p class="nt-sp">{e(N["s1_p"])}</p>
+<div class="nt-cards">{cards}</div></div></section>
+<section class="sec sec-paper nt" id="notary-process" aria-labelledby="nt-h2"><div class="wrap">
+<h3 class="nt-sh" id="nt-h2"><span class="nt-sec">§ 02</span>{e(N["s2_h"])}</h3><p class="nt-sp">{e(N["s2_p"])}</p>
+<ol class="nt-steps">{steps}</ol></div></section>
+<section class="sec sec-white nt" id="notary-rules" aria-labelledby="nt-h3"><div class="wrap">
+<h3 class="nt-sh" id="nt-h3"><span class="nt-sec">§ 03</span>{e(N["s3_h"])}</h3><p class="nt-sp">{e(N["s3_p"])}</p>
+<dl class="nt-rules">{rules}</dl><p class="nt-note">{note}</p></div></section>
+<section class="sec sec-paper nt" aria-labelledby="nt-h4"><div class="wrap two-col nt-split">
+<div>{doc}</div>
+<div><p class="nt-eyebrow">{e(N["s4_eyebrow"])}</p><h3 class="nt-sh" id="nt-h4">{e(N["s4_h"])}</h3><p class="nt-sp">{e(N["s4_p"])}</p>
+<h4 class="nt-sub">{e(N["bring_h"])}</h4><ul class="nt-list">{bring}</ul>
+<h4 class="nt-sub">{e(N["avoid_h"])}</h4><ul class="nt-list nt-no">{avoid}</ul></div></div></section>
+<section class="sec sec-white nt" aria-labelledby="nt-h5"><div class="wrap">
+<div class="nt-faq"><h3 class="nt-sh" id="nt-h5"><span class="nt-sec">§ 04</span>{e(N["faq_h"])}</h3>{faq}</div>
+<div class="nt-shop"><div><p class="nt-eyebrow">{e(N["shop_eyebrow"])}</p><h3>{e(N["shop_h"])}</h3><p>{e(N["shop_p"])}</p></div>
+<div class="nt-cta"><a class="btn btn-navy" href="{href(lang, "contact", lang, "inspections")}">{u["nav"]["inspections"]}</a><a class="btn btn-line" href="{href(lang, "contact", lang, "services")}">{u["nav"]["services"]}</a></div></div></div></section>"""
+
+
+def notary_ld(lang):
+    items = [{"@type": "Question", "name": L(q, lang),
+              "acceptedAnswer": {"@type": "Answer", "text": " ".join(L(x, lang) for x in ans)}} for q, ans in NOTARY["faq"]]
+    return '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang, "mainEntity": items}, ensure_ascii=False) + "</script>"
+
+
 def page_contact(lang):
     key = "contact"
     P = PAGES["contact"]
     u = UI[lang]
-    nc = faq_cat_by_id("notary")
     cards = f'''<div class="cards">
 <div class="cardrow">{G.icon("phone", 34)}<div><b>{u["contact_phone"]}</b><a href="{TEL}">{PHONE}</a></div></div>
 <div class="cardrow">{G.icon("pin", 34)}<div><b>{u["contact_addr"]}</b><p>{B["street"]}<br>{B["city"]}, {B["state"]} {B["zip"]}</p><a href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></div></div>
@@ -807,10 +874,9 @@ def page_contact(lang):
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap contact-grid"><div>{cards}</div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key)}</div></div></section>
-<section class="sec sec-white" id="notary"><div class="wrap two-col"><div><h2>{esc(L(P["notary_h"], lang))}</h2><p style="font-size:1.2rem">{esc(L(P["notary_p"], lang))}</p></div>
-<div>{faq_list(lang, nc)}</div></div></section>
+{notary_sections(lang)}
 <section class="sec sec-concrete"><div class="wrap">{mapbox}</div></section>'''
-    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body, extra_ld=notary_ld(lang))
 
 
 def page_privacy(lang):

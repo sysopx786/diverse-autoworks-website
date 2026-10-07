@@ -19,3 +19,9 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Mobile sticky bottom bar removed (Oct 7, 2026). Phone stays in the header and every page's text.
 - Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.
+
+## Notary section redesign (Oct 7, 2026)
+- The Contact page notary block (`/contact/#notary`, `/es/contact/#notary`) is now a full section: what we notarize, how it works in Pennsylvania, PA rules, what to bring or avoid, 15 FAQs, and a link band to Inspections and Services.
+- Copy (EN + ES) lives in `tools/notary.py`; markup is `notary_sections()` in `tools/build.py`; styles are the `.nt-*` block at the end of `docs/assets/css/main.css`. The block also writes FAQPage JSON-LD for the contact page.
+- The Spanish is a draft. Have a native speaker review it before treating it as final.
+- The older three-question notary FAQ in `FAQ_CATS` still feeds `/faq/`; it was left as is.
