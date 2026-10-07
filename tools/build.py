@@ -60,7 +60,7 @@ UI = {
         "pick_group": "Vehicle symptoms and needs", "pick_empty_h": "Pick an option", "pick_empty_p": "The matching service shows up here, with a one-tap way to send a request.",
         "pick_request": "Request this service", "pick_learn": "See details", "pick_call": f"Call {PHONE}",
         "all_services": "See all services", "more_reviews": "Read more reviews", "full_reviews": "Read the full reviews on",
-        "source": "Source", "fleet_btn": "Fleet repairs", "notary_btn": "Notary hours and details", "email_us": "Email the shop",
+        "notary_nav": "Notary Services", "rev_on": "Our reviews", "rev_label": "Reviews", "source": "Source", "fleet_btn": "Fleet repairs", "notary_btn": "Notary hours and details", "email_us": "Email the shop",
         "close_hours": "Hours", "close_addr": "Address", "close_mail": "Email", "close_notary": "Notary services",
         "moto_init": "Tap a numbered point to see which items PennDOT lists.", "moto_sel": "Selected:",
         "moto_listed": "listed by PennDOT among the items covered in a motorcycle safety inspection.",
@@ -116,7 +116,7 @@ UI = {
         "pick_group": "Síntomas y necesidades del vehículo", "pick_empty_h": "Elija una opción", "pick_empty_p": "El servicio correspondiente aparece aquí, con una forma rápida de enviar su solicitud.",
         "pick_request": "Solicitar este servicio", "pick_learn": "Ver detalles", "pick_call": f"Llamar al {PHONE}",
         "all_services": "Ver todos los servicios", "more_reviews": "Leer más reseñas", "full_reviews": "Lea las reseñas completas en",
-        "source": "Fuente", "fleet_btn": "Reparaciones para flotas", "notary_btn": "Horario y detalles del notario", "email_us": "Escribir al taller",
+        "notary_nav": "Notario público", "rev_on": "Nuestras reseñas", "rev_label": "Reseñas", "source": "Fuente", "fleet_btn": "Reparaciones para flotas", "notary_btn": "Horario y detalles del notario", "email_us": "Escribir al taller",
         "close_hours": "Horario", "close_addr": "Dirección", "close_mail": "Correo", "close_notary": "Notario público",
         "moto_init": "Toque un punto numerado para ver los elementos que enumera PennDOT.", "moto_sel": "Seleccionado:",
         "moto_listed": "PennDOT lo enumera entre los elementos que cubre una inspección de seguridad de motocicletas.",
@@ -316,12 +316,17 @@ def header(lang, key):
     for k in ("services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
+    items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
+    rv = (f'<div class="nav-rev" role="group" aria-label="{u["rev_on"]}"><p class="nav-rev-h">{u["rev_on"]}</p>'
+          f'<a class="rv rv-g" href="{DIRECTIONS}" rel="noopener" target="_blank"><img src="{asset(lang, key, "img/google-g.png")}" width="22" height="22" alt=""><span>Google <em>{u["rev_label"]}</em></span></a>'
+          f'<a class="rv rv-y" href="{YELP_URL}" rel="noopener" target="_blank"><span>Yelp <em>{u["rev_label"]}</em></span></a>'
+          f'<a class="rv rv-c" href="{CARFAX_URL}" rel="noopener" target="_blank" aria-label="CARFAX {u["rev_label"]}"><img src="{asset(lang, key, "img/carfax.png")}" width="66" height="14" alt=""><span><em>{u["rev_label"]}</em></span></a></div>')
     names = {"en": "English", "es": "Español"}
     sw = (f'<details class="lang" data-lang-menu><summary aria-label="{u["lang_label"]}: {names[lang]}"><span lang="{lang}">{names[lang]}</span></summary>'
           f'<a href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}">{names[other]}</a></details>')
     return f'''<header class="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
-<nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
+<nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul>{rv}</nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
 <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></header>'''
@@ -342,14 +347,8 @@ def footer(lang, key):
 </div></footer>'''
 
 
-def callbar(lang):
-    u = UI[lang]
-    return (f'<aside class="callbar on-dark" aria-label="Quick contact"><a class="btn btn-sign" href="CONTACT_HREF">{u["request"]}</a></aside>')
-
-
 def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
     u = UI[lang]
-    cb = callbar(lang).replace("CONTACT_HREF", href(lang, key, lang, "contact", anchor="request"))
     return f'''<!doctype html>
 <html lang="{lang}">
 <head>
@@ -362,7 +361,6 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 {body}
 </main>
 {footer(lang, key)}
-{cb}
 <script src="{asset(lang, key, "js/main.js")}" defer></script>
 </body>
 </html>
