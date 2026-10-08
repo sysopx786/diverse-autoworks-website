@@ -26,7 +26,11 @@
   --body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --maxw:1200px;
   --gut:clamp(18px,4vw,40px);
-  --header-h:76px;
+  /* header sizes: only the main row + logo change on scroll; buttons and the status strip stay constant */
+  --row-top:76px;--row-min:54px;--logo-top:56px;--logo-min:36px;--strip-h:32px;--btn:44px;
+  --hdr-full:calc(var(--row-top) + var(--strip-h));
+  --hdr-min:calc(var(--row-min) + var(--strip-h));
+  --header-h:var(--hdr-min);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 18px);-webkit-text-size-adjust:100%}
@@ -62,8 +66,11 @@ ul,ol{margin:0;padding:0}
 .link-arrow{font-weight:600}
 
 /* ---------- header ---------- */
-.hdr{position:sticky;top:0;z-index:100;background:var(--ink);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
-.hdr-in{display:flex;align-items:center;gap:20px;height:var(--header-h)}
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--ink);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08);transition:box-shadow .28s ease}
+.hdr.is-shrunk{box-shadow:0 1px 0 rgba(255,255,255,.08),0 8px 20px rgba(0,0,0,.35)}
+.hdr-spacer{height:var(--hdr-full)}
+.hdr-in{display:flex;align-items:center;gap:20px;height:var(--row-top);transition:height .28s cubic-bezier(.4,0,.2,1)}
+.hdr.is-shrunk .hdr-in{height:var(--row-min)}
 .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;flex:none}
 .brand:hover{color:#fff}
 .brand-mark{width:44px;height:44px;flex:none}
@@ -76,17 +83,19 @@ ul,ol{margin:0;padding:0}
 .nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
 .nav a[aria-current="page"]{color:var(--sign)}
 .nav a[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:3px;background:var(--sign-fill);border-radius:2px}
-.hdr-end{display:flex;align-items:center;gap:12px}
+.hdr-end{display:flex;align-items:center;gap:8px;flex:none}
 .lang{display:block}
 .lang a,.lang span{display:block;padding:7px 11px;font-family:var(--head);font-weight:700;font-size:1.05rem;line-height:1;text-decoration:none;color:#fff}
 .lang a:hover{background:rgba(255,255,255,.12);color:#fff}
 .lang [aria-current="true"]{background:var(--sign-fill);color:#fff}
-.hdr .btn{min-height:44px;padding:0 18px;font-size:1.2rem}
-.menu-btn{display:none;width:48px;height:48px;border:1px solid rgba(255,255,255,.3);border-radius:3px;background:transparent;color:#fff;cursor:pointer;padding:0}
-.menu-btn svg{margin:auto;width:26px;height:26px}
+.hdr .btn{min-height:var(--btn);height:var(--btn);padding:0 18px;font-size:1.2rem}
+.hbtn{display:grid;place-items:center;width:var(--btn);height:var(--btn);flex:none;border:1px solid rgba(255,255,255,.3);border-radius:3px;background:transparent;color:#fff;cursor:pointer;padding:0}
+.hbtn svg{width:24px;height:24px}
+.hbtn:hover,.hbtn[aria-expanded="true"]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.55)}
+.menu-btn{display:none}
 @media (max-width:1180px){
-  .menu-btn{display:block}
-  .nav{position:absolute;left:0;right:0;top:var(--header-h);background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);display:none;margin:0;padding:8px var(--gut) 20px}
+  .menu-btn{display:grid}
+  .nav{position:absolute;left:0;right:0;top:100%;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);display:none;margin:0;padding:8px var(--gut) 20px;max-height:calc(100vh - var(--hdr-full));max-height:calc(100dvh - var(--hdr-full));overflow:auto}
   .nav.open{display:block}
   .nav ul{flex-direction:column;gap:0}
   .nav a{padding:12px 4px;font-size:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);border-radius:0}
@@ -95,12 +104,46 @@ ul,ol{margin:0;padding:0}
 }
 @media (max-width:620px){
   .hdr .btn-call span{display:none}
-  .hdr .btn-call{padding:0 14px}
+  .hdr .btn-call{width:var(--btn);padding:0}
   .brand-txt span{letter-spacing:.1em}
   .hdr-in{gap:10px}
   .brand-mark{width:38px;height:38px}
   .brand-txt b{font-size:1.4rem}
 }
+
+/* ---------- header: shrink on scroll, constant-size buttons, status strip, search ----------
+   The header is fixed with a spacer of its full height, so shrinking never moves the page. */
+@media (min-width:621px){:root{--btn:48px}}
+@media (min-width:1181px){:root{--row-top:92px;--row-min:64px;--logo-top:66px;--logo-min:44px}}
+.hdr .brand{flex:0 1 auto;min-width:0}
+.hdr .brand-logo{height:var(--logo-top);width:auto;max-width:100%;object-fit:contain;object-position:left center;transition:height .28s cubic-bezier(.4,0,.2,1)}
+.hdr.is-shrunk .brand-logo{height:var(--logo-min)}
+.hdr .lang{width:var(--btn);height:var(--btn)}
+.hdr .lang-code{width:26px;height:26px;margin:-13px 0 0 -13px;font-size:.8rem}
+.hdr-strip{height:var(--strip-h);background:var(--ink-2);border-top:1px solid rgba(255,255,255,.08)}
+.hdr-strip .wrap{height:100%;display:flex;align-items:center}
+.status{display:flex;align-items:center;gap:9px;min-width:0;font-family:var(--body);font-weight:600;font-size:.9rem;line-height:1;color:#E8EAED;white-space:nowrap}
+.status-text{overflow:hidden;text-overflow:ellipsis}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:#8A8D92;box-shadow:0 0 0 3px rgba(138,141,146,.22)}
+.status[data-state="open"] .dot{background:#2FBF71;box-shadow:0 0 0 3px rgba(47,191,113,.25)}
+.status[data-state="soon"] .dot{background:#F5B301;box-shadow:0 0 0 3px rgba(245,179,1,.25)}
+.status-sample{flex:none;margin-left:2px;padding:2px 6px;border:1px solid #F5B301;border-radius:3px;color:#F5B301;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.srch{display:none;position:absolute;left:0;right:0;top:100%;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);padding:14px var(--gut) 20px;max-height:calc(100vh - var(--hdr-full));max-height:calc(100dvh - var(--hdr-full));overflow:auto}
+.srch.open{display:block}
+.srch-in{max-width:720px;margin-inline:auto}
+.srch-row{display:flex;gap:8px}
+.srch input{flex:1;min-width:0;height:48px;padding:0 14px;border:2px solid rgba(255,255,255,.35);border-radius:3px;background:var(--ink-2);color:#fff;font:500 16px var(--body)}
+.srch input::placeholder{color:#9A9DA2}
+.srch input:focus{border-color:var(--sign);outline:none}
+.srch-close{flex:none;height:48px;padding:0 14px;border:1px solid rgba(255,255,255,.3);border-radius:3px;background:transparent;color:#fff;font:600 1.1rem var(--head);cursor:pointer}
+.srch-close:hover{background:rgba(255,255,255,.1)}
+.srch-res{list-style:none;margin:10px 0 0;display:grid}
+.srch-res a{display:block;padding:12px 4px;color:#fff;text-decoration:none;font-family:var(--head);font-weight:600;font-size:1.35rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.srch-res a:hover,.srch-res a:focus-visible{color:var(--sign)}
+.srch-empty{margin:12px 0 0;color:#D5D7DA;font-size:1rem}
+.srch-empty a{color:#fff;font-weight:600}
+@media (max-width:400px){.hdr-in,.hdr-end{gap:6px}}
+.hdr.no-tr,.hdr.no-tr *{transition:none!important}
 
 /* ---------- hero ---------- */
 .hero{position:relative;background:var(--ink);color:#fff;overflow:hidden;isolation:isolate}
@@ -415,7 +458,7 @@ details.q .a p{margin:0}
   .hero .rise{opacity:1;transform:none}
 }
 @media print{
-  .hdr,.gauge,.foot,.skip{display:none}
+  .hdr,.hdr-spacer,.gauge,.foot,.skip{display:none}
   body{background:#fff;color:#000}
 }
 

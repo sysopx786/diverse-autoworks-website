@@ -37,6 +37,23 @@ TEL = "tel:" + B["phone_tel"]
 MAIL = "mailto:" + B["email"]
 ADDR_ONE = f'{B["street"]}, {B["city"]}, {B["state"]} {B["zip"]}'
 MAPS_Q = B["maps_query"].replace(" ", "+")
+
+# ------------------------------------------------------------------ SHOP HOURS (header open/closed status)
+# THE one place to edit hours. The header strip reads this, in the shop's own time zone (never the visitor's clock).
+#   hours: 24-hour "HH:MM"; several ranges per day allowed, e.g. [["08:00","12:00"],["13:00","17:00"]]; [] = closed all day.
+#          Ranges must end the same day (no overnight ranges).
+#   closedDates: whole days closed, "YYYY-MM-DD" (holidays, vacation).
+#   sample: True while the hours below are PLACEHOLDERS. The strip then shows a "Sample" tag. Set False once the hours are real.
+SHOP = {
+    "timeZone": "America/New_York",
+    "closingSoonMinutes": 60,
+    "sample": True,
+    "hours": {
+        "mon": [["08:00", "17:00"]], "tue": [["08:00", "17:00"]], "wed": [["08:00", "17:00"]],
+        "thu": [["08:00", "17:00"]], "fri": [["08:00", "17:00"]], "sat": [], "sun": [],
+    },
+    "closedDates": [],
+}
 DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace(",", "%2C")
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
@@ -50,6 +67,11 @@ PAGEKEY = {k: k for k in SLUGS}
 UI = {
     "en": {
         "skip": "Skip to content", "menu": "Menu", "back_top": "Back to top",
+        "search": "Search", "search_label": "Search the site", "search_ph": "Search services, inspections, notary…", "search_close": "Close",
+        "search_none": f'No match. Call <a href="{TEL}">{PHONE}</a> and we will point you to the right service.',
+        "status": {"open": "Open now · closes {time}", "soon": "Closing soon · closes {time}", "closed": "Closed · opens {when} {time}",
+                   "never": "Closed · call for hours", "today": "today", "tomorrow": "tomorrow", "am": "AM", "pm": "PM", "sample": "Sample",
+                   "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
         "nav": {"services": "Services", "inspections": "Inspections", "fleet": "Fleet Repairs", "about": "About",
                 "reviews": "Reviews", "faq": "FAQs", "contact": "Contact"},
         "call": f"Call {PHONE}", "call_short": "Call", "request": "Request an Appointment", "directions": "Get Directions",
@@ -106,6 +128,11 @@ UI = {
     },
     "es": {
         "skip": "Saltar al contenido", "menu": "Menú", "back_top": "Volver arriba",
+        "search": "Buscar", "search_label": "Buscar en el sitio", "search_ph": "Buscar servicios, inspecciones, notario…", "search_close": "Cerrar",
+        "search_none": f'Sin resultados. Llame al <a href="{TEL}">{PHONE}</a> y le indicaremos el servicio adecuado.',
+        "status": {"open": "Abierto ahora · cierra a las {time}", "soon": "Cierra pronto · cierra a las {time}", "closed": "Cerrado · abre {when} a las {time}",
+                   "never": "Cerrado · llame para conocer el horario", "today": "hoy", "tomorrow": "mañana", "am": "a. m.", "pm": "p. m.", "sample": "Ejemplo",
+                   "days": ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"]},
         "nav": {"services": "Servicios", "inspections": "Inspecciones", "fleet": "Flotas", "about": "Nosotros",
                 "reviews": "Reseñas", "faq": "Preguntas", "contact": "Contacto"},
         "call": f"Llamar al {PHONE}", "call_short": "Llamar", "request": "Solicitar una cita", "directions": "Cómo llegar",
@@ -323,6 +350,37 @@ def flag_svg(code):
     return f'<svg class="lang-flag" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true" focusable="false">{art}</svg>'
 
 
+# (page key, anchor, EN title, ES title, EN keywords, ES keywords) for the header search
+SEARCH_ROWS = [
+    ("services", "", "Services", "Servicios", "repair maintenance all services", "reparación mantenimiento todos los servicios"),
+    ("services", "maintenance", "Oil changes & maintenance", "Cambios de aceite y mantenimiento", "oil change filters cabin fuel belts wiper blades upkeep", "aceite filtros cabina combustible correas limpiaparabrisas mantenimiento"),
+    ("services", "brakes", "Brakes & rotors", "Frenos y rotores", "brake rotor noise squeal grinding stopping", "frenos rotor ruido chirrido parar"),
+    ("services", "tires", "Tires & alignments", "Llantas y alineación", "tire repair alignment wheel pulling uneven wear", "llantas neumáticos reparación alineación jalar desgaste"),
+    ("services", "engine", "Diagnostics & engine", "Diagnóstico y motor", "engine analysis tune-up fuel injector check engine running rough diagnostics", "motor análisis afinación inyectores diagnóstico falla"),
+    ("services", "suspension", "Steering & suspension", "Dirección y suspensión", "steering shocks struts ride handling loose rough", "dirección amortiguadores suspensión manejo"),
+    ("services", "ac", "A/C & cooling", "A/C y enfriamiento", "air conditioning ac cooling radiator not cold", "aire acondicionado enfriamiento radiador no enfría"),
+    ("services", "battery", "Batteries", "Baterías", "battery won't start no start dead", "batería no arranca no enciende"),
+    ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
+    ("inspections", "motorcycle", "Motorcycle inspections", "Inspecciones de motocicletas", "motorcycle bike inspection", "motocicleta moto inspección"),
+    ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),
+    ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
+    ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
+    ("contact", "", "Contact, phone & hours", "Contacto, teléfono y horario", "contact phone email address hours location", "contacto teléfono correo dirección horario ubicación"),
+    ("reviews", "", "Reviews", "Reseñas", "reviews ratings customers carfax yelp google", "reseñas opiniones clientes calificaciones"),
+    ("faq", "", "FAQs", "Preguntas frecuentes", "faq questions answers help", "preguntas respuestas ayuda"),
+    ("about", "", "About", "Nosotros", "about us shop team", "nosotros taller equipo acerca"),
+    ("privacy", "", "Privacy notice", "Aviso de privacidad", "privacy", "privacidad"),
+]
+
+
+def search_index(lang, key):
+    rows = []
+    for pk, anchor, ten, tes, ken, kes in SEARCH_ROWS:
+        rows.append([ten if lang == "en" else tes, href(lang, key, lang, pk, anchor=anchor), ken if lang == "en" else kes])
+    rows.append([UI[lang]["directions"], DIRECTIONS, "directions map address pawlings road cómo llegar mapa dirección"])
+    return rows
+
+
 def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
@@ -334,12 +392,24 @@ def header(lang, key):
     names = {"en": "English", "es": "Español"}
     sw = (f'<a class="lang" href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}" '
           f'aria-label="{u["lang_label"]}: {names[other]}" title="{names[other]}">{flag_svg(other)}<span class="lang-code" aria-hidden="true">{other.upper()}</span></a>')
-    return f'''<header class="hdr"><div class="wrap hdr-in">
+    data = json.dumps({"shop": SHOP, "ui": u["status"], "search": search_index(lang, key)}, ensure_ascii=False).replace("</", "<\\/")
+    search_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'
+    return f'''<header class="hdr no-tr" id="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
-<button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
-</div></header>'''
+<button class="hbtn search-btn" type="button" aria-expanded="false" aria-controls="site-search" aria-label="{u["search"]}">{search_svg}</button>
+<button class="hbtn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+</div>
+<div class="hdr-strip"><div class="wrap"><div class="status" id="shop-status" role="status" aria-live="polite" data-state="unknown"><i class="dot" aria-hidden="true"></i><span class="status-text">{u["hours_shop"]}</span></div></div></div>
+<div class="srch" id="site-search" role="search" aria-label="{u["search_label"]}"><div class="srch-in">
+<div class="srch-row"><input id="site-search-input" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="{u["search_ph"]}" aria-label="{u["search_label"]}" aria-controls="site-search-res"><button class="srch-close" type="button">{u["search_close"]}</button></div>
+<ul class="srch-res" id="site-search-res"></ul>
+<p class="srch-empty" id="site-search-empty" hidden>{u["search_none"]}</p>
+</div></div>
+<script type="application/json" id="shop-data">{data}</script>
+</header>
+<div class="hdr-spacer" aria-hidden="true"></div>'''
 
 
 def footer(lang, key):

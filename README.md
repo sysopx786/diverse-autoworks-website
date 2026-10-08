@@ -33,3 +33,11 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Deduplicated: tire rotation and alternators/starters already existed; gas tank + fuel system and differential + axles are one card each; the old general "bodywork" FAQ became the Body work card; a repeated alternator question under Batteries was replaced.
 - Part A: Engine, Oil/maintenance (fuel), Tires, Steering & suspension, A/C and Drivetrain descriptions now say what is listed and point to the call-to-confirm cards for the rest.
 - The Spanish is a draft. Have a native speaker review it.
+
+## Header: shrink on scroll, open/closed strip, search (Oct 8, 2026)
+
+- Two rows: main row (logo, ES flag, call, search, menu) and a status strip. Logo and main row are larger at the top of the page and shrink smoothly on scroll; buttons and the strip never change size. The header is `position:fixed` with a `.hdr-spacer` of its full height, so shrinking never moves the page.
+- **Shop hours live in one place: `SHOP` near the top of `tools/build.py`.** Hours are read in the shop's time zone (`America/New_York`), not the visitor's clock. Open = green, within `closingSoonMinutes` of closing = amber, closed = gray with the next opening.
+- **The hours currently in `SHOP` are placeholders (Mon-Fri 8:00-17:00).** The strip shows a "Sample" tag until `sample` is set to `False`. Replace them with the real hours, set `sample` to `False`, then run `python3 tools/build.py`.
+- Search button opens a local-index search (EN/ES, accent-insensitive). Index is `SEARCH_ROWS` in `tools/build.py`.
+- Status wording (EN/ES) lives in `UI[...]["status"]`.
