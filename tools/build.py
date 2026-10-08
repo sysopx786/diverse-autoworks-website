@@ -261,9 +261,29 @@ def check_parity():
         problems.append("UI keys differ: " + str(set(UI["en"].keys()) ^ set(UI["es"].keys())))
     if set(UI["en"]["form"]) != set(UI["es"]["form"]) or set(UI["en"]["js"]) != set(UI["es"]["js"]):
         problems.append("UI form/js keys differ")
-    n = sum(len(c["items"]) for c in FAQ_CATS)
-    if n != 36:
-        problems.append(f"expected 36 service FAQs, found {n}")
+    # duplicate guards: the service list grows over time, so check for repeats instead of a fixed count
+    all_cats = list(FAQ_CATS) + list(ASK_FAQ_CATS)
+    for label, values in (
+        ("service id", [s["id"] for s in SERVICES]),
+        ("service title", [s["title"]["en"].strip().lower() for s in SERVICES]),
+        ("service card", [s["card"]["en"].strip().lower() for s in SERVICES]),
+        ("FAQ category id", [c["id"] for c in all_cats]),
+        ("FAQ question", [q["en"].strip().lower() for c in all_cats for q, _ in c["items"]]),
+    ):
+        seen = set()
+        for v in values:
+            if v in seen:
+                problems.append(f"duplicate {label}: {v}")
+            seen.add(v)
+    cat_ids = {c["id"] for c in all_cats}
+    for s in SERVICES:
+        if s["faq"] not in cat_ids:
+            problems.append(f"service {s['id']} points to missing FAQ category {s['faq']}")
+        if s.get("group") not in {g for g, _ in GROUPS}:
+            problems.append(f"service {s['id']} has unknown group {s.get('group')}")
+    for c in all_cats:
+        if not c["items"]:
+            problems.append(f"FAQ category {c['id']} is empty")
     if problems:
         raise SystemExit("PARITY CHECK FAILED:\n  " + "\n  ".join(problems))
 
