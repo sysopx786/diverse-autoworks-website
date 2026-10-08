@@ -26,3 +26,10 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Copy (EN + ES) lives in `tools/notary.py`; markup is `notary_sections()` in `tools/build.py`; styles are the `.nt-*` block at the end of `docs/assets/css/main.css`. The block also writes FAQPage JSON-LD for the contact page.
 - The Spanish is a draft. Have a native speaker review it before treating it as final.
 - The older three-question notary FAQ in `FAQ_CATS` still feeds `/faq/`; it was left as is.
+
+## More "ask us about" services (Oct 8, 2026)
+- 14 services from the owner checklist (Part B) are on `/services/` under "Also ask us about (call to confirm)": towing, pre-purchase inspections, cylinder head & block, fuel system & gas tank, spark plugs, onboard computer, differential, emission control repair, heater, corrosion, wheels, tire retreads, ball joints, body work. Copy and FAQs (5 questions each, EN + ES) live in `tools/more_services.py`.
+- They are NOT confirmed offerings. Wording is "call to confirm," same as tags/title, EV/hybrid, tire rotation, and alternators. When the owner marks one Yes, move it from `more_services.py` into `SERVICES` in `tools/content.py` with confirmed wording.
+- Deduplicated: tire rotation and alternators/starters already existed; gas tank + fuel system and differential + axles are one card each; the old general "bodywork" FAQ became the Body work card; a repeated alternator question under Batteries was replaced.
+- Part A: Engine, Oil/maintenance (fuel), Tires, Steering & suspension, A/C and Drivetrain descriptions now say what is listed and point to the call-to-confirm cards for the rest.
+- The Spanish is a draft. Have a native speaker review it.
