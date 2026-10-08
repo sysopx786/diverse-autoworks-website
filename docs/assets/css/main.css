@@ -93,6 +93,14 @@ ul,ol{margin:0;padding:0}
 .hbtn svg{width:24px;height:24px}
 .hbtn:hover,.hbtn[aria-expanded="true"]{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.55)}
 .menu-btn{display:none}
+.menu-btn .ic-x{display:none}
+.menu-btn[aria-expanded="true"] .ic-bars{display:none}
+.menu-btn[aria-expanded="true"] .ic-x{display:inline}
+.to-top{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:40;width:48px;height:48px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.35);border-radius:50%;background:var(--ink);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{background:var(--sign-fill)}
+.to-top:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+.to-top svg{width:24px;height:24px}
 @media (max-width:1180px){
   .menu-btn{display:grid}
   .nav{position:absolute;left:0;right:0;top:100%;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);display:none;margin:0;padding:8px var(--gut) 20px;max-height:calc(100vh - var(--hdr-full));max-height:calc(100dvh - var(--hdr-full));overflow:auto}
@@ -458,7 +466,7 @@ details.q .a p{margin:0}
   .hero .rise{opacity:1;transform:none}
 }
 @media print{
-  .hdr,.hdr-spacer,.gauge,.foot,.skip{display:none}
+  .hdr,.hdr-spacer,.gauge,.foot,.skip,.to-top{display:none}
   body{background:#fff;color:#000}
 }
 

@@ -399,7 +399,7 @@ def header(lang, key):
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
 <button class="hbtn search-btn" type="button" aria-expanded="false" aria-controls="site-search" aria-label="{u["search"]}">{search_svg}</button>
-<button class="hbtn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+<button class="hbtn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="ic-bars" d="M4 7h16M4 12h16M4 17h16"/><path class="ic-x" d="M6 6l12 12M18 6L6 18"/></svg></button></div>
 </div>
 <div class="hdr-strip"><div class="wrap"><div class="status" id="shop-status" role="status" aria-live="polite" data-state="unknown"><i class="dot" aria-hidden="true"></i><span class="status-text">{u["hours_shop"]}</span></div></div></div>
 <div class="srch" id="site-search" role="search" aria-label="{u["search_label"]}"><div class="srch-in">
@@ -441,6 +441,7 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 {body}
 </main>
 {footer(lang, key)}
+<button class="to-top" type="button" aria-label="{u["back_top"]}" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script src="{asset(lang, key, "js/main.js")}" defer></script>
 </body>
 </html>

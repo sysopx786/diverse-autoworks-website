@@ -131,6 +131,23 @@
       else if (nav && nav.classList.contains("open")) { closeMenu(); mb.focus(); }
     });
     document.addEventListener("click", function (e) { if (!hdr.contains(e.target)) { closeMenu(); closeSearch(); } });
+    window.addEventListener("pageshow", function () { closeMenu(); closeSearch(); });
+    window.addEventListener("hashchange", closeMenu);
+
+    /* back-to-top button */
+    var tt = $(".to-top");
+    if (tt) {
+      tt.hidden = false;
+      var ttOn = function () { tt.classList.toggle("show", window.pageYOffset > 400); };
+      var ttTick = false;
+      window.addEventListener("scroll", function () { if (ttTick) return; ttTick = true; requestAnimationFrame(function () { ttTick = false; ttOn(); }); }, { passive: true });
+      ttOn();
+      tt.addEventListener("click", function () {
+        var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: rm ? "auto" : "smooth" });
+        var lg = $(".brand"); if (lg) lg.focus({ preventScroll: true });
+      });
+    }
 
     /* site search: local index, accent-insensitive */
     if (si && sres && HD.search) {
