@@ -47,7 +47,7 @@ MAPS_Q = B["maps_query"].replace(" ", "+")
 SHOP = {
     "timeZone": "America/New_York",
     "closingSoonMinutes": 60,
-    "sample": True,
+    "sample": False,
     "hours": {
         "mon": [["08:00", "17:00"]], "tue": [["08:00", "17:00"]], "wed": [["08:00", "17:00"]],
         "thu": [["08:00", "17:00"]], "fri": [["08:00", "17:00"]], "sat": [], "sun": [],
