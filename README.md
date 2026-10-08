@@ -21,6 +21,11 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.
 
+## Spanish coverage (Oct 8, 2026)
+- Every page under `/es/` is built from the `es` side of each `t(en, es)` pair. `python3 tests/es_audit.py` scans all built Spanish pages (visible text, alt text, aria-labels, titles, meta, JSON-LD) for English and exits 1 if it finds any. Run it after adding a page, service or review.
+- Fixed Oct 8: the three Pennsylvania source links on the notary section, the Google 4.9-star label on /es/reviews/, and the "(struts)" and "(retread)" asides. The search box now finds the 14 call-to-confirm services in both languages. The 404 page shows Spanish only on `/es/` paths and both languages elsewhere.
+- Left in English on purpose: the shop name, addresses, e-mail, customer names, car trim names in CARFAX owner lines, the "check engine" dashboard label, and the titles of the three English-language PA government pages (marked "en inglés").
+
 ## Notary section redesign (Oct 7, 2026)
 - The Contact page notary block (`/contact/#notary`, `/es/contact/#notary`) is now a full section: what we notarize, how it works in Pennsylvania, PA rules, what to bring or avoid, 15 FAQs, and a link band to Inspections and Services.
 - Copy (EN + ES) lives in `tools/notary.py`; markup is `notary_sections()` in `tools/build.py`; styles are the `.nt-*` block at the end of `docs/assets/css/main.css`. The block also writes FAQPage JSON-LD for the contact page.

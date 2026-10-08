@@ -229,14 +229,14 @@ _ITEMS = [
 
     # --------------------------------------------------------------- retreads
     _svc("retreads", "tire",
-         t("Tire retreads", "Llantas renovadas (retread)"),
+         t("Tire retreads", "Llantas renovadas (reencauchadas)"),
          t("Tire Retreads", "Llantas renovadas"),
          t("Ask about tire retreads.", "Pregunte por llantas renovadas."),
          t("A retread puts new tread on a worn tire's casing. Call to ask whether the shop offers or can arrange retreads for your vehicle." + _DISCLAIM_EN,
-           "Una llanta renovada (retread) lleva banda de rodadura nueva sobre la carcasa de una llanta desgastada. Llame para preguntar si el taller ofrece o puede coordinar llantas renovadas para su vehículo." + _DISCLAIM_ES),
-         t("Tire retreads", "Llantas renovadas (retread)"),
+           "Una llanta renovada, también llamada reencauchada, lleva banda de rodadura nueva sobre la carcasa de una llanta desgastada. Llame para preguntar si el taller ofrece o puede coordinar llantas renovadas para su vehículo." + _DISCLAIM_ES),
+         t("Tire retreads", "Llantas renovadas (reencauchadas)"),
          "tire retreads", "las llantas renovadas", "de las llantas renovadas",
-         (t("What is a retread tire?", "¿Qué es una llanta renovada (retread)?"),
+         (t("What is a retread tire?", "¿Qué es una llanta renovada o reencauchada?"),
           t("A retread reuses the casing of a worn tire and adds new tread. Whether a tire can be retreaded depends on its condition and type, so ask the shop.",
             "Una llanta renovada reutiliza la carcasa de una llanta desgastada y le agrega banda de rodadura nueva. Que una llanta pueda renovarse depende de su estado y tipo, así que pregunte al taller.")),
          (t("Are retreads right for every vehicle?", "¿Las llantas renovadas son adecuadas para todos los vehículos?"),

@@ -84,7 +84,7 @@ SERVICES = [
         "line": t("Steering parts, suspension parts, shocks, and struts.",
                   "Piezas de dirección y suspensión, amortiguadores y puntales."),
         "desc": t("Our service range includes steering and suspension components, shock absorbers, and struts. Ball joints are not named separately; see Ball joints under Also ask us about. Contact us if you have concerns about your vehicle's handling or ride.",
-                  "Nuestra gama de servicios incluye componentes de dirección y suspensión, amortiguadores y puntales (struts). Las rótulas no se nombran por separado; vea Rótulas en También pregunte por. Comuníquese con nosotros si le preocupa el manejo o la comodidad de marcha de su vehículo."),
+                  "Nuestra gama de servicios incluye componentes de dirección y suspensión, amortiguadores y puntales. Las rótulas no se nombran por separado; vea Rótulas en También pregunte por. Comuníquese con nosotros si le preocupa el manejo o la comodidad de marcha de su vehículo."),
         "faq": "suspension", "group": "ride",
     },
     {
@@ -310,7 +310,7 @@ FAQ_CATS = [
     {"id": "suspension", "title": t("Steering & suspension", "Dirección y suspensión"), "items": [
         (t("What steering and suspension work do you offer?", "¿Qué trabajos de dirección y suspensión ofrecen?"),
          t("Our advertised service range includes steering parts, suspension parts, shock absorbers, and struts. Call with your vehicle details to discuss the work needed.",
-           "Nuestra gama de servicios anunciada incluye piezas de dirección, piezas de suspensión, amortiguadores y puntales (struts). Llame con los datos de su vehículo para hablar del trabajo necesario.")),
+           "Nuestra gama de servicios anunciada incluye piezas de dirección, piezas de suspensión, amortiguadores y puntales. Llame con los datos de su vehículo para hablar del trabajo necesario.")),
         (t("Is a wheel alignment the same as suspension repair?", "¿Una alineación de ruedas es lo mismo que reparar la suspensión?"),
          t("No. Alignment adjusts suspension angles to the vehicle's specifications. Repairing worn or damaged suspension parts is a separate task. The work needed depends on the condition of your vehicle.",
            "No. La alineación ajusta los ángulos de la suspensión según las especificaciones del vehículo. Reparar piezas de suspensión desgastadas o dañadas es un trabajo aparte. El trabajo necesario depende del estado de su vehículo.")),

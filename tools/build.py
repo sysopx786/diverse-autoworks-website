@@ -377,7 +377,11 @@ def search_index(lang, key):
     rows = []
     for pk, anchor, ten, tes, ken, kes in SEARCH_ROWS:
         rows.append([ten if lang == "en" else tes, href(lang, key, lang, pk, anchor=anchor), ken if lang == "en" else kes])
-    rows.append([UI[lang]["directions"], DIRECTIONS, "directions map address pawlings road cómo llegar mapa dirección"])
+    for sv in ASK_SERVICES:
+        rows.append([L(sv["title"], lang), href(lang, key, lang, "services", anchor=sv["id"]),
+                     (L(sv["card"], lang) + " " + L(sv["line"], lang)).lower()])
+    rows.append([UI[lang]["directions"], DIRECTIONS,
+                 "cómo llegar mapa dirección pawlings road" if lang == "es" else "directions map address pawlings road"])
     return rows
 
 
@@ -745,7 +749,7 @@ def ratings_html(lang):
         link = (f'<a href="{r["url"]}" rel="noopener" target="_blank">{UI[lang]["source"]}: {r["name"]}</a>' if r["url"] else "")
         g_logo = ('<img class="g-logo" src="' + asset(lang, "reviews", "img/google-g.png") + '" width="36" height="36" alt="Google">') if r["name"] == "Google" else ""
         if r["name"] == "Google":
-            avg = avg + '<div class="g-stars" role="img" aria-label="4.9 out of 5 stars">★★★★★</div>'
+            avg = avg + '<div class="g-stars" role="img" aria-label="' + ("4.9 de 5 estrellas" if lang == "es" else "4.9 out of 5 stars") + '">★★★★★</div>'
         if r["name"] == "CARFAX":
             g_logo = '<img class="rt-cx" src="' + asset(lang, "reviews", "img/carfax.png") + '" width="116" height="25" alt="">'
         elif r["name"] == "Yelp":
@@ -1053,11 +1057,15 @@ def build():
             count += 1
     # 404 (self-contained: no external assets, so it works at any depth)
     nf = NOT_FOUND
-    write("404.html", f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found | Diverse Autoworks</title>
+    write("404.html", f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found | Página no encontrada | Diverse Autoworks</title>
 <style>body{{margin:0;font-family:system-ui,Arial,sans-serif;background:#0F1012;color:#fff;display:grid;min-height:100vh;place-items:center;padding:24px;text-align:center}}
-h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-width:46ch;margin:0 auto 1em;line-height:1.5}}a{{color:#E4372F;font-weight:700}}</style></head>
-<body><main><h1>{nf["h"]["en"]} / {nf["h"]["es"]}</h1><p>{nf["p"]["en"]}</p><p>{nf["p"]["es"]}</p>
-<p><a href="tel:{B["phone_tel"]}">{PHONE}</a></p></main></body></html>''')
+h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-width:46ch;margin:0 auto 1em;line-height:1.5}}a{{color:#E4372F;font-weight:700}}[hidden]{{display:none!important}}</style></head>
+<body><main>
+<section lang="en" data-l="en"><h1>{nf["h"]["en"]}</h1><p>{nf["p"]["en"]}</p></section>
+<section lang="es" data-l="es"><h1>{nf["h"]["es"]}</h1><p>{nf["p"]["es"]}</p></section>
+<p><a href="tel:{B["phone_tel"]}">{PHONE}</a></p></main>
+<script>(function(){{if(/\/es(\/|$)/.test(location.pathname)){{document.documentElement.lang="es";document.title="Página no encontrada | Diverse Autoworks";var e=document.querySelector('[data-l="en"]');if(e)e.hidden=true;}}}})();</script>
+</body></html>''')
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))

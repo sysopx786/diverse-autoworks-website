@@ -116,11 +116,11 @@ NOTARY = {
         "Basado en la página de PennDOT [[1]] y en las páginas del Departamento de Estado [[2]] y [[3]], revisadas en octubre de 2026. Los requisitos cambian y cada título es diferente. Esta página es información general, no asesoría legal."),
     "note_links": [
         ("https://www.pa.gov/agencies/dmv/vehicle-services/title-and-registration/buying-or-selling-a-vehicle",
-         t("Buying or Selling a Vehicle", "Buying or Selling a Vehicle")),
+         t("Buying or Selling a Vehicle", "Compra o venta de un vehículo (en inglés)")),
         ("https://www.pa.gov/agencies/dos/resources/notaries-resources-and-information/powers-of-a-notary-public",
-         t("Powers of a Notary Public", "Powers of a Notary Public")),
+         t("Powers of a Notary Public", "Facultades de un notario público (en inglés)")),
         ("https://www.pa.gov/agencies/dos/programs/notaries/notary-public-fees",
-         t("Notary Public Fees", "Notary Public Fees")),
+         t("Notary Public Fees", "Tarifas de notarios públicos (en inglés)")),
     ],
 
     "s4_eyebrow": t("Before you come", "Antes de venir"),
