@@ -658,6 +658,18 @@ IMAGES = {
     "svc-fleet": _im("svc-fleet.webp", 800, 603, "white work van", "camioneta de trabajo blanca"),
     "svc-battery": _im("svc-battery.webp", 800, 603, "battery and alternator", "batería y alternador"),
     "svc-drivetrain": _im("svc-drivetrain.webp", 800, 603, "transmission and axle", "transmisión y eje"),
+    "svc-tags": _im("svc-tags.webp", 800, 603, "blueprint-style drawing of a license plate, vehicle title, registration sticker and key", "dibujo tipo plano de una placa, un título de vehículo, una calcomanía de registro y una llave"),
+    "svc-notary": _im("svc-notary.webp", 800, 603, "blueprint-style drawing of a notary embosser, pen, stamp and documents", "dibujo tipo plano de un sello notarial en relieve, una pluma, un sello y documentos"),
+    "svc-ev": _im("svc-ev.webp", 800, 603, "blueprint-style drawing of an electric vehicle battery, motor and charge port", "dibujo tipo plano de la batería, el motor y el puerto de carga de un vehículo eléctrico"),
+    "svc-prepurchase": _im("svc-prepurchase.webp", 800, 603, "blueprint-style drawing of a used car with its hood open, a flashlight and a checklist", "dibujo tipo plano de un auto usado con el capó abierto, una linterna y una lista de verificación"),
+    "svc-bodywork": _im("svc-bodywork.webp", 800, 603, "blueprint-style drawing of a car door with dent repair tools and a spray gun", "dibujo tipo plano de la puerta de un auto con herramientas para reparar abolladuras y una pistola de pintura"),
+    "svc-corrosion": _im("svc-corrosion.webp", 800, 603, "blueprint-style drawing of a car underbody with rust, rust-proofing spray and coating layers", "dibujo tipo plano de los bajos de un auto con óxido, rociado antióxido y capas de recubrimiento"),
+    "svc-computer": _im("svc-computer.webp", 800, 603, "blueprint-style drawing of a car with a scan tool, engine computer and diagnostic port", "dibujo tipo plano de un auto con un escáner, la computadora del motor y el puerto de diagnóstico"),
+    "svc-towing": _im("svc-towing.webp", 800, 603, "blueprint-style drawing of a flatbed tow truck carrying a car", "dibujo tipo plano de una grúa de plataforma que transporta un auto"),
+    "svc-sparkplugs": _im("svc-sparkplugs.webp", 800, 603, "blueprint-style drawing of an engine with spark plugs and ignition coils", "dibujo tipo plano de un motor con bujías y bobinas de encendido"),
+    "svc-emissioncontrol": _im("svc-emissioncontrol.webp", 800, 603, "blueprint-style drawing of an exhaust system with a catalytic converter and oxygen sensor", "dibujo tipo plano de un sistema de escape con convertidor catalítico y sensor de oxígeno"),
+    "svc-fuelsys": _im("svc-fuelsys.webp", 800, 603, "blueprint-style drawing of a fuel tank, fuel pump, filter and injector", "dibujo tipo plano de un tanque de combustible, bomba, filtro e inyector"),
+    "svc-heater": _im("svc-heater.webp", 800, 603, "blueprint-style drawing of a car heater core, blower motor and hoses", "dibujo tipo plano del núcleo del calefactor, el motor del ventilador y las mangueras de un auto"),
     "moto": _im("moto.webp", 1200, 671, "motorcycle", "motocicleta"),
     "about-storefront": _im("about-storefront.webp", 1000, 753, "auto shop storefront with sign", "fachada de un taller con letrero"),
     "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior", "interior de un taller"),
@@ -670,3 +682,4 @@ SVC_IMG = {"inspections": "svc-inspections", "maintenance": "svc-oil", "engine":
            "tires": "svc-tires", "rotation": "svc-tires", "suspension": "svc-suspension",
            "ac": "svc-ac", "fleet": "svc-fleet", "electrical": "svc-battery"}
 SVC_IMG.update(NEW_SVC_IMG)
+SVC_IMG.update({"tags": "svc-tags", "notary": "svc-notary", "ev": "svc-ev", "prepurchase": "svc-prepurchase", "bodywork": "svc-bodywork", "corrosion": "svc-corrosion", "computer": "svc-computer", "towing": "svc-towing", "sparkplugs": "svc-sparkplugs", "emissioncontrol": "svc-emissioncontrol", "fuelsys": "svc-fuelsys", "heater": "svc-heater"})
