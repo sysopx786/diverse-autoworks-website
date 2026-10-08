@@ -28,7 +28,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - The older three-question notary FAQ in `FAQ_CATS` still feeds `/faq/`; it was left as is.
 
 ## Services and FAQ expansion (Oct 8, 2026)
-- Services page grew from 16 to 25 cards; FAQ page from 36 to 84 questions (27 categories), English and Spanish.
+- Services page grew from 16 to 25 cards; FAQ page from 36 to 135 questions (26 categories, every one with at least 5), English and Spanish.
 - Items from the owner's extracted services list that matched an existing card were merged into it, not added again: safety inspection and emissions testing (Inspections), tires and tire repair (Tires), tire rotation (Tires; the old "Ask us" rotation card was removed), cooling systems (A/C & cooling), spark plugs and on-board computer (Engine analysis), ball joints (Steering & suspension), axles and differentials (Drivetrain).
 - New cards: Emissions control, Pre-purchase inspections, Engine repair & cylinder head, Fuel system & gas tanks, Imports, Wheels & wheel repair, Retreads & tire recycling, Heating, A/C refrigerant & coolant recycling, Corrosion control. They are listed in `NEW_SERVICES` in `tools/content.py`.
 - New cards reuse the closest existing illustration (`SVC_IMG`). Imports and Corrosion control have no image yet.
