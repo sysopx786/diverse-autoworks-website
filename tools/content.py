@@ -1149,6 +1149,8 @@ IMAGES = {
     "svc-engine": _im("svc-engine.webp", 800, 603, "blueprint-style drawing of an engine", "dibujo tipo plano de un motor"),
     "svc-suspension": _im("svc-suspension.webp", 800, 603, "suspension strut", "amortiguador de la suspensión"),
     "svc-ac": _im("svc-ac.webp", 800, 603, "A/C compressor", "compresor del aire acondicionado"),
+    "svc-imports": _im("svc-imports.webp", 800, 603, "blueprint-style drawing of a sedan with metric tools, engine, scan tool, timing belt and brake rotor", "dibujo tipo plano de un sedán con herramientas métricas, motor, escáner, banda de distribución y disco de freno"),
+    "svc-corrosion": _im("svc-corrosion.webp", 800, 603, "blueprint-style drawing of a vehicle underbody with rust-protection details", "dibujo tipo plano de los bajos de un vehículo con detalles de protección contra el óxido"),
     "svc-fleet": _im("svc-fleet.webp", 800, 603, "white work van", "camioneta de trabajo blanca"),
     "svc-battery": _im("svc-battery.webp", 800, 603, "battery and alternator", "batería y alternador"),
     "svc-drivetrain": _im("svc-drivetrain.webp", 800, 603, "transmission and axle", "transmisión y eje"),
@@ -1163,7 +1165,8 @@ SVC_IMG = {"inspections": "svc-inspections", "maintenance": "svc-oil", "engine":
            "battery": "svc-battery", "drivetrain": "svc-drivetrain", "brakes": "svc-brakes",
            "tires": "svc-tires", "suspension": "svc-suspension",
            "ac": "svc-ac", "fleet": "svc-fleet", "electrical": "svc-battery",
-           # new cards reuse the closest existing illustration; imports and corrosion have none yet
+           # new cards reuse the closest existing illustration; imports and corrosion have their own
            "emissions-control": "svc-inspections", "prepurchase": "svc-inspections",
            "engine-repair": "svc-engine", "fuel": "svc-engine", "heating": "svc-ac", "refrigerant": "svc-ac",
-           "wheels": "svc-tires", "tire-recycling": "svc-tires"}
+           "wheels": "svc-tires", "tire-recycling": "svc-tires",
+           "imports": "svc-imports", "corrosion": "svc-corrosion"}
