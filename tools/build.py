@@ -646,7 +646,8 @@ def page_home(lang):
 <li>{G.icon("gear", 30)}<div><b>{u["close_hours"]}</b><span>{u["hours_shop"]}</span></div></li>
 <li>{G.icon("seal", 30)}<div><b>{u["close_notary"]}</b><span>{u["hours_notary"]}</span></div></li>
 <li>{G.icon("mail", 30)}<div><b>{u["close_mail"]}</b><a href="{MAIL}">{B["email"]}</a></div></li>
-</ul></div></section>'''
+</ul>
+{img(lang, key, "home-storefront", "fig-img close-photo")}</div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + moto + reviews + duo + close)
 
 

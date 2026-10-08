@@ -672,6 +672,7 @@ IMAGES = {
     "svc-heater": _im("svc-heater.webp", 800, 603, "blueprint-style drawing of a car heater core, blower motor and hoses", "dibujo tipo plano del núcleo del calefactor, el motor del ventilador y las mangueras de un auto"),
     "moto": _im("moto.webp", 1200, 671, "motorcycle", "motocicleta"),
     "about-storefront": _im("about-storefront.webp", 1000, 753, "Diverse Auto Works shop front at sunset, with state inspection and emission station signs", "fachada de Diverse Auto Works al atardecer, con letreros de estación de inspección y de emisiones del estado"),
+    "home-storefront": _im("home-storefront.webp", 1376, 768, "Diverse Auto Works shop front at sunset, with state inspection and emission station signs", "fachada de Diverse Auto Works al atardecer, con letreros de estación de inspección y de emisiones del estado"),
     "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior", "interior de un taller"),
     "about-mechanic": _im("about-mechanic.webp", 1200, 671, "mechanic working on an SUV", "mecánico trabajando en una camioneta SUV"),
     "about-hands": _im("about-hands.webp", 800, 603, "hands using a torque wrench", "manos usando una llave de torque"),

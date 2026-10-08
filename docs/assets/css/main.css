@@ -586,3 +586,5 @@ details.q .a p{margin:0}
 .rev-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:32px;align-items:center;margin-bottom:8px}
 .rev-top .rev-img{margin:0;aspect-ratio:4/3}
 @media (max-width:900px){.rev-top{grid-template-columns:1fr}.rev-top .rev-img{max-width:420px}}
+
+.close .close-photo{grid-column:1/-1;margin:clamp(8px,2vw,24px) 0 0;aspect-ratio:1376/768;object-fit:cover}
