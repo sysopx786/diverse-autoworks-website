@@ -395,7 +395,7 @@ def header(lang, key):
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
     names = {"en": "English", "es": "Español"}
     sw = (f'<a class="lang" href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}" '
-          f'aria-label="{u["lang_label"]}: {names[other]}" title="{names[other]}">{flag_svg(other)}<span class="lang-code" aria-hidden="true">{other.upper()}</span></a>')
+          f'aria-label="{other.upper()} – {names[other]}" title="{names[other]}">{flag_svg(other)}<span class="lang-code" aria-hidden="true">{other.upper()}</span></a>')
     data = json.dumps({"shop": SHOP, "ui": u["status"], "search": search_index(lang, key)}, ensure_ascii=False).replace("</", "<\\/")
     search_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'
     return f'''<header class="hdr no-tr" id="hdr"><div class="wrap hdr-in">
