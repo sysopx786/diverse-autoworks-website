@@ -455,6 +455,10 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 def phead(lang, key, h1, lead, crumb=True):
     u = UI[lang]
     cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {u["nav"].get(key, h1)}</p>' if crumb else "")
+    if key in ("services", "about", "contact"):
+        img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" '
+               f'sizes="(max-width:900px) 100vw, 60vw" width="1600" height="893" alt=""></div>')
+        return f'<section class="phead phead-photo">{img}<div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
     return f'<section class="phead on-dark"><div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
 
 
