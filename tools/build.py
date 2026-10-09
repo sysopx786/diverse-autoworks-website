@@ -470,7 +470,10 @@ def page_home(lang):
     # hero
     types = "".join(f"<span>{t_}</span>" for t_ in u["types"])
     gauge_svg = G.gauge(esc(u["gauge_top"]), esc(u["gauge_sub"]), "").replace(' role="img" aria-label=""', ' aria-hidden="true"')
-    hero = f'''<section class="hero on-dark"><div class="wrap hero-in">
+    hero_alt = "Representación ilustrativa del taller Diverse Auto Works al atardecer" if lang == "es" else "Illustrative rendering of the Diverse Auto Works shop at dusk"
+    hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
+<div class="gauge gauge-mini">{gauge_svg}<button class="gauge-btn" id="gauge-btn" type="button" aria-label="{esc(u["gauge_aria"], quote=True)}"></button></div></div>'''
+    hero = f'''<section class="hero on-dark hero-has-photo">{hero_photo}<div class="wrap hero-in">
 <div class="hero-copy">
 <h1 class="rise d1">{esc(L(P["h1"], lang))}</h1>
 <p class="lead rise d2">{esc(L(P["lead"], lang))}</p>
@@ -479,7 +482,6 @@ def page_home(lang):
 <a class="dir" href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></div>
 <p class="hero-types rise d4"><b>{u["hero_types_lead"]}</b>{types}</p>
 </div>
-<div class="gauge rise d2">{gauge_svg}<button class="gauge-btn" id="gauge-btn" type="button" aria-label="{esc(u["gauge_aria"], quote=True)}"></button><span class="gauge-hint" aria-hidden="true">{u["gauge_hint"]}</span></div>
 </div></section>'''
 
     # picker
