@@ -609,8 +609,7 @@ def page_home(lang):
         tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{img(lang, key, SVC_IMG[sid], "tile-img")}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
     board = f'''<section class="sec sec-white" id="services"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
-<div class="board">{"".join(tiles)}</div>
-<div class="board-foot"><a class="btn btn-sign btn-more" href="{href(lang, key, lang, "services")}">{u["all_big"].format(n=len(SERVICES))}<svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><p>{u["all_big_sub"]}</p></div>
+<div class="board">{"".join(tiles)}<div class="board-foot"><a class="btn btn-sign btn-more" href="{href(lang, key, lang, "services")}">{u["all_big"].format(n=len(SERVICES))}<svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><p>{u["all_big_sub"]}</p></div></div>
 {img(lang, key, "about-mechanic", "fig-img fig-wide fig-band")}
 </div></section>'''
 
