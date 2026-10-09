@@ -83,7 +83,7 @@ UI = {
         "pick_h": "What's your vehicle doing?", "pick_p": "Pick what you notice and we will point you to the right service.",
         "pick_group": "Vehicle symptoms and needs", "pick_empty_h": "Pick an option", "pick_empty_p": "The matching service shows up here, with a one-tap way to send a request.",
         "pick_request": "Request this service", "pick_learn": "See details", "pick_call": f"Call {PHONE}",
-        "all_services": "See all services", "more_reviews": "Read more reviews", "full_reviews": "Read the full reviews on",
+        "all_services": "See all services", "all_big": "See all {n} services", "all_big_sub": "Brakes to towing, EV to body work. Everything we offer, in one place.", "more_reviews": "Read more reviews", "full_reviews": "Read the full reviews on",
         "notary_nav": "Notary Services", "source": "Source", "fleet_btn": "Fleet repairs", "notary_btn": "Notary hours and details", "email_us": "Email the shop",
         "close_hours": "Hours", "close_addr": "Address", "close_mail": "Email", "close_notary": "Notary services",
         "moto_init": "Tap a numbered point to see which items PennDOT lists.", "moto_sel": "Selected:",
@@ -144,7 +144,7 @@ UI = {
         "pick_h": "¿Qué le pasa a su vehículo?", "pick_p": "Elija lo que nota y le indicaremos el servicio adecuado.",
         "pick_group": "Síntomas y necesidades del vehículo", "pick_empty_h": "Elija una opción", "pick_empty_p": "El servicio correspondiente aparece aquí, con una forma rápida de enviar su solicitud.",
         "pick_request": "Solicitar este servicio", "pick_learn": "Ver detalles", "pick_call": f"Llamar al {PHONE}",
-        "all_services": "Ver todos los servicios", "more_reviews": "Leer más reseñas", "full_reviews": "Lea las reseñas completas en",
+        "all_services": "Ver todos los servicios", "all_big": "Ver los {n} servicios", "all_big_sub": "De frenos a remolque, de eléctricos a carrocería. Todo lo que ofrecemos, en un solo lugar.", "more_reviews": "Leer más reseñas", "full_reviews": "Lea las reseñas completas en",
         "notary_nav": "Notario público", "source": "Fuente", "fleet_btn": "Reparaciones para flotas", "notary_btn": "Horario y detalles del notario", "email_us": "Escribir al taller",
         "close_hours": "Horario", "close_addr": "Dirección", "close_mail": "Correo", "close_notary": "Notario público",
         "moto_init": "Toque un punto numerado para ver los elementos que enumera PennDOT.", "moto_sel": "Seleccionado:",
@@ -610,7 +610,7 @@ def page_home(lang):
     board = f'''<section class="sec sec-white" id="services"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
 <div class="board">{"".join(tiles)}</div>
-<p class="board-foot"><a class="link-arrow" href="{href(lang, key, lang, "services")}">{u["all_services"]}</a></p>
+<div class="board-foot"><a class="btn btn-sign btn-more" href="{href(lang, key, lang, "services")}">{u["all_big"].format(n=len(SERVICES))}<svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><p>{u["all_big_sub"]}</p></div>
 {img(lang, key, "about-mechanic", "fig-img fig-wide fig-band")}
 </div></section>'''
 

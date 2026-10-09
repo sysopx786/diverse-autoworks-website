@@ -136,7 +136,7 @@ SERVICES = [
 ]
 
 # the 8 cards the brief lists for the home page
-HOME_CARDS = ["inspections", "maintenance", "brakes", "tires", "engine", "suspension", "ac", "fleet"]
+HOME_CARDS = ["inspections", "maintenance", "brakes", "tires", "engine", "suspension", "ac", "fleet", "battery", "drivetrain", "notary", "prepurchase"]
 
 GROUPS = [
     ("inspect", t("Inspections & testing", "Inspecciones y pruebas")),
