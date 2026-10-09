@@ -8,19 +8,181 @@
   /* footer year */
   $$("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
-  /* mobile menu */
-  var mb = $(".menu-btn"), nav = $("#site-nav");
-  if (mb && nav) {
-    mb.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
-      mb.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && nav.classList.contains("open")) {
-        nav.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mb.focus();
+  /* header: shrink on scroll, open/closed strip, menu + search panels */
+  var hdr = $("#hdr");
+  var HD = {};
+  try { HD = JSON.parse($("#shop-data").textContent); } catch (e) {}
+
+  /* Open / closed status. Pure function; uses the shop's time zone, never the visitor's clock. */
+  /* STATUS-LOGIC-START */
+  function computeStatus(now, cfg, L) {
+    var DAY = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+    function toMin(s) { var p = String(s).split(":"); return (+p[0]) * 60 + (+p[1]); }
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+    function fmt(min) {
+      var h = Math.floor(min / 60), m = min % 60, ap = h >= 12 ? (L.pm || "PM") : (L.am || "AM");
+      return (h % 12 === 0 ? 12 : h % 12) + ":" + pad(m) + " " + ap;
+    }
+    function ranges(dayKey) {
+      var out = [], src = (cfg.hours && cfg.hours[dayKey]) || [];
+      for (var i = 0; i < src.length; i++) {
+        var a = toMin(src[i][0]), b = toMin(src[i][1]);
+        if (!(a >= 0 && b > a && b <= 1440)) continue;
+        out.push([a, b]);
       }
+      out.sort(function (x, y) { return x[0] - y[0]; });
+      var merged = [];
+      for (var j = 0; j < out.length; j++) {
+        var last = merged[merged.length - 1];
+        if (last && out[j][0] <= last[1]) last[1] = Math.max(last[1], out[j][1]);
+        else merged.push(out[j]);
+      }
+      return merged;
+    }
+    var f = new Intl.DateTimeFormat("en-US", { timeZone: cfg.timeZone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short", hour: "2-digit", minute: "2-digit" });
+    var P = {}; f.formatToParts(now).forEach(function (p) { P[p.type] = p.value; });
+    var y = +P.year, mo = +P.month, d = +P.day, nowMin = (+P.hour) * 60 + (+P.minute);
+    function dayInfo(offset) {
+      var dt = new Date(Date.UTC(y, mo - 1, d + offset));
+      var key = dt.getUTCFullYear() + "-" + pad(dt.getUTCMonth() + 1) + "-" + pad(dt.getUTCDate());
+      var closed = (cfg.closedDates || []).indexOf(key) > -1;
+      return { dow: dt.getUTCDay(), ranges: closed ? [] : ranges(DAY[dt.getUTCDay()]) };
+    }
+    var today = dayInfo(0);
+    for (var i = 0; i < today.ranges.length; i++) {
+      var r = today.ranges[i];
+      if (nowMin >= r[0] && nowMin < r[1]) {
+        var soon = (r[1] - nowMin) <= (cfg.closingSoonMinutes || 60);
+        return { state: soon ? "soon" : "open", text: (soon ? L.soon : L.open).replace("{time}", fmt(r[1])) };
+      }
+    }
+    for (var off = 0; off <= 8; off++) {
+      var info = dayInfo(off);
+      for (var k = 0; k < info.ranges.length; k++) {
+        var start = info.ranges[k][0];
+        if (off === 0 && start <= nowMin) continue;
+        var when = off === 0 ? L.today : off === 1 ? L.tomorrow : L.days[info.dow];
+        return { state: "closed", text: L.closed.replace("{when}", when).replace("{time}", fmt(start)) };
+      }
+    }
+    return { state: "closed", text: L.never };
+  }
+  /* STATUS-LOGIC-END */
+
+  if (hdr) {
+    /* shrink on scroll (hysteresis: shrink past 40px, grow back under 8px) */
+    var shrunk = false, ticking = false;
+    var onScroll = function () {
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (!shrunk && y > 40) { shrunk = true; hdr.classList.add("is-shrunk"); }
+      else if (shrunk && y < 8) { shrunk = false; hdr.classList.remove("is-shrunk"); }
+      ticking = false;
+    };
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; window.requestAnimationFrame(onScroll); } }, { passive: true });
+    onScroll();
+    window.requestAnimationFrame(function () { window.requestAnimationFrame(function () { hdr.classList.remove("no-tr"); }); });
+
+    /* open/closed strip; the static hours line stays if anything fails */
+    var box = $("#shop-status"), txt = box && $(".status-text", box), lastKey = "";
+    if (box && HD.shop && HD.ui) {
+      if (HD.shop.sample) {
+        var tag = document.createElement("span");
+        tag.className = "status-sample"; tag.textContent = HD.ui.sample || "Sample";
+        box.appendChild(tag);
+        if (window.console) console.warn("Header hours are SAMPLE values. Edit SHOP in tools/build.py, set sample False, rebuild.");
+      }
+      var paint = function () {
+        var s;
+        try { s = computeStatus(new Date(), HD.shop, HD.ui); } catch (e) { return; }
+        var key = s.state + "|" + s.text;
+        if (key === lastKey) return;
+        lastKey = key; box.setAttribute("data-state", s.state); txt.textContent = s.text;
+      };
+      paint();
+      setInterval(paint, 30000);
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) paint(); });
+      window.addEventListener("focus", paint);
+    }
+
+    /* menu + search panels (one open at a time) */
+    var mb = $(".menu-btn"), nav = $("#site-nav");
+    var sb = $(".search-btn"), sp = $("#site-search"), si = $("#site-search-input");
+    var sres = $("#site-search-res"), sempty = $("#site-search-empty");
+    var closeMenu = function () { if (nav) nav.classList.remove("open"); if (mb) mb.setAttribute("aria-expanded", "false"); };
+    var closeSearch = function () { if (sp) sp.classList.remove("open"); if (sb) sb.setAttribute("aria-expanded", "false"); };
+    if (mb && nav) {
+      mb.addEventListener("click", function () {
+        var open = nav.classList.toggle("open");
+        mb.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open) closeSearch();
+      });
+      $$("a", nav).forEach(function (a) { a.addEventListener("click", closeMenu); });
+    }
+    if (sb && sp && si) {
+      sb.addEventListener("click", function () {
+        if (sp.classList.contains("open")) { closeSearch(); return; }
+        closeMenu(); sp.classList.add("open"); sb.setAttribute("aria-expanded", "true"); si.focus();
+      });
+      $(".srch-close", sp).addEventListener("click", function () { closeSearch(); sb.focus(); });
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (sp && sp.classList.contains("open")) { closeSearch(); sb.focus(); }
+      else if (nav && nav.classList.contains("open")) { closeMenu(); mb.focus(); }
     });
-    $$("a", nav).forEach(function (a) { a.addEventListener("click", function () { nav.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); }); });
+    document.addEventListener("click", function (e) { if (!hdr.contains(e.target)) { closeMenu(); closeSearch(); } });
+    window.addEventListener("pageshow", function () { closeMenu(); closeSearch(); });
+    window.addEventListener("hashchange", closeMenu);
+
+    /* back-to-top button */
+    var tt = $(".to-top");
+    if (tt) {
+      tt.hidden = false;
+      var ttOn = function () { tt.classList.toggle("show", window.pageYOffset > 400); };
+      var ttTick = false;
+      window.addEventListener("scroll", function () { if (ttTick) return; ttTick = true; requestAnimationFrame(function () { ttTick = false; ttOn(); }); }, { passive: true });
+      ttOn();
+      tt.addEventListener("click", function () {
+        var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: rm ? "auto" : "smooth" });
+        var lg = $(".brand"); if (lg) lg.focus({ preventScroll: true });
+      });
+    }
+
+    /* site search: local index, accent-insensitive */
+    if (si && sres && HD.search) {
+      var norm = function (t) { return String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
+      var run = function () {
+        var q = norm(si.value.trim());
+        sres.textContent = ""; sempty.hidden = true;
+        if (!q) return;
+        var tokens = q.split(/\s+/), hits = [];
+        HD.search.forEach(function (row) {
+          var title = norm(row[0]), hay = title + " " + norm(row[2]);
+          if (!tokens.every(function (t) { return hay.indexOf(t) > -1; })) return;
+          hits.push({ row: row, score: tokens.reduce(function (n, t) { return n + (title.indexOf(t) > -1 ? 2 : 1); }, 0) });
+        });
+        hits.sort(function (a, b) { return b.score - a.score; });
+        hits.slice(0, 6).forEach(function (h) {
+          var li = document.createElement("li"), a = document.createElement("a");
+          a.href = h.row[1]; a.textContent = h.row[0];
+          if (/^https?:/.test(h.row[1])) { a.target = "_blank"; a.rel = "noopener"; }
+          li.appendChild(a); sres.appendChild(li);
+        });
+        sempty.hidden = hits.length > 0;
+      };
+      si.addEventListener("input", run);
+      si.addEventListener("keydown", function (e) {
+        var first = $("a", sres);
+        if (e.key === "Enter" && first) { e.preventDefault(); first.click(); }
+        if (e.key === "ArrowDown" && first) { e.preventDefault(); first.focus(); }
+      });
+      sres.addEventListener("keydown", function (e) {
+        var links = $$("a", sres), i = links.indexOf(document.activeElement);
+        if (e.key === "ArrowDown" && i < links.length - 1) { e.preventDefault(); links[i + 1].focus(); }
+        if (e.key === "ArrowUp") { e.preventDefault(); (i > 0 ? links[i - 1] : si).focus(); }
+      });
+    }
   }
 
   /* hero gauge: one sweep on load, press-and-hold to rev */
@@ -189,11 +351,4 @@
       }
     });
   });
-})();
-
-(function () {
-  var d = document.querySelector("[data-lang-menu]");
-  if (!d) return;
-  document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && d.open) { d.open = false; var s = d.querySelector("summary"); if (s) s.focus(); } });
 })();

@@ -45,8 +45,8 @@ SERVICES = [
         "card": t("Oil Changes & Maintenance", "Aceite y mantenimiento"),
         "line": t("Oil changes, cabin and fuel filters, accessory belts, wiper blades.",
                   "Cambios de aceite, filtros de cabina y de combustible, bandas de accesorios, plumillas."),
-        "desc": t("Stay on top of vehicle maintenance with oil changes, cabin air filters, fuel filters, accessory belts, and wiper blade replacement. Contact us to discuss the maintenance appropriate for your vehicle.",
-                  "Mantenga al día el mantenimiento de su vehículo con cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas de accesorios y reemplazo de plumillas limpiaparabrisas. Comuníquese con nosotros para hablar del mantenimiento adecuado para su vehículo."),
+        "desc": t("Stay on top of vehicle maintenance with oil changes, cabin air filters, fuel filters, accessory belts, and wiper blade replacement. Fuel filters are the fuel service listed here; for other fuel-system work, see Fuel system & gas tank service under Also ask us about. Contact us to discuss the maintenance appropriate for your vehicle.",
+                  "Mantenga al día el mantenimiento de su vehículo con cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas de accesorios y reemplazo de plumillas limpiaparabrisas. Los filtros de combustible son el servicio de combustible anunciado aquí; para otro trabajo del sistema de combustible, vea Servicio del sistema de combustible y tanque en También pregunte por. Comuníquese con nosotros para hablar del mantenimiento adecuado para su vehículo."),
         "faq": "maintenance", "group": "maint",
     },
     {
@@ -55,8 +55,8 @@ SERVICES = [
         "card": t("Diagnostics & Engine Maintenance", "Diagnóstico y mantenimiento del motor"),
         "line": t("Engine analysis, tune-ups, and fuel-injector cleaning.",
                   "Análisis del motor, afinaciones y limpieza de inyectores."),
-        "desc": t("If your vehicle is not running as expected, contact us about engine analysis and tune-up services. We also offer fuel-injector cleaning as part of our service range.",
-                  "Si su vehículo no funciona como debería, consulte con nosotros sobre análisis del motor y afinaciones. También ofrecemos limpieza de inyectores de combustible como parte de nuestra gama de servicios."),
+        "desc": t("If your vehicle is not running as expected, contact us about engine analysis and tune-up services. We also offer fuel-injector cleaning as part of our service range. Other engine repairs are not listed here; call to confirm, or see Cylinder head & block repair, Spark plugs, and Fuel system service under Also ask us about.",
+                  "Si su vehículo no funciona como debería, consulte con nosotros sobre análisis del motor y afinaciones. También ofrecemos limpieza de inyectores de combustible como parte de nuestra gama de servicios. No anunciamos otras reparaciones del motor; llame para confirmar, o vea Reparación de culata y bloque, Bujías y Servicio del sistema de combustible en También pregunte por."),
         "faq": "engine", "group": "maint",
     },
     {
@@ -73,8 +73,8 @@ SERVICES = [
         "title": t("Tires & wheel alignments", "Llantas y alineación de ruedas"),
         "card": t("Tires & Alignments", "Llantas y alineación"),
         "line": t("Tires, tire repairs, and wheel alignments.", "Llantas, reparación de llantas y alineación."),
-        "desc": t("We offer tires, tire repairs, and wheel alignments. Contact us for help with tire concerns or to discuss alignment service.",
-                  "Ofrecemos llantas, reparación de llantas y alineación de ruedas. Comuníquese con nosotros para recibir ayuda con problemas de llantas o para hablar del servicio de alineación."),
+        "desc": t("We offer tires, tire repairs, and wheel alignments. Wheel (rim) work, tire retreads, and tire rotation and balancing are not listed here; see Also ask us about. Contact us for help with tire concerns or to discuss alignment service.",
+                  "Ofrecemos llantas, reparación de llantas y alineación de ruedas. El trabajo en ruedas (rines), las llantas renovadas y la rotación y el balanceo no figuran aquí; vea También pregunte por. Comuníquese con nosotros para recibir ayuda con problemas de llantas o para hablar del servicio de alineación."),
         "faq": "tires", "group": "ride",
     },
     {
@@ -83,8 +83,8 @@ SERVICES = [
         "card": t("Steering & Suspension", "Dirección y suspensión"),
         "line": t("Steering parts, suspension parts, shocks, and struts.",
                   "Piezas de dirección y suspensión, amortiguadores y puntales."),
-        "desc": t("Our service range includes steering and suspension components, shock absorbers, and struts. Contact us if you have concerns about your vehicle's handling or ride.",
-                  "Nuestra gama de servicios incluye componentes de dirección y suspensión, amortiguadores y puntales (struts). Comuníquese con nosotros si le preocupa el manejo o la comodidad de marcha de su vehículo."),
+        "desc": t("Our service range includes steering and suspension components, shock absorbers, and struts. Ball joints are not named separately; see Ball joints under Also ask us about. Contact us if you have concerns about your vehicle's handling or ride.",
+                  "Nuestra gama de servicios incluye componentes de dirección y suspensión, amortiguadores y puntales. Las rótulas no se nombran por separado; vea Rótulas en También pregunte por. Comuníquese con nosotros si le preocupa el manejo o la comodidad de marcha de su vehículo."),
         "faq": "suspension", "group": "ride",
     },
     {
@@ -92,8 +92,8 @@ SERVICES = [
         "title": t("Air conditioning & cooling systems", "Aire acondicionado y sistemas de enfriamiento"),
         "card": t("A/C & Cooling", "A/C y enfriamiento"),
         "line": t("Automotive A/C and cooling-system service.", "Servicio de A/C automotriz y del sistema de enfriamiento."),
-        "desc": t("We offer automotive A/C service and cooling-system service. Call to discuss cabin cooling problems or concerns about your vehicle's cooling system.",
-                  "Ofrecemos servicio de aire acondicionado automotriz y del sistema de enfriamiento. Llame para hablar de problemas de enfriamiento en la cabina o de inquietudes sobre el sistema de enfriamiento de su vehículo."),
+        "desc": t("We offer automotive A/C service and cooling-system service. Heater service is not listed here; see Heater service & repair under Also ask us about. Call to discuss cabin cooling problems or concerns about your vehicle's cooling system.",
+                  "Ofrecemos servicio de aire acondicionado automotriz y del sistema de enfriamiento. El servicio de calefacción no figura aquí; vea Servicio y reparación de la calefacción en También pregunte por. Llame para hablar de problemas de enfriamiento en la cabina o de inquietudes sobre el sistema de enfriamiento de su vehículo."),
         "faq": "ac", "group": "climate",
     },
     {
@@ -111,8 +111,8 @@ SERVICES = [
         "card": t("Drivetrain Maintenance", "Tren motriz"),
         "line": t("Transmission maintenance and rear-axle bearing and seal service.",
                   "Mantenimiento de transmisión y servicio de cojinetes y sellos del eje trasero."),
-        "desc": t("We offer transmission maintenance and service for rear-axle bearings and seals. Contact us to discuss the work appropriate for your vehicle.",
-                  "Ofrecemos mantenimiento de transmisión y servicio de cojinetes y sellos del eje trasero. Comuníquese con nosotros para hablar del trabajo adecuado para su vehículo."),
+        "desc": t("We offer transmission maintenance and service for rear-axle bearings and seals. Differentials and other drivetrain repairs are not listed here; see Differential repair under Also ask us about. Contact us to discuss the work appropriate for your vehicle.",
+                  "Ofrecemos mantenimiento de transmisión y servicio de cojinetes y sellos del eje trasero. Los diferenciales y otras reparaciones del tren motriz no figuran aquí; vea Reparación del diferencial en También pregunte por. Comuníquese con nosotros para hablar del trabajo adecuado para su vehículo."),
         "faq": "drivetrain", "group": "maint",
     },
     {
@@ -310,7 +310,7 @@ FAQ_CATS = [
     {"id": "suspension", "title": t("Steering & suspension", "Dirección y suspensión"), "items": [
         (t("What steering and suspension work do you offer?", "¿Qué trabajos de dirección y suspensión ofrecen?"),
          t("Our advertised service range includes steering parts, suspension parts, shock absorbers, and struts. Call with your vehicle details to discuss the work needed.",
-           "Nuestra gama de servicios anunciada incluye piezas de dirección, piezas de suspensión, amortiguadores y puntales (struts). Llame con los datos de su vehículo para hablar del trabajo necesario.")),
+           "Nuestra gama de servicios anunciada incluye piezas de dirección, piezas de suspensión, amortiguadores y puntales. Llame con los datos de su vehículo para hablar del trabajo necesario.")),
         (t("Is a wheel alignment the same as suspension repair?", "¿Una alineación de ruedas es lo mismo que reparar la suspensión?"),
          t("No. Alignment adjusts suspension angles to the vehicle's specifications. Repairing worn or damaged suspension parts is a separate task. The work needed depends on the condition of your vehicle.",
            "No. La alineación ajusta los ángulos de la suspensión según las especificaciones del vehículo. Reparar piezas de suspensión desgastadas o dañadas es un trabajo aparte. El trabajo necesario depende del estado de su vehículo.")),
@@ -336,9 +336,9 @@ FAQ_CATS = [
         (t("Can you help if my vehicle will not start?", "¿Pueden ayudarme si mi vehículo no arranca?"),
          t("Contact us and describe the symptoms. Our published list includes battery service and engine analysis, but the shop should confirm whether it can perform the specific no-start diagnosis your vehicle needs.",
            "Comuníquese con nosotros y describa los síntomas. Nuestra lista publicada incluye servicio de baterías y análisis del motor, pero el taller debe confirmar si puede realizar el diagnóstico específico de falla de arranque que necesita su vehículo.")),
-        (t("Do you repair alternators and starters?", "¿Reparan alternadores y motores de arranque?"),
-         t("Call with your vehicle details to confirm current availability of alternator or starter repair.",
-           "Llame con los datos de su vehículo para confirmar la disponibilidad actual de reparación de alternadores o motores de arranque.")),
+        (t("What signs suggest my battery may need replacing?", "¿Qué señales indican que mi batería podría necesitar reemplazo?"),
+         t("A slow crank, dim lights, a battery warning light, or a battery that is several years old can all be reported. A charging-system fault can cause similar signs, so the cause needs to be assessed. For alternator or starter work, see Alternators & starters.",
+           "Un arranque lento, luces tenues, una luz de advertencia de la batería o una batería con varios años de uso son señales que se pueden reportar. Una falla del sistema de carga puede causar señales parecidas, por lo que hay que evaluar la causa. Para trabajos de alternador o motor de arranque, vea Alternadores y motores de arranque.")),
     ]},
     {"id": "drivetrain", "title": t("Transmission maintenance & rear-axle service", "Mantenimiento de transmisión y servicio del eje trasero"), "items": [
         (t("Do you offer transmission maintenance?", "¿Ofrecen mantenimiento de transmisión?"),
@@ -378,9 +378,6 @@ FAQ_CATS = [
 # extra visitor FAQs; "online-request" is only shown when a working form endpoint is configured
 FAQ_GENERAL = {
     "id": "general", "title": t("General", "General"), "items": [
-        (t("Do you do bodywork or painting?", "¿Hacen trabajos de carrocería o pintura?"),
-         t("Our published services focus on mechanical repair and maintenance. Contact the shop about any bodywork or collision-related request.",
-           "Nuestros servicios publicados se centran en la reparación mecánica y el mantenimiento. Comuníquese con el taller si tiene alguna solicitud de carrocería o relacionada con colisiones.")),
         (t("Where are you located?", "¿Dónde están ubicados?"),
          t("1415 Pawlings Road, Phoenixville, PA 19460.", "1415 Pawlings Road, Phoenixville, PA 19460.")),
     ],
@@ -424,8 +421,8 @@ PAGES = {
         "desc": t("Inspections, oil changes, brakes, tires and alignments, engine analysis, steering and suspension, A/C, batteries, drivetrain maintenance, fleet repairs, and notary services in Phoenixville.",
                   "Inspecciones, cambios de aceite, frenos, llantas y alineación, análisis del motor, dirección y suspensión, A/C, baterías, mantenimiento del tren motriz, reparaciones para flotas y servicios de notario público en Phoenixville."),
         "h1": t("Services", "Servicios"),
-        "lead": t("Inspection, maintenance, and repair services for your vehicle. Call 610-650-0316 to discuss your vehicle and the work you need.",
-                  "Servicios de inspección, mantenimiento y reparación para su vehículo. Llame al 610-650-0316 para hablar de su vehículo y del trabajo que necesita."),
+        "lead": t("Inspection, maintenance, and repair services for your vehicle, minor or major. Services in the main groups are listed offerings. Items under Also ask us about are not confirmed, so call 610-650-0316 before you plan around them.",
+                  "Servicios de inspección, mantenimiento y reparación para su vehículo, menores o mayores. Los servicios de los grupos principales son ofertas anunciadas. Los de También pregunte por no están confirmados, así que llame al 610-650-0316 antes de contar con ellos."),
     },
     "inspections": {
         "title": t("State & Motorcycle Inspections, Phoenixville | Diverse Autoworks",
@@ -495,7 +492,7 @@ PAGES = {
         "lead": t("A few excerpts from public reviews. They are a selection, not the full record. Read the complete reviews on each platform.",
                   "Algunos extractos de reseñas públicas. Son una selección, no el registro completo. Lea las reseñas completas en cada plataforma."),
         "orig": t("Excerpt from the original review", "Extracto de la reseña original"),
-        "orig_es": t("", "Reseña original en inglés"),
+        "orig_es": t("", "Traducido del inglés"),
         "more": t("Read the full reviews", "Lea las reseñas completas"),
     },
     "faq": {
@@ -575,7 +572,7 @@ ASK_SERVICES = [
      "faq": "pickup", "group": "ask"},
 ]
 
-ASK_GROUP = ("ask", t("Also ask us about", "También pregunte por"))
+ASK_GROUP = ("ask", t("Also ask us about (call to confirm)", "También pregunte por (llame para confirmar)"))
 
 ASK_FAQ_CATS = [
     {"id": "tags", "title": t("Tags & title work", "Placas y trámites de título"), "items": [
@@ -635,5 +632,55 @@ ASK_FAQ_CATS = [
     ]},
 ]
 
+from more_services import NEW_ASK_SERVICES, NEW_ASK_FAQ_CATS, NEW_SVC_IMG  # noqa: E402
+ASK_SERVICES.extend(NEW_ASK_SERVICES)
+ASK_FAQ_CATS.extend(NEW_ASK_FAQ_CATS)
+
 SERVICES.extend(ASK_SERVICES)
 GROUPS.append(ASK_GROUP)
+
+
+# ---------------------------------------------------------------------------
+# Illustrative images (AI-generated; alt text says so). file, width, height.
+# ---------------------------------------------------------------------------
+def _im(file, w, h, en, es):
+    return {"file": file, "w": w, "h": h,
+            "alt": t(en[0].upper() + en[1:], es[0].upper() + es[1:])}
+
+IMAGES = {
+    "svc-inspections": _im("svc-inspections.webp", 800, 603, "blueprint-style drawing of a vehicle inspection", "dibujo tipo plano de una inspección vehicular"),
+    "svc-oil": _im("svc-oil.webp", 800, 603, "oil filter", "filtro de aceite"),
+    "svc-brakes": _im("svc-brakes.webp", 800, 603, "brake rotor", "disco de freno"),
+    "svc-tires": _im("svc-tires.webp", 800, 603, "tire", "neumático"),
+    "svc-engine": _im("svc-engine.webp", 800, 603, "blueprint-style drawing of an engine", "dibujo tipo plano de un motor"),
+    "svc-suspension": _im("svc-suspension.webp", 800, 603, "suspension strut", "amortiguador de la suspensión"),
+    "svc-ac": _im("svc-ac.webp", 800, 603, "A/C compressor", "compresor del aire acondicionado"),
+    "svc-fleet": _im("svc-fleet.webp", 800, 603, "white work van", "camioneta de trabajo blanca"),
+    "svc-battery": _im("svc-battery.webp", 800, 603, "battery and alternator", "batería y alternador"),
+    "svc-drivetrain": _im("svc-drivetrain.webp", 800, 603, "transmission and axle", "transmisión y eje"),
+    "svc-tags": _im("svc-tags.webp", 800, 603, "blueprint-style drawing of a license plate, vehicle title, registration sticker and key", "dibujo tipo plano de una placa, un título de vehículo, una calcomanía de registro y una llave"),
+    "svc-notary": _im("svc-notary.webp", 800, 603, "blueprint-style drawing of a notary embosser, pen, stamp and documents", "dibujo tipo plano de un sello notarial en relieve, una pluma, un sello y documentos"),
+    "svc-ev": _im("svc-ev.webp", 800, 603, "blueprint-style drawing of an electric vehicle battery, motor and charge port", "dibujo tipo plano de la batería, el motor y el puerto de carga de un vehículo eléctrico"),
+    "svc-prepurchase": _im("svc-prepurchase.webp", 800, 603, "blueprint-style drawing of a used car with its hood open, a flashlight and a checklist", "dibujo tipo plano de un auto usado con el capó abierto, una linterna y una lista de verificación"),
+    "svc-bodywork": _im("svc-bodywork.webp", 800, 603, "blueprint-style drawing of a car door with dent repair tools and a spray gun", "dibujo tipo plano de la puerta de un auto con herramientas para reparar abolladuras y una pistola de pintura"),
+    "svc-corrosion": _im("svc-corrosion.webp", 800, 603, "blueprint-style drawing of a car underbody with rust, rust-proofing spray and coating layers", "dibujo tipo plano de los bajos de un auto con óxido, rociado antióxido y capas de recubrimiento"),
+    "svc-computer": _im("svc-computer.webp", 800, 603, "blueprint-style drawing of a car with a scan tool, engine computer and diagnostic port", "dibujo tipo plano de un auto con un escáner, la computadora del motor y el puerto de diagnóstico"),
+    "svc-towing": _im("svc-towing.webp", 800, 603, "blueprint-style drawing of a flatbed tow truck carrying a car", "dibujo tipo plano de una grúa de plataforma que transporta un auto"),
+    "svc-sparkplugs": _im("svc-sparkplugs.webp", 800, 603, "blueprint-style drawing of an engine with spark plugs and ignition coils", "dibujo tipo plano de un motor con bujías y bobinas de encendido"),
+    "svc-emissioncontrol": _im("svc-emissioncontrol.webp", 800, 603, "blueprint-style drawing of an exhaust system with a catalytic converter and oxygen sensor", "dibujo tipo plano de un sistema de escape con convertidor catalítico y sensor de oxígeno"),
+    "svc-fuelsys": _im("svc-fuelsys.webp", 800, 603, "blueprint-style drawing of a fuel tank, fuel pump, filter and injector", "dibujo tipo plano de un tanque de combustible, bomba, filtro e inyector"),
+    "svc-heater": _im("svc-heater.webp", 800, 603, "blueprint-style drawing of a car heater core, blower motor and hoses", "dibujo tipo plano del núcleo del calefactor, el motor del ventilador y las mangueras de un auto"),
+    "moto": _im("moto.webp", 1200, 671, "motorcycle", "motocicleta"),
+    "about-storefront": _im("about-storefront.webp", 1000, 753, "Diverse Auto Works shop front at sunset, with state inspection and emission station signs", "fachada de Diverse Auto Works al atardecer, con letreros de estación de inspección y de emisiones del estado"),
+    "home-storefront": _im("home-storefront.webp", 1376, 768, "Diverse Auto Works shop front at sunset, with state inspection and emission station signs", "fachada de Diverse Auto Works al atardecer, con letreros de estación de inspección y de emisiones del estado"),
+    "about-interior": _im("about-interior.webp", 1200, 671, "repair shop interior", "interior de un taller"),
+    "about-mechanic": _im("about-mechanic.webp", 1200, 671, "mechanic working on an SUV", "mecánico trabajando en una camioneta SUV"),
+    "about-hands": _im("about-hands.webp", 800, 603, "hands using a torque wrench", "manos usando una llave de torque"),
+}
+# Services that reuse another service's image on /services/
+SVC_IMG = {"inspections": "svc-inspections", "maintenance": "svc-oil", "engine": "svc-engine",
+           "battery": "svc-battery", "drivetrain": "svc-drivetrain", "brakes": "svc-brakes",
+           "tires": "svc-tires", "rotation": "svc-tires", "suspension": "svc-suspension",
+           "ac": "svc-ac", "fleet": "svc-fleet", "electrical": "svc-battery"}
+SVC_IMG.update(NEW_SVC_IMG)
+SVC_IMG.update({"tags": "svc-tags", "notary": "svc-notary", "ev": "svc-ev", "prepurchase": "svc-prepurchase", "bodywork": "svc-bodywork", "corrosion": "svc-corrosion", "computer": "svc-computer", "towing": "svc-towing", "sparkplugs": "svc-sparkplugs", "emissioncontrol": "svc-emissioncontrol", "fuelsys": "svc-fuelsys", "heater": "svc-heater"})

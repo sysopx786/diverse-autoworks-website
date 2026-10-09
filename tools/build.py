@@ -21,7 +21,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from content import *  # noqa
+from notary import NOTARY  # noqa
 import graphics as G
+import reviews_es as RES
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -35,6 +37,23 @@ TEL = "tel:" + B["phone_tel"]
 MAIL = "mailto:" + B["email"]
 ADDR_ONE = f'{B["street"]}, {B["city"]}, {B["state"]} {B["zip"]}'
 MAPS_Q = B["maps_query"].replace(" ", "+")
+
+# ------------------------------------------------------------------ SHOP HOURS (header open/closed status)
+# THE one place to edit hours. The header strip reads this, in the shop's own time zone (never the visitor's clock).
+#   hours: 24-hour "HH:MM"; several ranges per day allowed, e.g. [["08:00","12:00"],["13:00","17:00"]]; [] = closed all day.
+#          Ranges must end the same day (no overnight ranges).
+#   closedDates: whole days closed, "YYYY-MM-DD" (holidays, vacation).
+#   sample: True while the hours below are PLACEHOLDERS. The strip then shows a "Sample" tag. Set False once the hours are real.
+SHOP = {
+    "timeZone": "America/New_York",
+    "closingSoonMinutes": 60,
+    "sample": False,
+    "hours": {
+        "mon": [["08:00", "17:00"]], "tue": [["08:00", "17:00"]], "wed": [["08:00", "17:00"]],
+        "thu": [["08:00", "17:00"]], "fri": [["08:00", "17:00"]], "sat": [], "sun": [],
+    },
+    "closedDates": [],
+}
 DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace(",", "%2C")
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
@@ -48,6 +67,11 @@ PAGEKEY = {k: k for k in SLUGS}
 UI = {
     "en": {
         "skip": "Skip to content", "menu": "Menu", "back_top": "Back to top",
+        "search": "Search", "search_label": "Search the site", "search_ph": "Search services, inspections, notary…", "search_close": "Close",
+        "search_none": f'No match. Call <a href="{TEL}">{PHONE}</a> and we will point you to the right service.',
+        "status": {"open": "Open now · closes {time}", "soon": "Closing soon · closes {time}", "closed": "Closed · opens {when} {time}",
+                   "never": "Closed · call for hours", "today": "today", "tomorrow": "tomorrow", "am": "AM", "pm": "PM", "sample": "Sample",
+                   "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
         "nav": {"services": "Services", "inspections": "Inspections", "fleet": "Fleet Repairs", "about": "About",
                 "reviews": "Reviews", "faq": "FAQs", "contact": "Contact"},
         "call": f"Call {PHONE}", "call_short": "Call", "request": "Request an Appointment", "directions": "Get Directions",
@@ -60,7 +84,7 @@ UI = {
         "pick_group": "Vehicle symptoms and needs", "pick_empty_h": "Pick an option", "pick_empty_p": "The matching service shows up here, with a one-tap way to send a request.",
         "pick_request": "Request this service", "pick_learn": "See details", "pick_call": f"Call {PHONE}",
         "all_services": "See all services", "more_reviews": "Read more reviews", "full_reviews": "Read the full reviews on",
-        "source": "Source", "fleet_btn": "Fleet repairs", "notary_btn": "Notary hours and details", "email_us": "Email the shop",
+        "notary_nav": "Notary Services", "source": "Source", "fleet_btn": "Fleet repairs", "notary_btn": "Notary hours and details", "email_us": "Email the shop",
         "close_hours": "Hours", "close_addr": "Address", "close_mail": "Email", "close_notary": "Notary services",
         "moto_init": "Tap a numbered point to see which items PennDOT lists.", "moto_sel": "Selected:",
         "moto_listed": "listed by PennDOT among the items covered in a motorcycle safety inspection.",
@@ -104,6 +128,11 @@ UI = {
     },
     "es": {
         "skip": "Saltar al contenido", "menu": "Menú", "back_top": "Volver arriba",
+        "search": "Buscar", "search_label": "Buscar en el sitio", "search_ph": "Buscar servicios, inspecciones, notario…", "search_close": "Cerrar",
+        "search_none": f'Sin resultados. Llame al <a href="{TEL}">{PHONE}</a> y le indicaremos el servicio adecuado.',
+        "status": {"open": "Abierto ahora · cierra a las {time}", "soon": "Cierra pronto · cierra a las {time}", "closed": "Cerrado · abre {when} a las {time}",
+                   "never": "Cerrado · llame para conocer el horario", "today": "hoy", "tomorrow": "mañana", "am": "a. m.", "pm": "p. m.", "sample": "Ejemplo",
+                   "days": ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"]},
         "nav": {"services": "Servicios", "inspections": "Inspecciones", "fleet": "Flotas", "about": "Nosotros",
                 "reviews": "Reseñas", "faq": "Preguntas", "contact": "Contacto"},
         "call": f"Llamar al {PHONE}", "call_short": "Llamar", "request": "Solicitar una cita", "directions": "Cómo llegar",
@@ -116,7 +145,7 @@ UI = {
         "pick_group": "Síntomas y necesidades del vehículo", "pick_empty_h": "Elija una opción", "pick_empty_p": "El servicio correspondiente aparece aquí, con una forma rápida de enviar su solicitud.",
         "pick_request": "Solicitar este servicio", "pick_learn": "Ver detalles", "pick_call": f"Llamar al {PHONE}",
         "all_services": "Ver todos los servicios", "more_reviews": "Leer más reseñas", "full_reviews": "Lea las reseñas completas en",
-        "source": "Fuente", "fleet_btn": "Reparaciones para flotas", "notary_btn": "Horario y detalles del notario", "email_us": "Escribir al taller",
+        "notary_nav": "Notario público", "source": "Fuente", "fleet_btn": "Reparaciones para flotas", "notary_btn": "Horario y detalles del notario", "email_us": "Escribir al taller",
         "close_hours": "Horario", "close_addr": "Dirección", "close_mail": "Correo", "close_notary": "Notario público",
         "moto_init": "Toque un punto numerado para ver los elementos que enumera PennDOT.", "moto_sel": "Seleccionado:",
         "moto_listed": "PennDOT lo enumera entre los elementos que cubre una inspección de seguridad de motocicletas.",
@@ -189,6 +218,14 @@ def asset(cur_lang, cur_key, name):
     return "../" * depth(cur_lang, cur_key) + "assets/" + name
 
 
+def img(lang, key, name, cls="", eager=False, alt=None):
+    d = IMAGES[name]
+    a = esc(L(d["alt"], lang), quote=True) if alt is None else alt
+    c = f' class="{cls}"' if cls else ""
+    return (f'<img{c} src="{asset(lang, key, "img/" + d["file"])}" width="{d["w"]}" height="{d["h"]}" '
+            f'alt="{a}" loading="{"eager" if eager else "lazy"}" decoding="async">')
+
+
 def abs_url(lang, key):
     p = path_of(lang, key)
     return SITE_URL + "/" + (p + "/" if p else "")
@@ -243,7 +280,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -301,6 +338,53 @@ def head_tags(lang, key, title, desc, extra_ld=""):
     return "\n".join(out)
 
 
+def flag_svg(code):
+    """Round-button flag art: US flag for English, Spain flag for Spanish. Decorative (the link carries the label)."""
+    if code == "es":
+        art = '<rect width="44" height="44" fill="#c60b1e"/><rect y="11" width="44" height="22" fill="#ffc400"/>'
+    else:
+        h = 44 / 13
+        stripes = "".join(f'<rect y="{i * h:.2f}" width="44" height="{h:.2f}" fill="#b22234"/>' for i in range(0, 13, 2))
+        stars = "".join(f'<circle cx="{4 + c * 5.2:.1f}" cy="{4 + r * 5.6:.1f}" r="1" fill="#fff"/>' for r in range(4) for c in range(5))
+        art = f'<rect width="44" height="44" fill="#fff"/>{stripes}<rect width="26" height="{7 * h:.2f}" fill="#3c3b6e"/>{stars}'
+    return f'<svg class="lang-flag" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true" focusable="false">{art}</svg>'
+
+
+# (page key, anchor, EN title, ES title, EN keywords, ES keywords) for the header search
+SEARCH_ROWS = [
+    ("services", "", "Services", "Servicios", "repair maintenance all services", "reparación mantenimiento todos los servicios"),
+    ("services", "maintenance", "Oil changes & maintenance", "Cambios de aceite y mantenimiento", "oil change filters cabin fuel belts wiper blades upkeep", "aceite filtros cabina combustible correas limpiaparabrisas mantenimiento"),
+    ("services", "brakes", "Brakes & rotors", "Frenos y rotores", "brake rotor noise squeal grinding stopping", "frenos rotor ruido chirrido parar"),
+    ("services", "tires", "Tires & alignments", "Llantas y alineación", "tire repair alignment wheel pulling uneven wear", "llantas neumáticos reparación alineación jalar desgaste"),
+    ("services", "engine", "Diagnostics & engine", "Diagnóstico y motor", "engine analysis tune-up fuel injector check engine running rough diagnostics", "motor análisis afinación inyectores diagnóstico falla"),
+    ("services", "suspension", "Steering & suspension", "Dirección y suspensión", "steering shocks struts ride handling loose rough", "dirección amortiguadores suspensión manejo"),
+    ("services", "ac", "A/C & cooling", "A/C y enfriamiento", "air conditioning ac cooling radiator not cold", "aire acondicionado enfriamiento radiador no enfría"),
+    ("services", "battery", "Batteries", "Baterías", "battery won't start no start dead", "batería no arranca no enciende"),
+    ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
+    ("inspections", "motorcycle", "Motorcycle inspections", "Inspecciones de motocicletas", "motorcycle bike inspection", "motocicleta moto inspección"),
+    ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),
+    ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
+    ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
+    ("contact", "", "Contact, phone & hours", "Contacto, teléfono y horario", "contact phone email address hours location", "contacto teléfono correo dirección horario ubicación"),
+    ("reviews", "", "Reviews", "Reseñas", "reviews ratings customers carfax yelp google", "reseñas opiniones clientes calificaciones"),
+    ("faq", "", "FAQs", "Preguntas frecuentes", "faq questions answers help", "preguntas respuestas ayuda"),
+    ("about", "", "About", "Nosotros", "about us shop team", "nosotros taller equipo acerca"),
+    ("privacy", "", "Privacy notice", "Aviso de privacidad", "privacy", "privacidad"),
+]
+
+
+def search_index(lang, key):
+    rows = []
+    for pk, anchor, ten, tes, ken, kes in SEARCH_ROWS:
+        rows.append([ten if lang == "en" else tes, href(lang, key, lang, pk, anchor=anchor), ken if lang == "en" else kes])
+    for sv in ASK_SERVICES:
+        rows.append([L(sv["title"], lang), href(lang, key, lang, "services", anchor=sv["id"]),
+                     (L(sv["card"], lang) + " " + L(sv["line"], lang)).lower()])
+    rows.append([UI[lang]["directions"], DIRECTIONS,
+                 "cómo llegar mapa dirección pawlings road" if lang == "es" else "directions map address pawlings road"])
+    return rows
+
+
 def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
@@ -308,15 +392,28 @@ def header(lang, key):
     for k in ("services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
+    items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
     names = {"en": "English", "es": "Español"}
-    sw = (f'<details class="lang" data-lang-menu><summary aria-label="{u["lang_label"]}: {names[lang]}"><span lang="{lang}">{names[lang]}</span></summary>'
-          f'<a href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}">{names[other]}</a></details>')
-    return f'''<header class="hdr"><div class="wrap hdr-in">
+    sw = (f'<a class="lang" href="{href(lang, key, other, key)}" lang="{other}" hreflang="{other}" '
+          f'aria-label="{u["lang_label"]}: {names[other]}" title="{names[other]}">{flag_svg(other)}<span class="lang-code" aria-hidden="true">{other.upper()}</span></a>')
+    data = json.dumps({"shop": SHOP, "ui": u["status"], "search": search_index(lang, key)}, ensure_ascii=False).replace("</", "<\\/")
+    search_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'
+    return f'''<header class="hdr no-tr" id="hdr"><div class="wrap hdr-in">
 <a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Auto Works"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
-<button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
-</div></header>'''
+<button class="hbtn search-btn" type="button" aria-expanded="false" aria-controls="site-search" aria-label="{u["search"]}">{search_svg}</button>
+<button class="hbtn menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{u["menu"]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path class="ic-bars" d="M4 7h16M4 12h16M4 17h16"/><path class="ic-x" d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+</div>
+<div class="hdr-strip"><div class="wrap"><div class="status" id="shop-status" role="status" aria-live="polite" data-state="unknown"><i class="dot" aria-hidden="true"></i><span class="status-text">{u["hours_shop"]}</span></div></div></div>
+<div class="srch" id="site-search" role="search" aria-label="{u["search_label"]}"><div class="srch-in">
+<div class="srch-row"><input id="site-search-input" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="{u["search_ph"]}" aria-label="{u["search_label"]}" aria-controls="site-search-res"><button class="srch-close" type="button">{u["search_close"]}</button></div>
+<ul class="srch-res" id="site-search-res"></ul>
+<p class="srch-empty" id="site-search-empty" hidden>{u["search_none"]}</p>
+</div></div>
+<script type="application/json" id="shop-data">{data}</script>
+</header>
+<div class="hdr-spacer" aria-hidden="true"></div>'''
 
 
 def footer(lang, key):
@@ -334,14 +431,8 @@ def footer(lang, key):
 </div></footer>'''
 
 
-def callbar(lang):
-    u = UI[lang]
-    return (f'<aside class="callbar on-dark" aria-label="Quick contact"><a class="btn btn-sign" href="CONTACT_HREF">{u["request"]}</a></aside>')
-
-
 def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
     u = UI[lang]
-    cb = callbar(lang).replace("CONTACT_HREF", href(lang, key, lang, "contact", anchor="request"))
     return f'''<!doctype html>
 <html lang="{lang}">
 <head>
@@ -354,7 +445,7 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 {body}
 </main>
 {footer(lang, key)}
-{cb}
+<button class="to-top" type="button" aria-label="{u["back_top"]}" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script src="{asset(lang, key, "js/main.js")}" defer></script>
 </body>
 </html>
@@ -381,15 +472,15 @@ def motorcycle_block(lang, key):
 </div>'''
 
 
-def review_html(lang, r, big=False):
+def review_html(lang, r, big=False, key="reviews"):
     u = UI[lang]
     who = L(r["who"], lang)
     date = L(r["date"], lang)
     orig = f'<span class="rev-orig">{PAGES["reviews"]["orig_es"]["es"]}</span>' if lang == "es" else ""
-    ic = {"CARFAX": '<img class="src-ic src-cx" src="' + asset(lang, "reviews", "img/carfax.png") + '" width="64" height="14" alt="CARFAX">',
+    ic = {"CARFAX": '<img class="src-ic src-cx" src="' + asset(lang, key, "img/carfax.png") + '" width="64" height="14" alt="CARFAX">',
           "Yelp": '<span class="src-ic src-yelp">Yelp</span>'}.get(r["src"], "")
     cite = (f'<div class="who"><b>{esc(who)}</b>{esc(date)}<br><span class="src-row">{ic}<a href="{r["url"]}" rel="noopener" target="_blank">{u["source"]}: {r["src"]}</a></span>{("<br>" + orig) if orig else ""}</div>')
-    q = f'<blockquote lang="en">“{esc(r["q"])}”</blockquote>'
+    q = f'<blockquote lang="es">“{esc(RES.FEATURED[REVIEWS.index(r)])}”</blockquote>' if lang == "es" else f'<blockquote lang="en">“{esc(r["q"])}”</blockquote>'
     return q, cite
 
 
@@ -511,31 +602,33 @@ def page_home(lang):
     tiles = []
     for sid in HOME_CARDS:
         s = svc_by_id(sid)
-        tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{G.icon(s["icon"], 52)}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
+        tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{img(lang, key, SVC_IMG[sid], "tile-img")}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
     board = f'''<section class="sec sec-white" id="services"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
 <div class="board">{"".join(tiles)}</div>
 <p class="board-foot"><a class="link-arrow" href="{href(lang, key, lang, "services")}">{u["all_services"]}</a></p>
+{img(lang, key, "about-mechanic", "fig-img fig-wide fig-band")}
 </div></section>'''
 
     # motorcycle
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a></p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 </div></section>'''
 
     # reviews (lead + three)
     rev = REVIEWS
-    lq, lc = review_html(lang, rev[0])
+    lq, lc = review_html(lang, rev[0], key=key)
     others = []
     for r in rev[1:4]:
-        q, c = review_html(lang, r)
+        q, c = review_html(lang, r, key=key)
         others.append(f"<li>{q}{c}</li>")
     themes = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in THEMES)
     reviews = f'''<section class="sec sec-paper" id="reviews"><div class="wrap">
-<div class="sec-head"><h2>{esc(L(P["rev_h"], lang))}</h2><p>{esc(L(P["rev_p"], lang))}</p></div>
-<ul class="themes">{themes}</ul>
+<div class="rev-top"><div><div class="sec-head"><h2>{esc(L(P["rev_h"], lang))}</h2><p>{esc(L(P["rev_p"], lang))}</p></div>
+<ul class="themes">{themes}</ul></div>{img(lang, key, "about-hands", "fig-img rev-img")}</div>
 <div class="revs"><figure class="lead-quote">{lq}<figcaption>{lc}</figcaption></figure><ul class="qlist">{"".join(others)}</ul></div>
 <div class="rev-more"><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div>
 </div></section>'''
@@ -545,6 +638,7 @@ def page_home(lang):
 <div class="panel panel-fleet on-dark">{G.icon("van", 64)}<h2>{esc(L(svc_by_id("fleet")["title"], lang))}</h2><p>{esc(L(P["fleet_p"], lang))}</p>
 <a class="btn btn-sign" href="{href(lang, key, lang, "fleet")}">{u["fleet_btn"]}</a></div>
 <div class="panel panel-notary">{G.icon("seal", 64)}<h2>{esc(L(svc_by_id("notary")["title"], lang))}</h2><p>{esc(L(P["notary_p"], lang))}</p>
+<img class="panel-photo" src="{asset(lang, key, "img/notary-signing.webp")}" width="1168" height="880" alt="{esc(L(NOTARY["photo_alt"], lang), quote=True)}" loading="lazy" decoding="async">
 <a class="btn btn-navy" href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_btn"]}</a></div></section>'''
 
     # close
@@ -558,7 +652,8 @@ def page_home(lang):
 <li>{G.icon("gear", 30)}<div><b>{u["close_hours"]}</b><span>{u["hours_shop"]}</span></div></li>
 <li>{G.icon("seal", 30)}<div><b>{u["close_notary"]}</b><span>{u["hours_notary"]}</span></div></li>
 <li>{G.icon("mail", 30)}<div><b>{u["close_mail"]}</b><a href="{MAIL}">{B["email"]}</a></div></li>
-</ul></div></section>'''
+</ul>
+{img(lang, key, "home-storefront", "fig-img close-photo")}</div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + moto + reviews + duo + close)
 
 
@@ -576,7 +671,7 @@ def page_services(lang):
             if s.get("page"):
                 acts.append(f'<a href="{learn_href(lang, key, s["id"])}">{u["svc_details"]}</a>')
             acts.append(f'<a href="{href(lang, key, lang, "faq", anchor=s["faq"])}">{u["faq_related"]}</a>')
-            blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div><p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
+            blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div>{img(lang, key, SVC_IMG[s["id"]], "svc-img") if s["id"] in SVC_IMG else ""}<p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
         groups.append(f'<section class="svc-group" id="g-{gid}"><h2>{esc(L(gtitle, lang))}</h2>{"".join(blocks)}</section>')
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''<section class="sec sec-paper"><div class="wrap svc-layout">
 <nav aria-label="{u["svc_index"]}"><ul class="svc-index">{"".join(idx)}</ul></nav><div>{"".join(groups)}</div></div></section>'''
@@ -596,12 +691,13 @@ def page_inspections(lang):
 <div class="split"><div><h3>{esc(L(P["safety_h"], lang))}</h3><p>{esc(L(P["safety_p"], lang))}</p></div><div><h3>{esc(L(P["emis_h"], lang))}</h3><p>{esc(L(P["emis_p"], lang))}</p></div></div>
 </div></section>
 <section class="sec sec-white"><div class="wrap two-col">
-<div><h2>{esc(L(P["types_h"], lang))}</h2><ul class="vtypes">{types}</ul>
+<div><h2>{esc(L(P["types_h"], lang))}</h2>{img(lang, key, "svc-inspections", "fig-img")}<ul class="vtypes">{types}</ul>
 <div class="callout"><h3>{esc(L(P["price_h"], lang))}</h3><p>{esc(L(P["price_p"], lang))}</p></div>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
 <div><h2>{esc(L(ins["title"], lang))}</h2>{faq_list(lang, ins)}</div></div></section>
 <section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 <p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
@@ -619,7 +715,7 @@ def page_fleet(lang):
     fc = faq_cat_by_id("fleet")
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap two-col">
-<div><h2>{esc(L(P["tell_h"], lang))}</h2><ul class="checklist">{tell}</ul>
+<div>{img(lang, key, "svc-fleet", "fig-img")}<h2>{esc(L(P["tell_h"], lang))}</h2><ul class="checklist">{tell}</ul>
 <div class="callout" style="margin-top:28px"><h3>{esc(L(P["terms_h"], lang))}</h3><p>{esc(L(P["terms_p"], lang))}</p></div>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key, fleet=True)}</div></div></section>
@@ -638,6 +734,7 @@ def page_about(lang):
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
 <p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="320" height="168" alt="Diverse Auto Works logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
+<section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
 <ul class="themes">{themes}</ul><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
@@ -654,7 +751,7 @@ def ratings_html(lang):
         link = (f'<a href="{r["url"]}" rel="noopener" target="_blank">{UI[lang]["source"]}: {r["name"]}</a>' if r["url"] else "")
         g_logo = ('<img class="g-logo" src="' + asset(lang, "reviews", "img/google-g.png") + '" width="36" height="36" alt="Google">') if r["name"] == "Google" else ""
         if r["name"] == "Google":
-            avg = avg + '<div class="g-stars" role="img" aria-label="4.9 out of 5 stars">★★★★★</div>'
+            avg = avg + '<div class="g-stars" role="img" aria-label="' + ("4.9 de 5 estrellas" if lang == "es" else "4.9 out of 5 stars") + '">★★★★★</div>'
         if r["name"] == "CARFAX":
             g_logo = '<img class="rt-cx" src="' + asset(lang, "reviews", "img/carfax.png") + '" width="116" height="25" alt="">'
         elif r["name"] == "Yelp":
@@ -671,12 +768,14 @@ def google_html(lang):
     data = _j.load(open(_o.path.join(_o.path.dirname(__file__), "google_reviews.json"), encoding="utf-8"))
     shown = [r for r in data if r["text"] and not r["hold"]]
     blank = sum(1 for r in data if not r["text"])
+    assert len(shown) == len(RES.GOOGLE), "google_reviews.json changed: update reviews_es.GOOGLE"
+    es = lang == "es"
     items = "".join(
-        f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["age"])}<br><span class="src-row"><img class="src-ic src-g" src="{asset(lang, "reviews", "img/google-g.png")}" width="22" height="22" alt="Google">Google</span></div><div class="g-rate" role="img" aria-label="{r["stars"]} of 5 stars"><span class="g-stars" style="--p:{r["stars"]*20}%">★★★★★</span></div></li>' for r in shown)
+        f'<li><blockquote lang="{lang}">“{esc(RES.GOOGLE[i] if es else r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(RES.age_es(r["age"]) if es else r["age"])}<br><span class="src-row"><img class="src-ic src-g" src="{asset(lang, "reviews", "img/google-g.png")}" width="22" height="22" alt="Google">Google</span></div><div class="g-rate" role="img" aria-label="{r["stars"]} {"de 5 estrellas" if es else "of 5 stars"}"><span class="g-stars" style="--p:{r["stars"]*20}%">★★★★★</span></div></li>' for i, r in enumerate(shown))
     if lang == "en":
         h, p = "Reviews from Google", f"Written Google reviews, newest first, as captured on {L(RATINGS_ASOF, lang)}. {blank} more customers left a star rating with no text. Ages such as “2 months ago” are as of that date."
     else:
-        h, p = "Reseñas de Google", f"Reseñas escritas de Google, de la más nueva a la más antigua, según se capturaron el {L(RATINGS_ASOF, lang)}. {blank} clientes más dejaron solo una calificación con estrellas. Las antigüedades como “2 months ago” corresponden a esa fecha. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Reseñas de Google", f"Reseñas escritas de Google, de la más nueva a la más antigua, según se capturaron el {L(RATINGS_ASOF, lang)}. {blank} clientes más dejaron solo una calificación con estrellas. Las antigüedades como “hace 2 meses” corresponden a esa fecha. Las reseñas se tradujeron del inglés; los textos originales están en Google."
     return f'<div class="sec-head" style="margin-top:44px"><h2 class="g-h"><img class="g-logo" src="{asset(lang, "reviews", "img/google-g.png")}" width="44" height="44" alt="">{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{items}</ul>'
 
 
@@ -688,13 +787,15 @@ def _jload(name):
     return _j.load(open(_o.path.join(_o.path.dirname(__file__), name), encoding="utf-8"))
 
 
-def _car_who(w):
+def _car_who(w, lang="en"):
     parts = []
     for tok in w.split():
         if tok.upper() == "OWNER":
             parts.append("owner"); continue
         keep = any(c.isdigit() for c in tok) or "/" in tok or all(len(x) <= 3 for x in tok.split("-"))
         parts.append("Fe" if tok == "FE" else (tok if keep else tok.title()))
+    if lang == "es" and parts and parts[-1] == "owner":
+        return "Propietario del vehículo: " + " ".join(parts[:-1])
     return " ".join(parts)
 
 
@@ -714,31 +815,33 @@ def _yelp_date(lang, d):
 def carfax_html(lang):
     data = _jload("carfax_reviews.json")
     ic = f'<img class="src-ic src-cx" src="{asset(lang, "reviews", "img/carfax.png")}" width="64" height="14" alt="CARFAX">'
+    assert len(data) == len(RES.CARFAX), "carfax_reviews.json changed: update reviews_es.CARFAX"
     items = "".join(
-        f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(_car_who(r["who"]))}</b>{esc(_car_date(lang, r["date"]))}<br><span class="src-row">{ic}<span class="vs">{"Verified Service" if lang == "en" else "Servicio verificado"}</span></span></div></li>'
-        for r in data)
+        f'<li><blockquote lang="{lang}">“{esc(RES.CARFAX[i] if lang == "es" else r["text"])}”</blockquote><div class="who"><b>{esc(_car_who(r["who"], lang))}</b>{esc(_car_date(lang, r["date"]))}<br><span class="src-row">{ic}<span class="vs">{"Verified Service" if lang == "en" else "Servicio verificado"}</span></span></div></li>'
+        for i, r in enumerate(data))
     if lang == "en":
         h, p = "All CARFAX reviews", f"All {len(data)} written CARFAX reviews as supplied, newest-first order as on the CARFAX page. CARFAX shows an overall 5.0 from 61 verified reviews; it did not give a star count for each review, so none is shown here."
     else:
-        h, p = "Todas las reseñas de CARFAX", f"Las {len(data)} reseñas escritas de CARFAX, tal como se recibieron, en el orden de la página de CARFAX. CARFAX muestra 5.0 en total con 61 reseñas verificadas; no indicó las estrellas de cada reseña, así que aquí no se muestra ninguna. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Todas las reseñas de CARFAX", f"Las {len(data)} reseñas escritas de CARFAX, tal como se recibieron, en el orden de la página de CARFAX. CARFAX muestra 5.0 en total con 61 reseñas verificadas; no indicó las estrellas de cada reseña, así que aquí no se muestra ninguna. Las reseñas se tradujeron del inglés; los textos originales están en CARFAX."
     return f'<div class="sec-head" style="margin-top:44px"><h2>{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{items}</ul>'
 
 
 def yelp_html(lang):
     data = _jload("yelp_reviews.json")
     ic = '<span class="src-ic src-yelp">Yelp</span>'
+    assert len(data) == len(RES.YELP), "yelp_reviews.json changed: update reviews_es.YELP"
     out = []
-    for r in data:
+    for i, r in enumerate(data):
         rep = ""
         if r.get("reply"):
             q = r["reply"]
             lab = "Business owner reply" if lang == "en" else "Respuesta del propietario"
-            rep = f'<div class="owner-reply"><b>{lab}: {esc(q["who"])}, {esc(_yelp_date(lang, q["date"]))}</b><p lang="en">{esc(q["text"])}</p></div>'
-        out.append(f'<li><blockquote lang="en">“{esc(r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["loc"])} · {esc(_yelp_date(lang, r["date"]))}<br><span class="src-row">{ic}</span></div>{rep}</li>')
+            rep = f'<div class="owner-reply"><b>{lab}: {esc(q["who"])}, {esc(_yelp_date(lang, q["date"]))}</b><p lang="{lang}">{esc(RES.YELP_REPLY[i] if lang == "es" else q["text"])}</p></div>'
+        out.append(f'<li><blockquote lang="{lang}">“{esc(RES.YELP[i] if lang == "es" else r["text"])}”</blockquote><div class="who"><b>{esc(r["who"])}</b>{esc(r["loc"])} · {esc(_yelp_date(lang, r["date"]))}<br><span class="src-row">{ic}</span></div>{rep}</li>')
     if lang == "en":
         h, p = "All Yelp reviews", f"Yelp shows 10 reviews. The supplied copy has {len(data)} with text, shown here as supplied; Yelp did not give a reliable overall score or a star count per review, so none is shown."
     else:
-        h, p = "Todas las reseñas de Yelp", f"Yelp muestra 10 reseñas. El texto recibido tiene {len(data)} con comentario, que se muestran tal cual; Yelp no dio una calificación general confiable ni las estrellas de cada reseña, así que no se muestra ninguna. Las reseñas están en inglés, tal como se publicaron."
+        h, p = "Todas las reseñas de Yelp", f"Yelp muestra 10 reseñas. El texto recibido tiene {len(data)} con comentario, que se muestran tal cual; Yelp no dio una calificación general confiable ni las estrellas de cada reseña, así que no se muestra ninguna. Las reseñas se tradujeron del inglés; los textos originales están en Yelp."
     return f'<div class="sec-head" style="margin-top:44px"><h2>{h}</h2><p>{esc(p)}</p></div><ul class="qlist g-list" style="max-width:860px">{"".join(out)}</ul>'
 
 
@@ -788,11 +891,78 @@ def page_faq(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body, extra_ld=ld)
 
 
+def notary_sections(lang):
+    """Redesigned notary block on the Contact page (anchor #notary). Copy lives in tools/notary.py."""
+    N = NOTARY
+    u = UI[lang]
+
+    def e(d):
+        return esc(L(d, lang))
+
+    call = f"Llame al {PHONE}" if lang == "es" else f"Call {PHONE}"
+    chips = "".join(f"<li>{e(c)}</li>" for c in N["chips"])
+    cards = "".join(f'<div class="nt-card">{G.icon(ic, 34)}<h4>{e(h)}</h4><p>{e(p)}</p></div>' for ic, h, p in N["cards"])
+    steps = "".join(f'<li class="nt-step"><span class="nt-n" aria-hidden="true">{i:02d}</span><h4>{e(h)}</h4><p>{e(p)}</p></li>'
+                    for i, (h, p) in enumerate(N["steps"], 1))
+    rules = "".join(
+        f'<div class="nt-rule"><dt>{e(dt)}<small>{e(sm)}</small></dt><dd>{"".join(f"<p>{e(x)}</p>" for x in ps)}</dd></div>'
+        for dt, sm, ps in N["rules"])
+    note = e(N["note"])
+    for i, (url, label) in enumerate(N["note_links"], 1):
+        note = note.replace(f"[[{i}]]", f'<a href="{url}" rel="noopener" target="_blank">{e(label)}</a>')
+    bring = "".join(f"<li>{e(x)}</li>" for x in N["bring"])
+    avoid = "".join(f"<li>{e(x)}</li>" for x in N["avoid"])
+    faq = "".join(
+        f'<details class="q"><summary>{e(q)}</summary><div class="a">{"".join(f"<p>{e(x)}</p>" for x in ans)}</div></details>'
+        for q, ans in N["faq"])
+    doc = f"""<svg class="nt-doc" viewBox="0 0 520 440" role="img" aria-label="{esc(L(N["doc_aria"], lang), quote=True)}">
+<rect x="40" y="14" width="440" height="412" fill="#fff" stroke="#CDCED0"/><rect x="40" y="14" width="440" height="44" fill="#26282C"/>
+<text x="62" y="42" font-size="12" letter-spacing="2" fill="#fff">{e(N["doc_top"])}</text>
+<g fill="#E6E6E7"><rect x="62" y="80" width="190" height="8"/><rect x="62" y="100" width="260" height="8"/><rect x="62" y="120" width="150" height="8"/><rect x="330" y="80" width="130" height="8"/><rect x="330" y="100" width="100" height="8"/></g>
+<text x="62" y="170" font-size="11" letter-spacing="2" fill="#5B5F66">{e(N["doc_assign"])}</text>
+<rect x="62" y="182" width="396" height="86" fill="#FDECEA" stroke="#B3201B" stroke-width="1.5"/>
+<text x="76" y="204" font-size="11" letter-spacing="1.2" fill="#B3201B">{e(N["doc_seller"])}</text>
+<path d="M78 246 q16 -26 30 -4 t28 -2 t26 2 t26 -4" fill="none" stroke="#26282C" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="3 4" opacity=".55"/>
+<line x1="76" y1="254" x2="440" y2="254" stroke="#B3201B" stroke-width="1"/>
+<rect x="62" y="284" width="190" height="52" fill="#fff" stroke="#CDCED0"/><text x="74" y="304" font-size="10.5" letter-spacing="1.2" fill="#5B5F66">{e(N["doc_odo"])}</text>
+<rect x="268" y="284" width="190" height="52" fill="#fff" stroke="#CDCED0"/><text x="280" y="304" font-size="10.5" letter-spacing="1.2" fill="#5B5F66">{e(N["doc_buyer"])}</text>
+<g fill="#E6E6E7"><rect x="62" y="356" width="396" height="8"/><rect x="62" y="376" width="300" height="8"/></g>
+<circle cx="430" cy="390" r="30" fill="none" stroke="#26282C" stroke-width="1.5" opacity=".6"/><circle cx="430" cy="390" r="23" fill="none" stroke="#26282C" stroke-width="1" stroke-dasharray="1 3" opacity=".6"/>
+<text x="430" y="394" text-anchor="middle" font-size="8.5" letter-spacing="1" fill="#26282C" opacity=".75">{e(N["doc_notary"])}</text></svg>"""
+    return f"""<section class="sec sec-white nt" id="notary" aria-labelledby="nt-h"><div class="wrap">
+<div class="nt-intro"><div class="nt-intro-txt"><p class="nt-eyebrow">{e(N["eyebrow"])}</p><h2 id="nt-h">{e(N["h2"])}</h2><p class="nt-lede">{e(N["lede"])}</p>
+<div class="nt-cta"><a class="btn btn-navy" href="{TEL}">{call}</a><a class="btn btn-line" href="#notary-process">{e(N["cta_how"])}</a><a class="btn btn-line" href="{MAIL}">{u["email_us"]}</a></div>
+<ul class="nt-chips">{chips}</ul></div>
+<figure class="nt-photo"><img src="{asset(lang, "contact", "img/notary-signing.webp")}" width="1168" height="880" alt="{esc(L(N["photo_alt"], lang), quote=True)}" loading="lazy" decoding="async"></figure></div>
+<h3 class="nt-sh"><span class="nt-sec">§ 01</span>{e(N["s1_h"])}</h3><p class="nt-sp">{e(N["s1_p"])}</p>
+<div class="nt-cards">{cards}</div></div></section>
+<section class="sec sec-paper nt" id="notary-process" aria-labelledby="nt-h2"><div class="wrap">
+<h3 class="nt-sh" id="nt-h2"><span class="nt-sec">§ 02</span>{e(N["s2_h"])}</h3><p class="nt-sp">{e(N["s2_p"])}</p>
+<ol class="nt-steps">{steps}</ol></div></section>
+<section class="sec sec-white nt" id="notary-rules" aria-labelledby="nt-h3"><div class="wrap">
+<h3 class="nt-sh" id="nt-h3"><span class="nt-sec">§ 03</span>{e(N["s3_h"])}</h3><p class="nt-sp">{e(N["s3_p"])}</p>
+<dl class="nt-rules">{rules}</dl><p class="nt-note">{note}</p></div></section>
+<section class="sec sec-paper nt" aria-labelledby="nt-h4"><div class="wrap two-col nt-split">
+<div>{doc}</div>
+<div><p class="nt-eyebrow">{e(N["s4_eyebrow"])}</p><h3 class="nt-sh" id="nt-h4">{e(N["s4_h"])}</h3><p class="nt-sp">{e(N["s4_p"])}</p>
+<h4 class="nt-sub">{e(N["bring_h"])}</h4><ul class="nt-list">{bring}</ul>
+<h4 class="nt-sub">{e(N["avoid_h"])}</h4><ul class="nt-list nt-no">{avoid}</ul></div></div></section>
+<section class="sec sec-white nt" aria-labelledby="nt-h5"><div class="wrap">
+<div class="nt-faq"><h3 class="nt-sh" id="nt-h5"><span class="nt-sec">§ 04</span>{e(N["faq_h"])}</h3>{faq}</div>
+<div class="nt-shop"><div><p class="nt-eyebrow">{e(N["shop_eyebrow"])}</p><h3>{e(N["shop_h"])}</h3><p>{e(N["shop_p"])}</p></div>
+<div class="nt-cta"><a class="btn btn-navy" href="{href(lang, "contact", lang, "inspections")}">{u["nav"]["inspections"]}</a><a class="btn btn-line" href="{href(lang, "contact", lang, "services")}">{u["nav"]["services"]}</a></div></div></div></section>"""
+
+
+def notary_ld(lang):
+    items = [{"@type": "Question", "name": L(q, lang),
+              "acceptedAnswer": {"@type": "Answer", "text": " ".join(L(x, lang) for x in ans)}} for q, ans in NOTARY["faq"]]
+    return '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang, "mainEntity": items}, ensure_ascii=False) + "</script>"
+
+
 def page_contact(lang):
     key = "contact"
     P = PAGES["contact"]
     u = UI[lang]
-    nc = faq_cat_by_id("notary")
     cards = f'''<div class="cards">
 <div class="cardrow">{G.icon("phone", 34)}<div><b>{u["contact_phone"]}</b><a href="{TEL}">{PHONE}</a></div></div>
 <div class="cardrow">{G.icon("pin", 34)}<div><b>{u["contact_addr"]}</b><p>{B["street"]}<br>{B["city"]}, {B["state"]} {B["zip"]}</p><a href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></div></div>
@@ -804,10 +974,9 @@ def page_contact(lang):
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap contact-grid"><div>{cards}</div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key)}</div></div></section>
-<section class="sec sec-white" id="notary"><div class="wrap two-col"><div><h2>{esc(L(P["notary_h"], lang))}</h2><p style="font-size:1.2rem">{esc(L(P["notary_p"], lang))}</p></div>
-<div>{faq_list(lang, nc)}</div></div></section>
+{notary_sections(lang)}
 <section class="sec sec-concrete"><div class="wrap">{mapbox}</div></section>'''
-    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body, extra_ld=notary_ld(lang))
 
 
 def page_privacy(lang):
@@ -890,11 +1059,15 @@ def build():
             count += 1
     # 404 (self-contained: no external assets, so it works at any depth)
     nf = NOT_FOUND
-    write("404.html", f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found | Diverse Autoworks</title>
+    write("404.html", f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found | Página no encontrada | Diverse Autoworks</title>
 <style>body{{margin:0;font-family:system-ui,Arial,sans-serif;background:#0F1012;color:#fff;display:grid;min-height:100vh;place-items:center;padding:24px;text-align:center}}
-h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-width:46ch;margin:0 auto 1em;line-height:1.5}}a{{color:#E4372F;font-weight:700}}</style></head>
-<body><main><h1>{nf["h"]["en"]} / {nf["h"]["es"]}</h1><p>{nf["p"]["en"]}</p><p>{nf["p"]["es"]}</p>
-<p><a href="tel:{B["phone_tel"]}">{PHONE}</a></p></main></body></html>''')
+h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-width:46ch;margin:0 auto 1em;line-height:1.5}}a{{color:#E4372F;font-weight:700}}[hidden]{{display:none!important}}</style></head>
+<body><main>
+<section lang="en" data-l="en"><h1>{nf["h"]["en"]}</h1><p>{nf["p"]["en"]}</p></section>
+<section lang="es" data-l="es"><h1>{nf["h"]["es"]}</h1><p>{nf["p"]["es"]}</p></section>
+<p><a href="tel:{B["phone_tel"]}">{PHONE}</a></p></main>
+<script>(function(){{if(/\/es(\/|$)/.test(location.pathname)){{document.documentElement.lang="es";document.title="Página no encontrada | Diverse Autoworks";var e=document.querySelector('[data-l="en"]');if(e)e.hidden=true;}}}})();</script>
+</body></html>''')
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))

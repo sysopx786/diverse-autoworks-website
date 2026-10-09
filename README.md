@@ -15,6 +15,34 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
 
 ## Header, call bar, rating icons (Oct 7, 2026)
-- Language switch is one dropdown (`<details>`): shows the current language in full ("English" / "Español"); the other opens below it. Closes on outside click or Esc.
-- Mobile sticky bar has one button (Request an Appointment). Phone stays in the header and every page's text.
+- Language switch is one round flag button (no dropdown) that shows the OTHER language: Spain flag + ES on the English site, US flag + EN on the Spanish site. One click opens the same page in that language. Art is `flag_svg()` in `tools/build.py`; styles are the `.lang` block in `main.css`.
+- Reviews page in Spanish (Oct 7, 2026): all Google, CARFAX and Yelp reviews plus the featured quotes are translated. Translations live in `tools/reviews_es.py`, matched by position to the source lists; `build.py` asserts the counts, so adding a review to a JSON file fails the build until its Spanish line is added. The Spanish is a draft: have a native speaker review it.
+- Mobile sticky bottom bar removed (Oct 7, 2026). Phone stays in the header and every page's text.
+- Mobile menu adds a Notary Services link (mobile only).
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.
+
+## Spanish coverage (Oct 8, 2026)
+- Every page under `/es/` is built from the `es` side of each `t(en, es)` pair. `python3 tests/es_audit.py` scans all built Spanish pages (visible text, alt text, aria-labels, titles, meta, JSON-LD) for English and exits 1 if it finds any. Run it after adding a page, service or review.
+- Fixed Oct 8: the three Pennsylvania source links on the notary section, the Google 4.9-star label on /es/reviews/, and the "(struts)" and "(retread)" asides. The search box now finds the 14 call-to-confirm services in both languages. The 404 page shows Spanish only on `/es/` paths and both languages elsewhere.
+- Left in English on purpose: the shop name, addresses, e-mail, customer names, car trim names in CARFAX owner lines, the "check engine" dashboard label, and the titles of the three English-language PA government pages (marked "en inglés").
+
+## Notary section redesign (Oct 7, 2026)
+- The Contact page notary block (`/contact/#notary`, `/es/contact/#notary`) is now a full section: what we notarize, how it works in Pennsylvania, PA rules, what to bring or avoid, 15 FAQs, and a link band to Inspections and Services.
+- Copy (EN + ES) lives in `tools/notary.py`; markup is `notary_sections()` in `tools/build.py`; styles are the `.nt-*` block at the end of `docs/assets/css/main.css`. The block also writes FAQPage JSON-LD for the contact page.
+- The Spanish is a draft. Have a native speaker review it before treating it as final.
+- The older three-question notary FAQ in `FAQ_CATS` still feeds `/faq/`; it was left as is.
+
+## More "ask us about" services (Oct 8, 2026)
+- 14 services from the owner checklist (Part B) are on `/services/` under "Also ask us about (call to confirm)": towing, pre-purchase inspections, cylinder head & block, fuel system & gas tank, spark plugs, onboard computer, differential, emission control repair, heater, corrosion, wheels, tire retreads, ball joints, body work. Copy and FAQs (5 questions each, EN + ES) live in `tools/more_services.py`.
+- They are NOT confirmed offerings. Wording is "call to confirm," same as tags/title, EV/hybrid, tire rotation, and alternators. When the owner marks one Yes, move it from `more_services.py` into `SERVICES` in `tools/content.py` with confirmed wording.
+- Deduplicated: tire rotation and alternators/starters already existed; gas tank + fuel system and differential + axles are one card each; the old general "bodywork" FAQ became the Body work card; a repeated alternator question under Batteries was replaced.
+- Part A: Engine, Oil/maintenance (fuel), Tires, Steering & suspension, A/C and Drivetrain descriptions now say what is listed and point to the call-to-confirm cards for the rest.
+- The Spanish is a draft. Have a native speaker review it.
+
+## Header: shrink on scroll, open/closed strip, search (Oct 8, 2026)
+
+- Two rows: main row (logo, ES flag, call, search, menu) and a status strip. Logo and main row are larger at the top of the page and shrink smoothly on scroll; buttons and the strip never change size. The header is `position:fixed` with a `.hdr-spacer` of its full height, so shrinking never moves the page.
+- **Shop hours live in one place: `SHOP` near the top of `tools/build.py`.** Hours are read in the shop's time zone (`America/New_York`), not the visitor's clock. Open = green, within `closingSoonMinutes` of closing = amber, closed = gray with the next opening.
+- **The hours currently in `SHOP` are placeholders (Mon-Fri 8:00-17:00).** The strip shows a "Sample" tag until `sample` is set to `False`. Replace them with the real hours, set `sample` to `False`, then run `python3 tools/build.py`.
+- Search button opens a local-index search (EN/ES, accent-insensitive). Index is `SEARCH_ROWS` in `tools/build.py`.
+- Status wording (EN/ES) lives in `UI[...]["status"]`.
