@@ -290,8 +290,10 @@ def check_parity():
         problems.append("UI form/js keys differ")
     n = sum(len(c["items"]) for c in FAQ_CATS)
     # 36 original FAQs + 65 for the 13 confirmed services added Oct 18, 2026 (5 each).
-    if n != 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS):
-        problems.append(f"expected {36 + sum(len(c['items']) for c in NEW_MAIN_FAQ_CATS)} service FAQs, found {n}")
+    # 36 original + 65 for the 13 confirmed services (Oct 18, 2026) + 2 engine repair FAQs (Oct 18, 2026).
+    expected = 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS) + 2
+    if n != expected:
+        problems.append(f"expected {expected} service FAQs, found {n}")
     if problems:
         raise SystemExit("PARITY CHECK FAILED:\n  " + "\n  ".join(problems))
 
@@ -357,7 +359,7 @@ SEARCH_ROWS = [
     ("services", "maintenance", "Oil changes & maintenance", "Cambios de aceite y mantenimiento", "oil change filters cabin fuel belts wiper blades upkeep", "aceite filtros cabina combustible correas limpiaparabrisas mantenimiento"),
     ("services", "brakes", "Brakes & rotors", "Frenos y rotores", "brake rotor noise squeal grinding stopping", "frenos rotor ruido chirrido parar"),
     ("services", "tires", "Tires & alignments", "Llantas y alineación", "tire repair alignment wheel pulling uneven wear", "llantas neumáticos reparación alineación jalar desgaste"),
-    ("services", "engine", "Diagnostics & engine", "Diagnóstico y motor", "engine analysis tune-up fuel injector check engine running rough diagnostics", "motor análisis afinación inyectores diagnóstico falla"),
+    ("services", "engine", "Engine analysis, repair & tune-ups", "Análisis, reparación y afinación del motor", "engine repair analysis tune-up fuel injector spark plugs cylinder head block rebuild check engine running rough diagnostics", "motor reparación análisis afinación inyectores bujías culata bloque reconstrucción diagnóstico falla"),
     ("services", "suspension", "Steering & suspension", "Dirección y suspensión", "steering shocks struts ride handling loose rough", "dirección amortiguadores suspensión manejo"),
     ("services", "ac", "A/C & cooling", "A/C y enfriamiento", "air conditioning ac cooling radiator not cold", "aire acondicionado enfriamiento radiador no enfría"),
     ("services", "battery", "Batteries", "Baterías", "battery won't start no start dead", "batería no arranca no enciende"),

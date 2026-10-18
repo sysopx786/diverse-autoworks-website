@@ -29,6 +29,8 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Batteries and belts/coolant wording was updated to the owner's confirmed scope (testing, replacement, starting and charging diagnosis; fan and accessory belts; coolant systems).
 - `tools/build.py` checks the FAQ count: 36 original + 65 new = 101. Update that number when adding or removing FAQs.
 - The Spanish for these services is a draft: have a native speaker review it.
+- Engine card (Oct 18, 2026) now covers the owner's full engine list: ignition, fuel system, sensors, cooling, oil and seals, timing and valves, belts, internal repair, rebuild or replacement. Cylinder head & block repair, spark plugs, and onboard computer diagnostics moved from "Also ask us about" into the engine card. "Also ask us about" → Fuel system is now Gas tank service only.
+- `build.py` FAQ count is now 36 + 65 + 2 = 103.
 
 ## Spanish coverage (Oct 8, 2026)
 - Process rule: any English copy change in `tools/content.py`, `tools/more_services.py`, `tools/notary.py` or `tools/reviews_es.py` ships with its Spanish text in the same commit. Run `python3 tests/es_audit.py` before committing.
