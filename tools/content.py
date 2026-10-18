@@ -43,10 +43,10 @@ SERVICES = [
         "id": "maintenance", "icon": "oil",
         "title": t("Oil changes & routine maintenance", "Cambios de aceite y mantenimiento de rutina"),
         "card": t("Oil Changes & Maintenance", "Aceite y mantenimiento"),
-        "line": t("Oil changes, cabin and fuel filters, accessory belts, wiper blades.",
-                  "Cambios de aceite, filtros de cabina y de combustible, bandas de accesorios, plumillas."),
-        "desc": t("Stay on top of vehicle maintenance with oil changes, cabin air filters, fuel filters, accessory belts, and wiper blade replacement. Fuel filters are the fuel service listed here; for other fuel-system work, see Fuel system & gas tank service under Also ask us about. Contact us to discuss the maintenance appropriate for your vehicle.",
-                  "Mantenga al día el mantenimiento de su vehículo con cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas de accesorios y reemplazo de plumillas limpiaparabrisas. Los filtros de combustible son el servicio de combustible anunciado aquí; para otro trabajo del sistema de combustible, vea Servicio del sistema de combustible y tanque en También pregunte por. Comuníquese con nosotros para hablar del mantenimiento adecuado para su vehículo."),
+        "line": t("Oil changes, cabin and fuel filters, fan and accessory belts, wiper blades.",
+                  "Cambios de aceite, filtros de cabina y de combustible, bandas del ventilador y de accesorios, plumillas."),
+        "desc": t("Stay on top of vehicle maintenance with oil changes, cabin air filters, fuel filters, fan and accessory belts, and wiper blade replacement. Fuel filters are the fuel service listed here; for other fuel-system work, see Fuel system & gas tank service under Also ask us about. Contact us to discuss the maintenance appropriate for your vehicle.",
+                  "Mantenga al día el mantenimiento de su vehículo con cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas del ventilador y de accesorios, y reemplazo de plumillas limpiaparabrisas. Los filtros de combustible son el servicio de combustible anunciado aquí; para otro trabajo del sistema de combustible, vea Servicio del sistema de combustible y tanque en También pregunte por. Comuníquese con nosotros para hablar del mantenimiento adecuado para su vehículo."),
         "faq": "maintenance", "group": "maint",
     },
     {
@@ -91,18 +91,18 @@ SERVICES = [
         "id": "ac", "icon": "snow",
         "title": t("Air conditioning & cooling systems", "Aire acondicionado y sistemas de enfriamiento"),
         "card": t("A/C & Cooling", "A/C y enfriamiento"),
-        "line": t("Automotive A/C and cooling-system service.", "Servicio de A/C automotriz y del sistema de enfriamiento."),
-        "desc": t("We offer automotive A/C service and cooling-system service. Heater service is not listed here; see Heater service & repair under Also ask us about. Call to discuss cabin cooling problems or concerns about your vehicle's cooling system.",
-                  "Ofrecemos servicio de aire acondicionado automotriz y del sistema de enfriamiento. El servicio de calefacción no figura aquí; vea Servicio y reparación de la calefacción en También pregunte por. Llame para hablar de problemas de enfriamiento en la cabina o de inquietudes sobre el sistema de enfriamiento de su vehículo."),
+        "line": t("Automotive A/C, coolant systems, and cooling-system service.", "Servicio de A/C automotriz, sistemas de refrigerante y del sistema de enfriamiento."),
+        "desc": t("We offer automotive A/C service, coolant systems, and cooling-system service. Heater service is not listed here; see Heater service & repair under Also ask us about. Call to discuss cabin cooling problems or concerns about your vehicle's cooling system.",
+                  "Ofrecemos servicio de aire acondicionado automotriz, sistemas de refrigerante y servicio del sistema de enfriamiento. El servicio de calefacción no figura aquí; vea Servicio y reparación de la calefacción en También pregunte por. Llame para hablar de problemas de enfriamiento en la cabina o de inquietudes sobre el sistema de enfriamiento de su vehículo."),
         "faq": "ac", "group": "climate",
     },
     {
         "id": "battery", "icon": "battery",
         "title": t("Batteries", "Baterías"),
         "card": t("Batteries", "Baterías"),
-        "line": t("Battery service.", "Servicio de baterías."),
-        "desc": t("Battery service is part of our maintenance and repair offerings. Call to discuss starting concerns or your vehicle's battery needs.",
-                  "El servicio de baterías forma parte de nuestros servicios de mantenimiento y reparación. Llame para hablar de problemas de arranque o de lo que necesita la batería de su vehículo."),
+        "line": t("Battery testing, replacement, and starting and charging system diagnosis.", "Pruebas y reemplazo de baterías, y diagnóstico del sistema de arranque y carga."),
+        "desc": t("We test and replace batteries, and we diagnose starting and charging system problems. Call to discuss your vehicle's battery needs.",
+                  "Probamos y reemplazamos baterías, y diagnosticamos problemas del sistema de arranque y carga. Llame para hablar de las necesidades de batería de su vehículo."),
         "faq": "battery", "group": "maint",
     },
     {
@@ -141,6 +141,7 @@ HOME_CARDS = ["inspections", "maintenance", "battery", "drivetrain", "brakes", "
 GROUPS = [
     ("inspect", t("Inspections & testing", "Inspecciones y pruebas")),
     ("maint", t("Maintenance & engine", "Mantenimiento y motor")),
+    ("exhaust", t("Exhaust & emissions", "Escape y emisiones")),
     ("ride", t("Brakes, tires & ride", "Frenos, llantas y manejo")),
     ("climate", t("Climate & cooling", "Clima y enfriamiento")),
     ("biz", t("Business & paperwork", "Negocios y trámites")),
@@ -265,8 +266,8 @@ FAQ_CATS = [
     ]},
     {"id": "maintenance", "title": t("Oil changes & routine maintenance", "Cambios de aceite y mantenimiento de rutina"), "items": [
         (t("What routine maintenance services do you offer?", "¿Qué servicios de mantenimiento de rutina ofrecen?"),
-         t("Our service list includes oil changes, cabin air filters, fuel filters, accessory belts, and wiper blade replacement. Call to discuss the maintenance needed for your vehicle.",
-           "Nuestra lista de servicios incluye cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas de accesorios y reemplazo de plumillas limpiaparabrisas. Llame para hablar del mantenimiento que necesita su vehículo.")),
+         t("Our service list includes oil changes, cabin air filters, fuel filters, fan and accessory belts, and wiper blade replacement. Call to discuss the maintenance needed for your vehicle.",
+           "Nuestra lista de servicios incluye cambios de aceite, filtros de aire de cabina, filtros de combustible, bandas del ventilador y de accesorios, y reemplazo de plumillas limpiaparabrisas. Llame para hablar del mantenimiento que necesita su vehículo.")),
         (t("How often should I change my oil?", "¿Cada cuánto debo cambiar el aceite?"),
          t("Follow the maintenance schedule and oil specifications for your vehicle. Intervals vary by model, oil requirements, and driving conditions; one fixed interval is not appropriate for every vehicle.",
            "Siga el programa de mantenimiento y las especificaciones de aceite de su vehículo. Los intervalos varían según el modelo, el tipo de aceite requerido y las condiciones de manejo; un solo intervalo fijo no es adecuado para todos los vehículos.")),
@@ -331,8 +332,8 @@ FAQ_CATS = [
     ]},
     {"id": "battery", "title": t("Batteries", "Baterías"), "items": [
         (t("Do you offer battery service?", "¿Ofrecen servicio de baterías?"),
-         t("Yes. Batteries are included in our published maintenance and repair offerings. Call to discuss your vehicle and its battery needs.",
-           "Sí. Las baterías están incluidas en nuestros servicios publicados de mantenimiento y reparación. Llame para hablar de su vehículo y de lo que necesita su batería.")),
+         t("Yes. We test and replace batteries, and we diagnose starting and charging system problems. Call to discuss your vehicle and its battery needs.",
+           "Sí. Probamos y reemplazamos baterías, y diagnosticamos problemas del sistema de arranque y carga. Llame para hablar de su vehículo y de lo que necesita su batería.")),
         (t("Can you help if my vehicle will not start?", "¿Pueden ayudarme si mi vehículo no arranca?"),
          t("Contact us and describe the symptoms. Our published list includes battery service and engine analysis, but the shop should confirm whether it can perform the specific no-start diagnosis your vehicle needs.",
            "Comuníquese con nosotros y describa los síntomas. Nuestra lista publicada incluye servicio de baterías y análisis del motor, pero el taller debe confirmar si puede realizar el diagnóstico específico de falla de arranque que necesita su vehículo.")),
@@ -635,6 +636,10 @@ ASK_FAQ_CATS = [
 from more_services import NEW_ASK_SERVICES, NEW_ASK_FAQ_CATS, NEW_SVC_IMG  # noqa: E402
 ASK_SERVICES.extend(NEW_ASK_SERVICES)
 ASK_FAQ_CATS.extend(NEW_ASK_FAQ_CATS)
+
+from confirmed_services import NEW_MAIN_SERVICES, NEW_MAIN_FAQ_CATS  # noqa: E402
+SERVICES.extend(NEW_MAIN_SERVICES)
+FAQ_CATS.extend(NEW_MAIN_FAQ_CATS)
 
 SERVICES.extend(ASK_SERVICES)
 GROUPS.append(ASK_GROUP)

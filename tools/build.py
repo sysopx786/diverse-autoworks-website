@@ -289,8 +289,9 @@ def check_parity():
     if set(UI["en"]["form"]) != set(UI["es"]["form"]) or set(UI["en"]["js"]) != set(UI["es"]["js"]):
         problems.append("UI form/js keys differ")
     n = sum(len(c["items"]) for c in FAQ_CATS)
-    if n != 36:
-        problems.append(f"expected 36 service FAQs, found {n}")
+    # 36 original FAQs + 65 for the 13 confirmed services added Oct 18, 2026 (5 each).
+    if n != 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS):
+        problems.append(f"expected {36 + sum(len(c['items']) for c in NEW_MAIN_FAQ_CATS)} service FAQs, found {n}")
     if problems:
         raise SystemExit("PARITY CHECK FAILED:\n  " + "\n  ".join(problems))
 
@@ -360,6 +361,19 @@ SEARCH_ROWS = [
     ("services", "suspension", "Steering & suspension", "Dirección y suspensión", "steering shocks struts ride handling loose rough", "dirección amortiguadores suspensión manejo"),
     ("services", "ac", "A/C & cooling", "A/C y enfriamiento", "air conditioning ac cooling radiator not cold", "aire acondicionado enfriamiento radiador no enfría"),
     ("services", "battery", "Batteries", "Baterías", "battery won't start no start dead", "batería no arranca no enciende"),
+    ("services", "timing", "Timing belt & chain", "Correa y cadena de distribución", "timing belt chain service engine", "correa cadena distribución motor"),
+    ("services", "waterpump", "Water pump & thermostat", "Bomba de agua y termostato", "water pump thermostat overheating coolant", "bomba agua termostato sobrecalentamiento"),
+    ("services", "oilleak", "Oil leaks & gaskets", "Fugas de aceite y juntas", "oil leak gasket drip seal", "fuga aceite junta gotea"),
+    ("services", "mounts", "Motor & transmission mounts", "Soportes de motor y transmisión", "motor mount transmission mount vibration clunk", "soporte motor transmisión vibración"),
+    ("services", "brakefluid", "Brake fluid flush", "Cambio de líquido de frenos", "brake fluid flush spongy pedal", "líquido frenos cambio pedal esponjoso"),
+    ("services", "wheelbearing", "Wheel bearings & hubs", "Baleros y mazas de rueda", "wheel bearing hub humming noise", "balero maza rueda zumbido"),
+    ("services", "powersteer", "Power steering", "Dirección asistida", "power steering whining stiff steering fluid", "dirección asistida silbido líquido"),
+    ("services", "control", "Control arms, tie rods & sway bar", "Brazos de control y terminales", "control arm tie rod sway bar link clunk", "brazo control terminal bieleta golpe"),
+    ("services", "cvaxle", "CV axles & joints", "Ejes CV y juntas", "cv axle joint clicking turning", "eje cv junta chasquido"),
+    ("services", "clutch", "Clutch service", "Servicio de embrague", "clutch slipping manual transmission", "embrague patina transmisión manual"),
+    ("services", "exhaust", "Exhaust, muffler & catalytic converter", "Escape, silenciador y convertidor catalítico", "exhaust muffler catalytic converter loud smell", "escape silenciador convertidor catalítico ruidoso"),
+    ("services", "o2sensor", "Oxygen sensors", "Sensores de oxígeno", "oxygen sensor o2 check engine fuel economy", "sensor oxígeno luz motor consumo"),
+    ("services", "emissioncontrol", "Emission control repair", "Reparación del control de emisiones", "emission control repair failed emissions test", "control emisiones reparación prueba reprobada"),
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
     ("inspections", "motorcycle", "Motorcycle inspections", "Inspecciones de motocicletas", "motorcycle bike inspection", "motocicleta moto inspección"),
     ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),

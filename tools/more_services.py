@@ -163,22 +163,6 @@ _ITEMS = [
           t("Listed drivetrain work is transmission maintenance and rear-axle bearing and seal service. Differential repair is not listed; call to confirm.",
             "El trabajo del tren motriz anunciado es el mantenimiento de transmisión y el servicio de cojinetes y sellos del eje trasero. La reparación del diferencial no figura; llame para confirmar."))),
 
-    # --------------------------------------------------- emission control
-    _svc("emissioncontrol", "inspection",
-         t("Emission control repair", "Reparación del control de emisiones"),
-         t("Emission Control Repair", "Control de emisiones"),
-         t("Ask about emission control repair.", "Pregunte por reparación del control de emisiones."),
-         t("Emissions testing is a listed service. Repair of emission-control parts, for example after a failed test, is not listed. Call with your inspection report to ask what the shop can do." + _DISCLAIM_EN,
-           "Las pruebas de emisiones son un servicio anunciado. La reparación de piezas del control de emisiones, por ejemplo después de una prueba reprobada, no figura. Llame con su informe de inspección para preguntar qué puede hacer el taller." + _DISCLAIM_ES),
-         t("Emission control repair", "Reparación del control de emisiones"),
-         "emission control repair", "la reparación del control de emisiones", "de la reparación del control de emisiones",
-         (t("My vehicle failed an emissions test. Can you fix it?", "Mi vehículo reprobó la prueba de emisiones. ¿Pueden repararlo?"),
-          t("Call and have your inspection report ready. The shop will confirm whether it can diagnose and repair the cause for your vehicle.",
-            "Llame y tenga a mano su informe de inspección. El taller confirmará si puede diagnosticar y reparar la causa en su vehículo.")),
-         (t("Is emissions testing the same as emission control repair?", "¿Las pruebas de emisiones son lo mismo que la reparación del control de emisiones?"),
-          t("No. Testing checks whether your vehicle meets the requirement. Repair addresses the parts behind a failure. Testing is listed; repair is call-to-confirm.",
-            "No. La prueba verifica si su vehículo cumple el requisito. La reparación atiende las piezas que causan una falla. La prueba figura entre los servicios; la reparación se confirma por teléfono."))),
-
     # -------------------------------------------------------------- heater
     _svc("heater", "engine",
          t("Heater service & repair", "Servicio y reparación de la calefacción"),
