@@ -534,8 +534,8 @@ PAGES = {
         "h1": t("Domestic and Foreign Brands We Work On", "Marcas nacionales y extranjeras con las que trabajamos"),
         "lead": t("We work on domestic and foreign cars. Find your brand below, then call 610-650-0316 with your year, make, and model to confirm that we can help with your vehicle.",
                   "Trabajamos con autos nacionales y extranjeros. Busque su marca abajo y llame al 610-650-0316 con el año, la marca y el modelo para confirmar que podemos ayudarle con su vehículo."),
-        "note": t("Don't see your make? Call us to ask. For electric and hybrid vehicles, call to confirm what we can do for your car. Availability depends on the vehicle and the work.",
-                  "¿No ve su marca? Llámenos para preguntar. Para vehículos eléctricos e híbridos, llame para confirmar qué podemos hacer por su auto. La disponibilidad depende del vehículo y del trabajo."),
+        "note": t("Don't see your make? Call us to ask. Hybrid and electric vehicles: call to confirm what we can do for your car. Hybrid models vary by brand and model year, and availability depends on the vehicle and the work.",
+                  "¿No ve su marca? Llámenos para preguntar. Vehículos híbridos y eléctricos: llame para confirmar qué podemos hacer por su auto. Los modelos híbridos varían según la marca y el año del modelo, y la disponibilidad depende del vehículo y del trabajo."),
     },
     "privacy": {
         "title": t("Privacy Notice | Diverse Autoworks", "Aviso de privacidad | Diverse Autoworks"),
@@ -548,6 +548,9 @@ PAGES = {
 _JP = t("Japan", "Japón"); _KR = t("South Korea", "Corea del Sur"); _DE = t("Germany", "Alemania")
 _SE = t("Sweden", "Suecia"); _GB = t("UK", "Reino Unido"); _US = t("US", "EE. UU.")
 BRAND_GROUPS = [
+    (t("Brands with hybrid models", "Marcas con modelos híbridos"), [
+        ("Toyota", _JP), ("Honda", _JP), ("Ford", _US), ("Jeep", None), ("Volkswagen", _DE),
+        ("Mercedes-Benz", _DE), ("Audi", _DE), ("Karma", _US)]),
     (t("US-headquartered brands", "Marcas con sede en EE. UU."), [
         ("Ford", _US), ("Lincoln", _US), ("Chevrolet", _US), ("GMC", _US), ("Buick", _US),
         ("Cadillac", _US), ("Tesla", _US), ("Rivian", _US), ("Lucid", _US)]),
