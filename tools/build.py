@@ -59,7 +59,7 @@ MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
 SLUGS = {  # slug -> directory path (English)
     "home": "", "services": "services", "inspections": "inspections", "fleet": "fleet-repairs",
-    "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy",
+    "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
 PAGEKEY = {k: k for k in SLUGS}
@@ -72,7 +72,7 @@ UI = {
         "status": {"open": "Open now · closes {time}", "soon": "Closing soon · closes {time}", "closed": "Closed · opens {when} {time}",
                    "never": "Closed · call for hours", "today": "today", "tomorrow": "tomorrow", "am": "AM", "pm": "PM", "sample": "Sample",
                    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
-        "nav": {"services": "Services", "inspections": "Inspections", "fleet": "Fleet Repairs", "about": "About",
+        "nav": {"brands": "Brands", "services": "Services", "inspections": "Inspections", "fleet": "Fleet Repairs", "about": "About",
                 "reviews": "Reviews", "faq": "FAQs", "contact": "Contact"},
         "call": f"Call {PHONE}", "call_short": "Call", "request": "Request an Appointment", "directions": "Get Directions",
         "home_label": "Diverse Autoworks home", "lang_label": "Language", "main_nav": "Main navigation",
@@ -133,7 +133,7 @@ UI = {
         "status": {"open": "Abierto ahora · cierra a las {time}", "soon": "Cierra pronto · cierra a las {time}", "closed": "Cerrado · abre {when} a las {time}",
                    "never": "Cerrado · llame para conocer el horario", "today": "hoy", "tomorrow": "mañana", "am": "a. m.", "pm": "p. m.", "sample": "Ejemplo",
                    "days": ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"]},
-        "nav": {"services": "Servicios", "inspections": "Inspecciones", "fleet": "Flotas", "about": "Nosotros",
+        "nav": {"brands": "Marcas", "services": "Servicios", "inspections": "Inspecciones", "fleet": "Flotas", "about": "Nosotros",
                 "reviews": "Reseñas", "faq": "Preguntas", "contact": "Contacto"},
         "call": f"Llamar al {PHONE}", "call_short": "Llamar", "request": "Solicitar una cita", "directions": "Cómo llegar",
         "home_label": "Inicio de Diverse Autoworks", "lang_label": "Idioma", "main_nav": "Navegación principal",
@@ -355,6 +355,7 @@ def flag_svg(code):
 
 # (page key, anchor, EN title, ES title, EN keywords, ES keywords) for the header search
 SEARCH_ROWS = [
+    ("brands", "", "Brands we work on", "Marcas con las que trabajamos", "brands makes domestic foreign Toyota Ford Honda BMW", "marcas nacionales extranjeras Toyota Ford Honda BMW"),
     ("services", "", "Services", "Servicios", "repair maintenance all services", "reparación mantenimiento todos los servicios"),
     ("services", "maintenance", "Oil changes & maintenance", "Cambios de aceite y mantenimiento", "oil change filters cabin fuel belts wiper blades upkeep", "aceite filtros cabina combustible correas limpiaparabrisas mantenimiento"),
     ("services", "brakes", "Brakes & rotors", "Frenos y rotores", "brake rotor noise squeal grinding stopping", "frenos rotor ruido chirrido parar"),
@@ -434,7 +435,7 @@ def header(lang, key):
 
 def footer(lang, key):
     u = UI[lang]
-    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("services", "inspections", "fleet", "about", "reviews", "faq", "contact"))
+    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"))
     return f'''<footer class="foot on-dark"><div class="wrap">
 <div class="foot-grid">
 <div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="168" height="88" alt="Diverse Auto Works" loading="lazy"></a>
@@ -1027,7 +1028,22 @@ def page_privacy(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
-BUILDERS = {"home": page_home, "services": page_services, "inspections": page_inspections, "fleet": page_fleet,
+def page_brands(lang):
+    key = "brands"
+    P = PAGES["brands"]
+    u = UI[lang]
+    groups = []
+    for gtitle, items in BRAND_GROUPS:
+        lis = "".join(f"<li>{esc(name)}" + (f" ({esc(L(origin, lang))})" if origin else "") + "</li>" for name, origin in items)
+        groups.append(f'<section><h2>{esc(L(gtitle, lang))}</h2><ul class="checklist">{lis}</ul></section>')
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
+<section class="sec sec-paper"><div class="wrap"><div style="max-width:820px">{"".join(groups)}
+<div class="callout" style="margin-top:28px"><p>{esc(L(P["note"], lang))}</p></div>
+<p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
+BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "fleet": page_fleet,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 
 

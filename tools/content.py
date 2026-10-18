@@ -526,12 +526,45 @@ PAGES = {
                       "Horario de notario: de lunes a viernes, de 8 a. m. a 3 p. m. Llame con anticipación para confirmar la disponibilidad y los requisitos."),
         "form_h": t("Request an appointment", "Solicite una cita"),
     },
+    "brands": {
+        "title": t("Brands We Work On | Domestic and Foreign Cars | Diverse Autoworks",
+                   "Marcas con las que trabajamos | Autos nacionales y extranjeros | Diverse Autoworks"),
+        "desc": t("Diverse Autoworks works on domestic and foreign cars in Phoenixville, PA. See the brands we work on and call to confirm your vehicle.",
+                  "Diverse Autoworks trabaja con autos nacionales y extranjeros en Phoenixville, PA. Vea las marcas con las que trabajamos y llame para confirmar su vehículo."),
+        "h1": t("Domestic and Foreign Brands We Work On", "Marcas nacionales y extranjeras con las que trabajamos"),
+        "lead": t("We work on domestic and foreign cars. Find your brand below, then call 610-650-0316 with your year, make, and model to confirm that we can help with your vehicle.",
+                  "Trabajamos con autos nacionales y extranjeros. Busque su marca abajo y llame al 610-650-0316 con el año, la marca y el modelo para confirmar que podemos ayudarle con su vehículo."),
+        "note": t("Don't see your make? Call us to ask. For electric and hybrid vehicles, call to confirm what we can do for your car. Availability depends on the vehicle and the work.",
+                  "¿No ve su marca? Llámenos para preguntar. Para vehículos eléctricos e híbridos, llame para confirmar qué podemos hacer por su auto. La disponibilidad depende del vehículo y del trabajo."),
+    },
     "privacy": {
         "title": t("Privacy Notice | Diverse Autoworks", "Aviso de privacidad | Diverse Autoworks"),
         "desc": t("How the Diverse Autoworks website handles your information.", "Cómo el sitio web de Diverse Autoworks maneja su información."),
         "h1": t("Privacy notice", "Aviso de privacidad"),
     },
 }
+
+# Brand list for the Brands page. Origin is the company's headquarters country (None = no origin label).
+_JP = t("Japan", "Japón"); _KR = t("South Korea", "Corea del Sur"); _DE = t("Germany", "Alemania")
+_SE = t("Sweden", "Suecia"); _GB = t("UK", "Reino Unido"); _US = t("US", "EE. UU.")
+BRAND_GROUPS = [
+    (t("US-headquartered brands", "Marcas con sede en EE. UU."), [
+        ("Ford", _US), ("Lincoln", _US), ("Chevrolet", _US), ("GMC", _US), ("Buick", _US),
+        ("Cadillac", _US), ("Tesla", _US), ("Rivian", _US), ("Lucid", _US)]),
+    (t("Stellantis brands, built mainly in the US", "Marcas de Stellantis, fabricadas principalmente en EE. UU."), [
+        ("Chrysler", None), ("Dodge", None), ("Jeep", None), ("Ram", None)]),
+    (t("Mainstream foreign brands", "Marcas extranjeras populares"), [
+        ("Toyota", _JP), ("Honda", _JP), ("Nissan", _JP), ("Mazda", _JP), ("Subaru", _JP),
+        ("Mitsubishi", _JP), ("Hyundai", _KR), ("Kia", _KR), ("Volkswagen", _DE), ("BMW", _DE),
+        ("Mercedes-Benz", _DE), ("Volvo", _SE), ("Audi", _DE)]),
+    (t("Luxury and specialty brands", "Marcas de lujo y especializadas"), [
+        ("Lexus", _JP), ("Acura", _JP), ("Infiniti", _JP), ("Genesis", _KR), ("Porsche", _DE),
+        ("MINI", t("UK, BMW", "Reino Unido, BMW")), ("Polestar", _SE), ("Jaguar", _GB), ("Land Rover", _GB),
+        ("Bentley", _GB), ("Rolls-Royce", _GB), ("Aston Martin", _GB), ("McLaren", _GB), ("Lotus", _GB)]),
+    (t("Italian brands", "Marcas italianas"), [
+        ("Fiat", t("Italy, Stellantis", "Italia, Stellantis")), ("Alfa Romeo", t("Italy, Stellantis", "Italia, Stellantis")),
+        ("Maserati", t("Italy", "Italia"))]),
+]
 
 NOT_FOUND = {
     "h": t("That page isn't here", "Esa página no existe"),
