@@ -3,10 +3,12 @@
 Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixville, PA.
 
 ## Links
-- Public (GitHub Pages): https://sysopx786.github.io/diverse-autoworks-website/
+- Live site: https://www.mydiverseauto.com/ (Cloudflare Pages, per Oct 2026 move; the Cloudflare host is inferred from the live page, confirm in the Cloudflare dashboard)
+- GitHub Pages mirror (may lag the live site): https://sysopx786.github.io/diverse-autoworks-website/
 - Private preview (Claude artifact, owner access only): https://claude.ai/artifact/9Zd66Fr1JT8dMqqUMcFHsL
 
-- `docs/` is the built site. GitHub Pages: Settings > Pages > Deploy from branch > `main` / `/docs`.
+- `docs/` is the built site. Deploy target: see the hosting note above. The GitHub Pages setting is Settings > Pages > Deploy from branch > `main` / `/docs`.
+- Known drift (Oct 18, 2026): the live site's header shows "Shop open Monday–Friday. Call for current hours." with no open/closed strip, but this repo's build includes the strip. Check which build is deployed before treating either as current.
 - `tools/content.py` holds all copy (EN + ES). `tools/build.py` builds the site into `docs/`.
 - Rebuild: `python3 tools/build.py`
 - Optional env vars: `SITE_URL` (canonical, hreflang, sitemap) and `FORM_ENDPOINT` (form backend).
@@ -22,6 +24,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - CARFAX badge and Yelp mark added to the rating cards on /reviews/.
 
 ## Spanish coverage (Oct 8, 2026)
+- Process rule: any English copy change in `tools/content.py`, `tools/more_services.py`, `tools/notary.py` or `tools/reviews_es.py` ships with its Spanish text in the same commit. Run `python3 tests/es_audit.py` before committing.
 - Every page under `/es/` is built from the `es` side of each `t(en, es)` pair. `python3 tests/es_audit.py` scans all built Spanish pages (visible text, alt text, aria-labels, titles, meta, JSON-LD) for English and exits 1 if it finds any. Run it after adding a page, service or review.
 - Fixed Oct 8: the three Pennsylvania source links on the notary section, the Google 4.9-star label on /es/reviews/, and the "(struts)" and "(retread)" asides. The search box now finds the 14 call-to-confirm services in both languages. The 404 page shows Spanish only on `/es/` paths and both languages elsewhere.
 - Left in English on purpose: the shop name, addresses, e-mail, customer names, car trim names in CARFAX owner lines, the "check engine" dashboard label, and the titles of the three English-language PA government pages (marked "en inglés").
