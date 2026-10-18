@@ -406,7 +406,7 @@ def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
     items = []
-    for k in ("services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
+    for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
