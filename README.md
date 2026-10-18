@@ -46,6 +46,6 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 
 - Two rows: main row (logo, ES flag, call, search, menu) and a status strip. Logo and main row are larger at the top of the page and shrink smoothly on scroll; buttons and the strip never change size. The header is `position:fixed` with a `.hdr-spacer` of its full height, so shrinking never moves the page.
 - **Shop hours live in one place: `SHOP` near the top of `tools/build.py`.** Hours are read in the shop's time zone (`America/New_York`), not the visitor's clock. Open = green, within `closingSoonMinutes` of closing = amber, closed = gray with the next opening.
-- **The hours currently in `SHOP` are placeholders (Mon-Fri 8:00-17:00).** The strip shows a "Sample" tag until `sample` is set to `False`. Replace them with the real hours, set `sample` to `False`, then run `python3 tools/build.py`.
+- **Shop hours are confirmed by the owner (Oct 18, 2026): Mon-Fri 7:30 a.m.-4:30 p.m., Sat and Sun closed.** `sample` is `False`. Change them only in `SHOP`, then run `python3 tools/build.py`.
 - Search button opens a local-index search (EN/ES, accent-insensitive). Index is `SEARCH_ROWS` in `tools/build.py`.
 - Status wording (EN/ES) lives in `UI[...]["status"]`.
