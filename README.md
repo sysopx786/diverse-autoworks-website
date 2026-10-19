@@ -3,7 +3,7 @@
 Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixville, PA.
 
 ## Links
-- Live site: https://www.mydiverseauto.com/ (Cloudflare Pages, per Oct 2026 move; the Cloudflare host is inferred from the live page, confirm in the Cloudflare dashboard)
+- Live site (canonical host): https://mydiverseauto.com/ (Cloudflare Pages). Use the apex host, not www.
 - GitHub Pages mirror (may lag the live site): https://sysopx786.github.io/diverse-autoworks-website/
 - Private preview (Claude artifact, owner access only): https://claude.ai/artifact/9Zd66Fr1JT8dMqqUMcFHsL
 
