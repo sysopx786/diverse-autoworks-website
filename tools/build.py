@@ -336,8 +336,7 @@ def head_tags(lang, key, title, desc, extra_ld=""):
         out.append(f'<link rel="alternate" hreflang="x-default" href="{abs_url("en", key)}">')
     if key == "home":
         ld = {"@context": "https://schema.org", "@type": "AutoRepair", "name": B["name"], "telephone": B["phone_tel"], "email": B["email"],
-              "address": {"@type": "PostalAddress", "streetAddress": B["street"], "addressLocality": B["city"], "addressRegion": B["state"], "postalCode": B["zip"], "addressCountry": "US"},
-              "inLanguage": ["en", "es"]}
+              "address": {"@type": "PostalAddress", "streetAddress": B["street"], "addressLocality": B["city"], "addressRegion": B["state"], "postalCode": B["zip"], "addressCountry": "US"}}
         if SITE_URL:
             ld["url"] = SITE_URL + "/"
         out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + "</script>")
