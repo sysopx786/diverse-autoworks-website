@@ -38,7 +38,7 @@ GOOGLE = [
 ]
 
 CARFAX = [
-    "¡El equipo de Diverse Auto Works son los mecánicos amigables de su barrio! Son muy meticulosos, honestos y conocedores. Dan información detallada y una explicación clara del trabajo realizado. La sala de espera está limpia y tiene sofás cómodos, si hace falta.",
+    "¡El equipo de Diverse Autoworks son los mecánicos amigables de su barrio! Son muy meticulosos, honestos y conocedores. Dan información detallada y una explicación clara del trabajo realizado. La sala de espera está limpia y tiene sofás cómodos, si hace falta.",
     "El servicio fue excelente y el carro quedó listo en un tiempo razonable. La comunicación también fue muy buena. Se lo recomendaría a cualquiera.",
     "Siempre cumplen con el horario y puedo esperar con confianza a que terminen el trabajo. También dan evaluaciones honestas del estado del vehículo y hacen recomendaciones razonables para reparaciones o reemplazos.",
     "Joe es maravilloso. El servicio se hace bien y no cuesta una fortuna. Todos ahí son amables y respetuosos.",
@@ -47,7 +47,7 @@ CARFAX = [
     "Este es mi taller de confianza. El servicio es excelente y cercano. La calidad del trabajo es de primera y el costo es más que justo.",
     "Muy amables: me dieron un repaso completo del trabajo de servicio realizado y, al revisar las reparaciones recomendadas, me dijeron con honestidad qué tan crítica era cada una. El vehículo estuvo listo a tiempo. Cobros razonables.",
     "Hacen lo que hay que hacer y no tratan de vender cosas que no hacen falta. Es indescriptiblemente agradable poder confiar en su mecánico.",
-    "No puedo decir lo suficiente de lo bueno que es Diverse. Siempre amables, profesionales, muy conocedores, y van más allá de lo necesario pensando en usted. Es como tener un mecánico en la propia familia en quien se puede confiar. Si quiere un gran servicio bien hecho, ¡recomiendo mucho Diverse Auto Works!",
+    "No puedo decir lo suficiente de lo bueno que es Diverse. Siempre amables, profesionales, muy conocedores, y van más allá de lo necesario pensando en usted. Es como tener un mecánico en la propia familia en quien se puede confiar. Si quiere un gran servicio bien hecho, ¡recomiendo mucho Diverse Autoworks!",
     "¡Negocio maravilloso! Llevo más de 5 años yendo con mi Honda Civic. Se comunican muy bien y hacen todo mucho más fácil. Me avisan qué piezas probablemente habrá que reemplazar en la próxima visita para que pueda prepararme económicamente. ¡Ariel es de gran ayuda! ¡Muy recomendado!",
     "He usado Diverse varias veces y siempre he recibido un excelente servicio, amable. Incluso las personas en el mostrador saben lo que pasa con su carro y explican de maravilla lo que se hizo o lo que hay que hacer. ¡Una vez hasta con fotos! Así que... gran servicio, precios razonables, gente amable y confiable, ¡no hay mucho mejor que eso!",
     "Me escucharon y me ayudaron a diagnosticar el problema.",
@@ -85,7 +85,7 @@ CARFAX = [
     "Atención al cliente increíble. Gran trabajo mecánico a precio razonable.",
     "Joe es el mejor. ¡¡¡Entrar y salir en menos de 2 horas!!!",
     "¡¡¡Muy recomendado!!! Personal muy amable y conocedor.",
-    "Todo estuvo bien. Diverse Auto Works es un buen lugar para llevar su carro.",
+    "Todo estuvo bien. Diverse Autoworks es un buen lugar para llevar su carro.",
     "Gente honesta y gran trabajo.",
     "Amables, puntuales, conocedores y razonables. Gran lugar.",
     "Servicio excelente y justo para el cliente",
@@ -104,7 +104,7 @@ CARFAX = [
 YELP = [
     "Gran experiencia con la inspección de motocicleta. Mucha disponibilidad para la cita. ¡Servicio rápido!",
     "El motor de mi camioneta F150 hacía un ruido como de golpeteo. Pudieron haberme cobrado de más, pero encontraron una bujía defectuosa. Mi veredicto: ¡Cinco estrellas y DOS PULGARES ARRIBA!",
-    "Me alegra haber encontrado al equipo de Diverse Auto Works. Lo mantienen informado de lo que pasa con su carro y lo devuelven a la carretera de forma segura, sin tratar de engañarlo con trabajos innecesarios para cobrar más. Trabajo de calidad, precios justos, constantes y amables, pero sobre todo honestos. Joe y Ariel son excelentes para trabajar. ¡Muy recomendado si necesita un taller local confiable en el que pueda confiar!",
+    "Me alegra haber encontrado al equipo de Diverse Autoworks. Lo mantienen informado de lo que pasa con su carro y lo devuelven a la carretera de forma segura, sin tratar de engañarlo con trabajos innecesarios para cobrar más. Trabajo de calidad, precios justos, constantes y amables, pero sobre todo honestos. Joe y Ariel son excelentes para trabajar. ¡Muy recomendado si necesita un taller local confiable en el que pueda confiar!",
     "¡Gente increíble! Me han dado donas, bagels y galletas. Los quiero mucho por ayudarme con los problemas de mi carro. Ariel es mi favorita. Con cariño, Fabi",
     "¡Esta gente es increíble, Ariel es fantástica! Si quiere un grupo automotriz honesto y un descuento de vez en cuando en el servicio, ¡vaya con Joe y su equipo!",
     "¡Gran experiencia ayer con este grupo! Viajaba por negocios en un día lluvioso y se me murió el alternador. Respondieron rápido, consiguieron la pieza y la cambiaron en cuestión de horas, lo que me permitió salvar el resto de mi jornada de trabajo, a un precio razonable. ¡Agradezco de verdad que se hayan adaptado a mi situación y me hayan ayudado a volver a la carretera tan rápido!",

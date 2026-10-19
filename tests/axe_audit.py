@@ -1,7 +1,8 @@
 import asyncio, json, glob, os
 from playwright.async_api import async_playwright
-AX=open('node_modules/axe-core/axe.min.js').read()
-root='/root/diverse-autoworks/docs'
+REPO=os.path.abspath(os.path.join(os.path.dirname(__file__),'..'))
+AX=open(os.path.join(REPO,'node_modules','axe-core','axe.min.js')).read()
+root=os.path.join(REPO,'docs')
 paths=sorted(set('/'+os.path.relpath(os.path.dirname(f),root).replace('.','') .strip('/')+'/' if os.path.dirname(f)!=root else '/' for f in glob.glob(root+'/**/index.html',recursive=True)))
 paths=[p.replace('//','/') for p in paths]
 async def main():
