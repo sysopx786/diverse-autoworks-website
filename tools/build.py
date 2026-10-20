@@ -13,6 +13,8 @@ SITE_URL      Final public address (no trailing slash, include repo path for Git
 FORM_ENDPOINT Approved form-handling endpoint (e.g. Formspree). When empty, the request form
               prepares an email to the shop's address instead of posting anywhere.
 """
+import datetime
+import hashlib
 import html
 import json
 import os
@@ -1170,13 +1172,42 @@ def write(rel, text):
         fh.write(text)
 
 
+LASTMOD_FILE = os.path.join(os.path.dirname(__file__), "lastmod.json")
+
+
+def update_lastmod(page_hashes):
+    """Sitemap <lastmod> per page, from a manifest of page-HTML hashes (tools/lastmod.json).
+    A page's date only changes when its generated HTML changes, so dates are real change dates, not the build date.
+    Only runs for production builds (SITE_URL set): without it the HTML differs and would look like a change."""
+    try:
+        with open(LASTMOD_FILE, encoding="utf-8") as fh:
+            old = json.load(fh)
+    except (OSError, ValueError):
+        old = {}
+    today = datetime.date.today().isoformat()
+    new, dates = {}, {}
+    for pk, h in sorted(page_hashes.items()):
+        prev = old.get(pk)
+        entry = prev if prev and prev.get("hash") == h else {"hash": h, "date": today}
+        new[pk] = entry
+        dates[pk] = entry["date"]
+    if new != old:
+        with open(LASTMOD_FILE, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(new, fh, indent=1, sort_keys=True)
+            fh.write("\n")
+    return dates
+
+
 def build():
     check_parity()
     count = 0
+    page_hashes = {}
     for lang in LANGS:
         for key, fn in BUILDERS.items():
             p = path_of(lang, key)
-            write((p + "/" if p else "") + "index.html", fn(lang))
+            page_html = fn(lang)
+            write((p + "/" if p else "") + "index.html", page_html)
+            page_hashes[f"{lang}:{key}"] = hashlib.sha1(page_html.encode("utf-8")).hexdigest()
             count += 1
     # 404 (self-contained: no external assets, so it works at any depth)
     nf = NOT_FOUND
@@ -1193,11 +1224,12 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
     write(".nojekyll", "")
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
     if SITE_URL:
+        lastmods = update_lastmod(page_hashes)
         urls = []
         for key in SLUGS:
             en, es = abs_url("en", key), abs_url("es", key)
-            for loc in (en, es):
-                urls.append(f'<url><loc>{loc}</loc><xhtml:link rel="alternate" hreflang="en" href="{en}"/><xhtml:link rel="alternate" hreflang="es" href="{es}"/>'
+            for lg, loc in (("en", en), ("es", es)):
+                urls.append(f'<url><loc>{loc}</loc><lastmod>{lastmods[lg + ":" + key]}</lastmod><xhtml:link rel="alternate" hreflang="en" href="{en}"/><xhtml:link rel="alternate" hreflang="es" href="{es}"/>'
                             f'<xhtml:link rel="alternate" hreflang="x-default" href="{en}"/></url>')
         write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(urls) + "\n</urlset>\n")
     elif os.path.exists(os.path.join(ROOT, "sitemap.xml")):
