@@ -2,8 +2,8 @@
 """
 Notary section copy (English + Spanish) for the Contact page, anchor #notary.
 Every text is a dict {"en": ..., "es": ...}; build.py's parity check walks NOTARY.
-Source: owner-supplied notary page redesign (Oct 7, 2026). The Spanish is a draft that
-still needs a native-speaker review before it is treated as final.
+Source: owner-supplied notary page redesign (Oct 7, 2026). The Spanish was verified by a
+native speaker (Oct 2026).
 """
 from content import t
 

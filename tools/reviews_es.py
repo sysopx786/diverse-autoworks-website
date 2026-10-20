@@ -4,7 +4,7 @@ Order matters: GOOGLE follows google_reviews.json after dropping blank and held 
 CARFAX follows carfax_reviews.json, YELP follows yelp_reviews.json, YELP_REPLY maps a Yelp
 index to the owner's reply, FEATURED follows REVIEWS in content.py.
 build.py checks the counts so a new review cannot slip in untranslated.
-These are translations of the customers' words, not the originals. Have a native speaker review.
+These are translations of the customers' words, not the originals. Verified by a native speaker (Oct 2026).
 """
 
 GOOGLE = [
