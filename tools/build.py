@@ -398,8 +398,15 @@ def head_tags(lang, key, title, desc, extra_ld=""):
         '<meta property="og:type" content="website">',
         f'<meta property="og:site_name" content="{B["short"]}">',
         f'<meta property="og:locale" content="{"es_US" if lang == "es" else "en_US"}">',
-        '<meta name="twitter:card" content="summary">',
     ]
+    if SITE_URL:
+        og_img = SITE_URL + "/assets/img/og-default.jpg"
+        og_alt = "Diverse Autoworks, auto repair and state inspections in Phoenixville, PA" if lang == "en" else "Diverse Autoworks, reparación de autos e inspecciones estatales en Phoenixville, PA"
+        out += [f'<meta property="og:image" content="{og_img}">', '<meta property="og:image:width" content="1200">',
+                '<meta property="og:image:height" content="630">', f'<meta property="og:image:alt" content="{esc(og_alt, quote=True)}">',
+                '<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:image" content="{og_img}">']
+    else:
+        out.append('<meta name="twitter:card" content="summary">')
     if SITE_URL:
         out.append(f'<link rel="canonical" href="{abs_url(lang, key)}">')
         out.append(f'<meta property="og:url" content="{abs_url(lang, key)}">')
