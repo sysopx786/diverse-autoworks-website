@@ -9,7 +9,8 @@ HERE = os.path.dirname(__file__); BASE = os.path.join(HERE, "baseline")
 # Monday 19 Oct 2026, 10:00 a.m. New York: inside shop hours, so the status strip is always "Open now" or "Closing soon" on this clock.
 FIXED_TIME = datetime(2026, 10, 19, 10, 0, tzinfo=ZoneInfo("America/New_York"))
 PAGES = {"home": "/", "services": "/services/", "inspections": "/inspections/", "fleet": "/fleet-repairs/", "about": "/about/",
-         "reviews": "/reviews/", "faq": "/faq/", "contact": "/contact/", "es-home": "/es/"}
+         "reviews": "/reviews/", "faq": "/faq/", "contact": "/contact/", "es-home": "/es/",
+         "moto": "/motorcycle-inspection/", "es-moto": "/es/motorcycle-inspection/"}
 VPS = {"d": {"width": 1440, "height": 900}, "m": {"width": 390, "height": 844}}
 async def main(update):
     srv = subprocess.Popen([sys.executable, "-m", "http.server", "8124"], cwd=os.path.join(HERE, "..", "docs"), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
