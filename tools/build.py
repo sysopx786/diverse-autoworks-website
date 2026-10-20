@@ -304,6 +304,78 @@ BRAND_MARK = ('<svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true" fo
               '<path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.600" fill="#E4372F"/></svg>')
 
 
+# ------------------------------------------------------------------ structured data (JSON-LD)
+_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+_DAY_SCHEMA = {"mon": "Monday", "tue": "Tuesday", "wed": "Wednesday", "thu": "Thursday", "fri": "Friday", "sat": "Saturday", "sun": "Sunday"}
+
+
+def _slug_url(lang, slug, anchor=""):
+    """Absolute URL from a SLUGS value such as "fleet-repairs" (or "" for home)."""
+    base = SITE_URL + ("/es" if lang == "es" else "") + "/" + (slug + "/" if slug else "")
+    return base + ("#" + anchor if anchor else "")
+
+
+def _opening_hours():
+    """openingHoursSpecification built from SHOP, so hours stay in one place."""
+    groups = {}
+    for day, ranges in SHOP["hours"].items():
+        for opens, closes in ranges:
+            groups.setdefault((opens, closes), []).append(_DAY_SCHEMA[day])
+    return [{"@type": "OpeningHoursSpecification", "dayOfWeek": days, "opens": o, "closes": c} for (o, c), days in groups.items()]
+
+
+def business_node(lang):
+    """The single AutoRepair entity. Same @id on every page and in both languages."""
+    confirmed = [sv for sv in SERVICES if sv["id"] not in {a["id"] for a in ASK_SERVICES}]  # owner-confirmed only
+    offers = []
+    for sv in confirmed:
+        url = _slug_url(lang, sv["page"], sv.get("anchor", "")) if sv.get("page") else _slug_url(lang, "services", sv["id"])
+        offers.append({"@type": "Offer", "itemOffered": {"@type": "Service", "name": L(sv["title"], lang), "url": url}})
+    return {
+        "@type": ["AutoRepair", "LocalBusiness"],
+        "@id": SITE_URL + "/#business",
+        "name": B["name"],
+        "alternateName": B["short"],
+        "url": SITE_URL + "/",
+        "telephone": B["phone_tel"],
+        "email": B["email"],
+        "logo": SITE_URL + "/assets/img/diverse-autoworks-logo.png",
+        "address": {"@type": "PostalAddress", "streetAddress": B["street"], "addressLocality": B["city"], "addressRegion": B["state"],
+                    "postalCode": B["zip"], "addressCountry": "US"},
+        "hasMap": DIRECTIONS,
+        "openingHoursSpecification": _opening_hours(),
+        "areaServed": {"@type": "City", "name": B["city"]},
+        "sameAs": [YELP_URL, CARFAX_URL],
+        "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Auto services" if lang == "en" else "Servicios automotrices", "itemListElement": offers},
+    }
+
+
+def structured_data(lang, key):
+    """JSON-LD graphs for a page. Only emitted when SITE_URL is set (absolute URLs required).
+    Not included on purpose until real values exist: geo, image, priceRange. No aggregateRating: reviews are third-party."""
+    P = PAGES.get(PAGEKEY.get(key, key), {})
+    url = abs_url(lang, key)
+    if key == "home":
+        return [{"@context": "https://schema.org", "@graph": [
+            business_node(lang),
+            {"@type": "WebSite", "@id": SITE_URL + "/#website", "name": B["short"], "url": SITE_URL + "/",
+             "inLanguage": ["en", "es"], "publisher": {"@id": SITE_URL + "/#business"}},
+            {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
+             "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang},
+        ]}]
+    if key == "privacy" or key not in UI[lang]["nav"]:
+        return []
+    graph = []
+    if key in ("services", "inspections", "fleet"):
+        graph.append({"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
+                      "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}})
+    graph.append({"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home" if lang == "en" else "Inicio", "item": abs_url(lang, "home")},
+        {"@type": "ListItem", "position": 2, "name": UI[lang]["nav"][key], "item": url}]})
+    return [{"@context": "https://schema.org", "@graph": graph}]
+
+
+
 def head_tags(lang, key, title, desc, extra_ld=""):
     u = UI[lang]
     out = [
@@ -334,15 +406,13 @@ def head_tags(lang, key, title, desc, extra_ld=""):
         out.append(f'<link rel="alternate" hreflang="en" href="{abs_url("en", key)}">')
         out.append(f'<link rel="alternate" hreflang="es" href="{abs_url("es", key)}">')
         out.append(f'<link rel="alternate" hreflang="x-default" href="{abs_url("en", key)}">')
-    if key == "home":
+    if SITE_URL:
+        for graph in structured_data(lang, key):
+            out.append('<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False) + "</script>")
+    elif key == "home":
         ld = {"@context": "https://schema.org", "@type": "AutoRepair", "name": B["name"], "telephone": B["phone_tel"], "email": B["email"],
               "address": {"@type": "PostalAddress", "streetAddress": B["street"], "addressLocality": B["city"], "addressRegion": B["state"], "postalCode": B["zip"], "addressCountry": "US"}}
-        if SITE_URL:
-            ld["url"] = SITE_URL + "/"
         out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + "</script>")
-    if key == "home" and SITE_URL:
-        ws = {"@context": "https://schema.org", "@type": "WebSite", "name": B["short"], "url": abs_url(lang, key)}
-        out.append('<script type="application/ld+json">' + json.dumps(ws, ensure_ascii=False) + "</script>")
     if extra_ld:
         out.append(extra_ld)
     return "\n".join(out)
