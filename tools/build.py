@@ -56,6 +56,8 @@ SHOP = {
     },
     "closedDates": [],
 }
+# Notary hours differ from the shop hours. Used for structured data only; the visible text lives in content.py / notary.py.
+NOTARY_HOURS = {"days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "15:00"}
 DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace(",", "%2C")
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
@@ -332,7 +334,11 @@ def business_node(lang):
     offers = []
     for sv in confirmed:
         url = _slug_url(lang, sv["page"], sv.get("anchor", "")) if sv.get("page") else _slug_url(lang, "services", sv["id"])
-        offers.append({"@type": "Offer", "itemOffered": {"@type": "Service", "name": L(sv["title"], lang), "url": url}})
+        item = {"@type": "Service", "name": L(sv["title"], lang), "url": url}
+        if sv["id"] == "notary":
+            item["hoursAvailable"] = {"@type": "OpeningHoursSpecification", "dayOfWeek": NOTARY_HOURS["days"],
+                                      "opens": NOTARY_HOURS["opens"], "closes": NOTARY_HOURS["closes"]}
+        offers.append({"@type": "Offer", "itemOffered": item})
     return {
         "@type": ["AutoRepair", "LocalBusiness"],
         "@id": SITE_URL + "/#business",
@@ -368,19 +374,27 @@ def structured_data(lang, key):
     if key == "privacy" or (key not in UI[lang]["nav"] and key != "moto"):
         return []
     home_name = "Home" if lang == "en" else "Inicio"
-    graph = []
-    if key in ("services", "inspections", "fleet", "moto"):
-        svc = {"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
-               "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}}
-        if key == "moto":
-            svc["serviceType"] = "Motorcycle safety inspection" if lang == "en" else "Inspección de seguridad de motocicletas"
-        graph.append(svc)
+    page_type = {"about": "AboutPage", "contact": "ContactPage", "brands": "CollectionPage", "reviews": "CollectionPage"}.get(key, "WebPage")
+    service_type = {
+        "services": ("Auto repair and maintenance", "Reparación y mantenimiento de autos"),
+        "inspections": ("Vehicle state inspection and emissions testing", "Inspección estatal y pruebas de emisiones de vehículos"),
+        "fleet": ("Fleet vehicle repair", "Reparación de vehículos de flotas"),
+        "moto": ("Motorcycle safety inspection", "Inspección de seguridad de motocicletas"),
+    }.get(key)
+    has_service = service_type is not None
+    graph = [{"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang,
+              "isPartOf": {"@id": SITE_URL + "/#website"}, "breadcrumb": {"@id": url + "#breadcrumb"},
+              "about": {"@id": (url + "#service") if has_service else (SITE_URL + "/#business")}}]
+    if has_service:
+        graph.append({"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
+                      "serviceType": service_type[0 if lang == "en" else 1], "url": url,
+                      "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}})
     crumbs = [(home_name, abs_url(lang, "home"))]
     if key == "moto":
         crumbs += [(UI[lang]["nav"]["inspections"], abs_url(lang, "inspections")), (L(P["crumb"], lang), url)]
     else:
         crumbs.append((UI[lang]["nav"][key], url))
-    graph.append({"@type": "BreadcrumbList", "itemListElement": [
+    graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": [
         {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
     return [{"@context": "https://schema.org", "@graph": graph}]
 
@@ -565,14 +579,14 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 '''
 
 
-def phead(lang, key, h1, lead, crumb=True, trail=None):
+def phead(lang, key, h1, lead, crumb=True, trail=None, cta=""):
     u = UI[lang]
     cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {trail or u["nav"].get(key, h1)}</p>' if crumb else "")
     if key in ("services", "about", "contact"):
         img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" '
                f'sizes="(max-width:900px) 100vw, 60vw" width="1600" height="893" alt=""></div>')
-        return f'<section class="phead phead-photo">{img}<div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
-    return f'<section class="phead on-dark"><div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
+        return f'<section class="phead phead-photo">{img}<div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p>{cta}</div></section>'
+    return f'<section class="phead on-dark"><div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p>{cta}</div></section>'
 
 
 # ------------------------------------------------------------------ components
@@ -800,7 +814,6 @@ def page_inspections(lang):
     u = UI[lang]
     types = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in P["types"])
     ins = faq_cat_by_id("inspections")
-    mot = faq_cat_by_id("motorcycle")
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["two_h"], lang))}</h2><p>{esc(L(P["two_p"], lang))}</p></div>
@@ -813,13 +826,9 @@ def page_inspections(lang):
 <div><h2>{esc(L(ins["title"], lang))}</h2>{faq_list(lang, ins)}</div></div></section>
 <section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p></div>
-{img(lang, key, "moto", "fig-img fig-wide")}
-{motorcycle_block(lang, key)}
-<p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p>
 </div></section>
-<section class="sec sec-paper"><div class="wrap two-col"><div><h2>{esc(L(mot["title"], lang))}</h2>{faq_list(lang, mot)}</div>
-<div class="callout"><h3>{esc(L(PAGES["faq"]["h1"], lang))}</h3><p style="margin-bottom:14px">{esc(L(PAGES["faq"]["lead"], lang))}</p><a class="btn btn-navy" href="{href(lang, key, lang, "faq")}">{u["faq_more"]}</a></div></div></section>'''
+<section class="sec sec-paper"><div class="wrap"><div class="callout"><h3>{esc(L(PAGES["faq"]["h1"], lang))}</h3><p style="margin-bottom:14px">{esc(L(PAGES["faq"]["lead"], lang))}</p><a class="btn btn-navy" href="{href(lang, key, lang, "faq")}">{u["faq_more"]}</a></div></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
@@ -828,7 +837,9 @@ def page_moto(lang):
     P = PAGES["moto"]
     u = UI[lang]
     trail = f'<a href="{href(lang, key, lang, "inspections")}">{u["nav"]["inspections"]}</a> / {esc(L(P["crumb"], lang))}'
-    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail) + f'''
+    cta = f'<p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p>'
+    parts_text = ", ".join(L(lab, lang).lower() for _pid, lab in MOTO_PARTS)
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=cta) + f'''
 <section class="sec sec-paper"><div class="wrap two-col">
 <div><h2>{esc(L(P["short_h"], lang))}</h2>
 <div class="callout"><h3>{esc(L(P["call_h"], lang))}</h3><p>{esc(L(P["call_p"], lang))}</p>
@@ -839,7 +850,8 @@ def page_moto(lang):
 <div class="sec-head"><h2>{esc(L(P["covers_h"], lang))}</h2><p>{esc(L(P["covers_p"], lang))}</p></div>
 {img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
-<p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
+<p class="moto-note" style="max-width:68ch;margin-top:22px">{esc(L(P["list_lead"], lang))} {esc(parts_text)}.</p>
+<p class="moto-note" style="max-width:68ch;margin-top:12px">{u["moto_caveat"]}</p>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
 </div></section>
 <section class="sec sec-white"><div class="wrap">
@@ -1234,24 +1246,17 @@ def update_lastmod(page_hashes):
 
 # Cloudflare Pages reads docs/_headers (other hosts serve it as a plain file, harmlessly).
 # No CSP on purpose: the Google Maps embed and the optional form endpoint would need a tested allow-list first.
-HEADERS_FILE = """/*
-  X-Frame-Options: SAMEORIGIN
-  Strict-Transport-Security: max-age=31536000
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  ! Access-Control-Allow-Origin
-
-/assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/assets/img/*
-  Cache-Control: public, max-age=604800
-
-/assets/css/*
-  Cache-Control: public, max-age=86400
-
-/assets/js/*
-  Cache-Control: public, max-age=86400
-"""
+_SEC_HEADERS = ["X-Frame-Options: SAMEORIGIN", "Strict-Transport-Security: max-age=31536000",
+                "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()", "! Access-Control-Allow-Origin"]
+_HEADER_BLOCKS = [
+    ("/*", []),
+    ("/assets/fonts/*", ["Cache-Control: public, max-age=31536000, immutable"]),
+    ("/assets/img/*", ["Cache-Control: public, max-age=604800"]),
+    ("/assets/css/*", ["Cache-Control: public, max-age=86400"]),
+    ("/assets/js/*", ["Cache-Control: public, max-age=86400"]),
+    ("/robots.txt", []), ("/sitemap.xml", []), ("/llms.txt", []), ("/favicon.ico", ["Cache-Control: public, max-age=604800"]),
+]
+HEADERS_FILE = "\n".join(path + "\n" + "\n".join("  " + line for line in _SEC_HEADERS + extra) + "\n" for path, extra in _HEADER_BLOCKS)
 
 
 def build():
@@ -1279,6 +1284,14 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
     write("_headers", HEADERS_FILE)
+    if SITE_URL:
+        llm_pages = [("services", "Services"), ("inspections", "State inspections and emissions"), ("moto", "Motorcycle inspection (year-round in PA)"),
+                     ("fleet", "Fleet repairs"), ("contact", "Contact, directions and notary"), ("reviews", "Customer reviews"), ("faq", "FAQs"), ("about", "About")]
+        llm_lines = [f"# {B['name']}", "", f"> Auto repair, maintenance, PA state inspections and emissions (including motorcycles), fleet repairs and notary services in {B['city']}, {B['state']}. "
+                     f"{ADDR_ONE}. Phone {PHONE}. English and Spanish.", "", "## Main pages", ""]
+        llm_lines += [f"- [{name}]({abs_url('en', k)}): {L(PAGES[PAGEKEY[k]]['desc'], 'en')}" for k, name in llm_pages]
+        llm_lines += ["", "## Spanish", "", f"- [Versión en español]({abs_url('es', 'home')})", ""]
+        write("llms.txt", "\n".join(llm_lines))
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
     if SITE_URL:
         lastmods = update_lastmod(page_hashes)
