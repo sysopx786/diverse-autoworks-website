@@ -19,6 +19,7 @@ import html
 import json
 import os
 import posixpath
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -105,7 +106,7 @@ UI = {
         "about_range": ["Everyday maintenance", "Brakes", "Tires and alignments", "Engine analysis", "Steering and suspension",
                         "A/C and cooling-system service", "Fleet repairs", "Motorcycle state inspections", "Weekday notary services"],
         "foot_pages": "Pages", "foot_visit": "Visit", "foot_contact": "Contact", "foot_privacy": "Privacy notice",
-        "foot_copy": "Diverse Autoworks, Inc. All rights reserved.", "back_top": "Back to top",
+        "foot_copy": "Diverse Autoworks, Inc. All rights reserved.", "updated": "Page updated", "back_top": "Back to top",
         "form": {
             "name": "Name", "phone": "Phone", "email": "Email", "contact": "Best way to reach you", "p_phone": "Phone", "p_email": "Email",
             "vehicle": "Vehicle (year, make, model)", "service": "Service", "svc_pick": "Choose a service", "svc_other": "Something else", "svc_unsure": "I'm not sure",
@@ -166,7 +167,7 @@ UI = {
         "about_range": ["Mantenimiento diario", "Frenos", "Llantas y alineaciones", "Análisis del motor", "Dirección y suspensión",
                         "Servicio de A/C y del sistema de enfriamiento", "Reparaciones para flotas", "Inspecciones estatales de motocicletas", "Servicios de notario público entre semana"],
         "foot_pages": "Páginas", "foot_visit": "Visítenos", "foot_contact": "Contacto", "foot_privacy": "Aviso de privacidad",
-        "foot_copy": "Diverse Autoworks, Inc. Todos los derechos reservados.", "back_top": "Volver arriba",
+        "foot_copy": "Diverse Autoworks, Inc. Todos los derechos reservados.", "updated": "Página actualizada", "back_top": "Volver arriba",
         "form": {
             "name": "Nombre", "phone": "Teléfono", "email": "Correo electrónico", "contact": "Mejor forma de comunicarnos con usted", "p_phone": "Teléfono", "p_email": "Correo",
             "vehicle": "Vehículo (año, marca, modelo)", "service": "Servicio", "svc_pick": "Elija un servicio", "svc_other": "Otro", "svc_unsure": "No estoy seguro",
@@ -369,7 +370,7 @@ def structured_data(lang, key):
             {"@type": "WebSite", "@id": SITE_URL + "/#website", "name": B["short"], "url": SITE_URL + "/",
              "inLanguage": ["en", "es"], "publisher": {"@id": SITE_URL + "/#business"}},
             {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
-             "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang},
+             "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang, "dateModified": LASTMOD_MARK},
         ]}]
     if key == "privacy" or (key not in UI[lang]["nav"] and key != "moto"):
         return []
@@ -382,7 +383,7 @@ def structured_data(lang, key):
         "moto": ("Motorcycle safety inspection", "Inspección de seguridad de motocicletas"),
     }.get(key)
     has_service = service_type is not None
-    graph = [{"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang,
+    graph = [{"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang, "dateModified": LASTMOD_MARK,
               "isPartOf": {"@id": SITE_URL + "/#website"}, "breadcrumb": {"@id": url + "#breadcrumb"},
               "about": {"@id": (url + "#service") if has_service else (SITE_URL + "/#business")}}]
     if has_service:
@@ -554,7 +555,7 @@ def footer(lang, key):
 <div><h2>{u["foot_contact"]}</h2><ul><li><a href="{TEL}">{PHONE}</a></li><li><a href="{MAIL}">{B["email"]}</a></li><li><a href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></li></ul></div>
 <div><h2>{u["close_hours"]}</h2><ul><li>{u["hours_shop"]}</li><li>{u["hours_notary"]}</li></ul></div>
 </div>
-<div class="foot-bot"><span>© <span data-year>2026</span> {u["foot_copy"]}</span><span class="foot-links"><a href="#top">{u["back_top"]}</a><a href="{href(lang, key, lang, "privacy")}">{u["foot_privacy"]}</a></span></div>
+<div class="foot-bot"><span>© <span data-year>2026</span> {u["foot_copy"]}</span><span class="foot-updated">{u["updated"]} {LASTMOD_TEXT_MARK}</span><span class="foot-links"><a href="#top">{u["back_top"]}</a><a href="{href(lang, key, lang, "privacy")}">{u["foot_privacy"]}</a></span></div>
 </div></footer>'''
 
 
@@ -634,7 +635,7 @@ def form_html(lang, key, fleet=False):
     fleet_attr = ' data-fleet="1"' if fleet else ""
     return f'''<form class="form" id="request" data-request data-endpoint="{esc(FORM_ENDPOINT, quote=True)}" data-email="{B["email"]}"{fleet_attr} novalidate>
 <p class="form-note">{f["notice"]}</p>
-<div class="hp" aria-hidden="true"><label>Website<input type="text" name="company_site" tabindex="-1" autocomplete="off"></label></div>
+<div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" type="text" name="company_site" tabindex="-1" autocomplete="off"></div>
 <div class="grid2">
 <div class="fld"><label for="f-name">{f["name"]}</label><input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name"><span class="err" id="e-name" data-err="name" role="alert"></span></div>
 <div class="fld"><label for="f-phone">{f["phone"]}</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-phone"><span class="err" id="e-phone" data-err="phone" role="alert"></span></div>
@@ -800,6 +801,8 @@ def page_services(lang):
             acts = [f'<a class="btn btn-navy" style="min-height:44px;font-size:1.15rem" href="{request_href(lang, key, s["id"])}">{u["svc_request"]}</a>']
             if s.get("page"):
                 acts.append(f'<a href="{learn_href(lang, key, s["id"])}">{u["svc_details"]}</a>')
+            if s["id"] == "inspections":
+                acts.append(f'<a href="{href(lang, key, lang, "moto")}">{esc(L(PAGES["moto"]["more_btn"], lang))}</a>')
             acts.append(f'<a href="{href(lang, key, lang, "faq", anchor=s["faq"])}">{u["faq_related"]}</a>')
             blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div>{img(lang, key, SVC_IMG[s["id"]], "svc-img") if s["id"] in SVC_IMG else ""}<p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
         groups.append(f'<section class="svc-group" id="g-{gid}"><h2>{esc(L(gtitle, lang))}</h2>{"".join(blocks)}</section>')
@@ -1021,6 +1024,10 @@ def page_reviews(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
+def moto_more(lang, key):
+    return f'<p class="faq-more"><a href="{href(lang, key, lang, "moto")}">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p>'
+
+
 def page_faq(lang):
     key = "faq"
     P = PAGES["faq"]
@@ -1028,7 +1035,7 @@ def page_faq(lang):
     cats = faq_cats_all()
     chips = [f'<button type="button" data-cat="all" aria-pressed="true">{u["faq_all"]}</button>'] + [
         f'<button type="button" data-cat="{c["id"]}" aria-pressed="false">{esc(L(c["title"], lang))}</button>' for c in cats]
-    sections = "".join(f'<section class="faq-cat" id="{c["id"]}" data-cat="{c["id"]}"><h2>{esc(L(c["title"], lang))}</h2>{faq_list(lang, c)}</section>' for c in cats)
+    sections = "".join(f'<section class="faq-cat" id="{c["id"]}" data-cat="{c["id"]}"><h2>{esc(L(c["title"], lang))}</h2>{moto_more(lang, key) if c["id"] == "motorcycle" else ""}{faq_list(lang, c)}</section>' for c in cats)
     ld_items = []
     for c in cats:
         for q, a in c["items"]:
@@ -1218,6 +1225,26 @@ def write(rel, text):
         fh.write(text)
 
 
+# Placeholders written into pages while they are generated; build() swaps them for each page's real change date.
+LASTMOD_MARK = "@@LASTMOD@@"            # ISO date (JSON-LD dateModified)
+LASTMOD_TEXT_MARK = "@@LASTMOD_TEXT@@"  # readable date shown in the footer
+_MONTHS = {
+    "en": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "es": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+}
+
+
+def human_date(lang, iso):
+    y, m, d = (int(x) for x in iso.split("-"))
+    return f"{_MONTHS['en'][m - 1]} {d}, {y}" if lang == "en" else f"{d} de {_MONTHS['es'][m - 1]} de {y}"
+
+
+def main_html(page_html):
+    """Only the <main> content decides a page's change date, so a header/footer-only edit does not bump every date."""
+    m = re.search(r"<main\b.*?</main>", page_html, re.S)
+    return m.group(0) if m else page_html
+
+
 LASTMOD_FILE = os.path.join(os.path.dirname(__file__), "lastmod.json")
 
 
@@ -1266,13 +1293,19 @@ def build():
     check_parity()
     count = 0
     page_hashes = {}
+    built = []
     for lang in LANGS:
         for key, fn in BUILDERS.items():
             p = path_of(lang, key)
             page_html = fn(lang)
-            write((p + "/" if p else "") + "index.html", page_html)
-            page_hashes[f"{lang}:{key}"] = hashlib.sha1(page_html.encode("utf-8")).hexdigest()
+            built.append((lang, key, (p + "/" if p else "") + "index.html", page_html))
+            page_hashes[f"{lang}:{key}"] = hashlib.sha1(main_html(page_html).encode("utf-8")).hexdigest()
             count += 1
+    lastmods = update_lastmod(page_hashes) if SITE_URL else {}
+    today = datetime.date.today().isoformat()
+    for lang, key, rel, page_html in built:
+        d = lastmods.get(f"{lang}:{key}", today)
+        write(rel, page_html.replace(LASTMOD_MARK, d).replace(LASTMOD_TEXT_MARK, human_date(lang, d)))
     # 404 (self-contained: no external assets, so it works at any depth)
     nf = NOT_FOUND
     write("404.html", f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found | Página no encontrada | Diverse Autoworks</title>
@@ -1297,7 +1330,6 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
         write("llms.txt", "\n".join(llm_lines))
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
     if SITE_URL:
-        lastmods = update_lastmod(page_hashes)
         urls = []
         for key in SLUGS:
             en, es = abs_url("en", key), abs_url("es", key)
