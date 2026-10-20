@@ -655,3 +655,6 @@ details.q .a p{margin:0}
 .sec{content-visibility:auto;contain-intrinsic-size:auto 640px}
 .foot-updated{opacity:.85}
 .faq-more{margin:-.2em 0 1em}
+/* links inside paragraphs on dark sections (not breadcrumbs, which already use a light grey): lighter red (5.2:1 on #0F1012) and a visible hover, instead of the dark-red default (2.9:1) */
+.on-dark p:not(.crumbs) a:not(.btn){color:var(--sign)}
+.on-dark p:not(.crumbs) a:not(.btn):hover{color:#fff}
