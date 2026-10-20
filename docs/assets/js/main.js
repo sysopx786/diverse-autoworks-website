@@ -39,7 +39,8 @@
       }
       return merged;
     }
-    var f = new Intl.DateTimeFormat("en-US", { timeZone: cfg.timeZone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short", hour: "2-digit", minute: "2-digit" });
+    var cache = computeStatus._f || (computeStatus._f = {});
+    var f = cache[cfg.timeZone] || (cache[cfg.timeZone] = new Intl.DateTimeFormat("en-US", { timeZone: cfg.timeZone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short", hour: "2-digit", minute: "2-digit" }));
     var P = {}; f.formatToParts(now).forEach(function (p) { P[p.type] = p.value; });
     var y = +P.year, mo = +P.month, d = +P.day, nowMin = (+P.hour) * 60 + (+P.minute);
     function dayInfo(offset) {
@@ -79,7 +80,7 @@
       ticking = false;
     };
     window.addEventListener("scroll", function () { if (!ticking) { ticking = true; window.requestAnimationFrame(onScroll); } }, { passive: true });
-    onScroll();
+    window.requestAnimationFrame(onScroll); /* first frame: avoids a forced layout during script start-up */
     window.requestAnimationFrame(function () { window.requestAnimationFrame(function () { hdr.classList.remove("no-tr"); }); });
 
     /* open/closed strip; the static hours line stays if anything fails */
@@ -98,7 +99,7 @@
         if (key === lastKey) return;
         lastKey = key; box.setAttribute("data-state", s.state); txt.textContent = s.text;
       };
-      paint();
+      if (window.requestIdleCallback) window.requestIdleCallback(paint, { timeout: 1500 }); else setTimeout(paint, 200);
       setInterval(paint, 30000);
       document.addEventListener("visibilitychange", function () { if (!document.hidden) paint(); });
       window.addEventListener("focus", paint);

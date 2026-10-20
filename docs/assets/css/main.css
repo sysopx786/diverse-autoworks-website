@@ -27,7 +27,7 @@
   --maxw:1200px;
   --gut:clamp(18px,4vw,40px);
   /* header sizes: only the main row + logo change on scroll; buttons and the status strip stay constant */
-  --row-top:76px;--row-min:54px;--logo-top:56px;--logo-min:36px;--strip-h:32px;--btn:44px;
+  --row-top:76px;--row-min:54px;--logo-top:56px;--logo-min:36px;--strip-h:32px;--btn:48px;
   --hdr-full:calc(var(--row-top) + var(--strip-h));
   --hdr-min:calc(var(--row-min) + var(--strip-h));
   --header-h:var(--hdr-min);
@@ -166,6 +166,7 @@ ul,ol{margin:0;padding:0}
 .hero .lead{font-size:clamp(1.1rem,1.6vw,1.3rem);color:#DADCDF;max-width:56ch;line-height:1.55}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:center;margin-top:28px}
 .hero-cta .dir{color:#fff;font-family:var(--head);font-weight:700;font-size:1.3rem;padding:12px 6px}
+@media (max-width:480px){.hero-cta .btn{flex:1 1 100%}}
 .hero-types{margin-top:30px;display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--head);font-weight:600;font-size:1.3rem;color:var(--mist)}
 .hero-types b{color:#fff;font-weight:700}
 .hero-types span{display:flex;align-items:center;gap:8px}
@@ -651,3 +652,4 @@ details.q .a p{margin:0}
 /* Home board: CTA fills the last row */
 .board .board-foot{grid-column:span 3;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border:0;border-top:4px solid var(--sign-fill)}
 @media (max-width:1000px){.board .board-foot{grid-column:1/-1}}
+.sec{content-visibility:auto;contain-intrinsic-size:auto 640px}
