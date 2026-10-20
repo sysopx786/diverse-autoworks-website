@@ -406,6 +406,8 @@ def head_tags(lang, key, title, desc, extra_ld=""):
         out.append(f'<link rel="alternate" hreflang="en" href="{abs_url("en", key)}">')
         out.append(f'<link rel="alternate" hreflang="es" href="{abs_url("es", key)}">')
         out.append(f'<link rel="alternate" hreflang="x-default" href="{abs_url("en", key)}">')
+    if key == "home":
+        out.append(f'<link rel="preload" as="image" imagesrcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" imagesizes="100vw" fetchpriority="high">')
     if SITE_URL:
         for graph in structured_data(lang, key):
             out.append('<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False) + "</script>")
@@ -493,7 +495,7 @@ def header(lang, key):
     data = json.dumps({"shop": SHOP, "ui": u["status"], "search": search_index(lang, key)}, ensure_ascii=False).replace("</", "<\\/")
     search_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'
     return f'''<header class="hdr no-tr" id="hdr"><div class="wrap hdr-in">
-<a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Autoworks"></a>
+<a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="114" height="60" alt="Diverse Autoworks"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
 <button class="hbtn search-btn" type="button" aria-expanded="false" aria-controls="site-search" aria-label="{u["search"]}">{search_svg}</button>
@@ -515,7 +517,7 @@ def footer(lang, key):
     pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"))
     return f'''<footer class="foot on-dark"><div class="wrap">
 <div class="foot-grid">
-<div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
+<div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
 <address>{B["name"]}<br>{B["street"]}<br>{B["city"]}, {B["state"]} {B["zip"]}</address></div>
 <div><h2>{u["foot_pages"]}</h2><ul>{pages}</ul></div>
 <div><h2>{u["foot_contact"]}</h2><ul><li><a href="{TEL}">{PHONE}</a></li><li><a href="{MAIL}">{B["email"]}</a></li><li><a href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></li></ul></div>
@@ -550,7 +552,7 @@ def phead(lang, key, h1, lead, crumb=True):
     u = UI[lang]
     cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {u["nav"].get(key, h1)}</p>' if crumb else "")
     if key in ("services", "about", "contact"):
-        img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" '
+        img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" '
                f'sizes="(max-width:900px) 100vw, 60vw" width="1600" height="893" alt=""></div>')
         return f'<section class="phead phead-photo">{img}<div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
     return f'<section class="phead on-dark"><div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
@@ -660,7 +662,7 @@ def page_home(lang):
     types = "".join(f"<span>{t_}</span>" for t_ in u["types"])
     gauge_svg = G.gauge(esc(u["gauge_top"]), esc(u["gauge_sub"]), "").replace(' role="img" aria-label=""', ' aria-hidden="true"')
     hero_alt = "Representación ilustrativa del taller Diverse Autoworks al atardecer" if lang == "es" else "Illustrative rendering of the Diverse Autoworks shop at dusk"
-    hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
+    hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
 <div class="gauge gauge-mini">{gauge_svg}<button class="gauge-btn" id="gauge-btn" type="button" aria-label="{esc(u["gauge_aria"], quote=True)}"></button></div></div>'''
     hero = f'''<section class="hero on-dark hero-has-photo">{hero_photo}<div class="wrap hero-in">
 <div class="hero-copy">
@@ -829,7 +831,7 @@ def page_about(lang):
     body = phead(lang, key, L(P["h1"], lang), L(P["p2"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap two-col">
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
-<p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="320" height="168" alt="Diverse Autoworks logo" loading="lazy"></div>
+<p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo-560.webp")}" width="320" height="168" alt="Diverse Autoworks logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
 <section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
