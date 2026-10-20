@@ -74,7 +74,7 @@ UI = {
         "status": {"open": "Open now · closes {time}", "soon": "Closing soon · closes {time}", "closed": "Closed · opens {when} {time}",
                    "never": "Closed · call for hours", "today": "today", "tomorrow": "tomorrow", "am": "AM", "pm": "PM", "sample": "Sample",
                    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
-        "nav": {"brands": "Brands", "services": "Services", "inspections": "Inspections", "fleet": "Fleet Repairs", "about": "About",
+        "nav": {"brands": "Brands", "services": "Services", "inspections": "Inspections", "moto": "Motorcycle", "fleet": "Fleet Repairs", "about": "About",
                 "reviews": "Reviews", "faq": "FAQs", "contact": "Contact"},
         "call": f"Call {PHONE}", "call_short": "Call", "request": "Request an Appointment", "directions": "Get Directions",
         "home_label": "Diverse Autoworks home", "lang_label": "Language", "main_nav": "Main navigation",
@@ -135,7 +135,7 @@ UI = {
         "status": {"open": "Abierto ahora · cierra a las {time}", "soon": "Cierra pronto · cierra a las {time}", "closed": "Cerrado · abre {when} a las {time}",
                    "never": "Cerrado · llame para conocer el horario", "today": "hoy", "tomorrow": "mañana", "am": "a. m.", "pm": "p. m.", "sample": "Ejemplo",
                    "days": ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"]},
-        "nav": {"brands": "Marcas", "services": "Servicios", "inspections": "Inspecciones", "fleet": "Flotas", "about": "Nosotros",
+        "nav": {"brands": "Marcas", "services": "Servicios", "inspections": "Inspecciones", "moto": "Motocicletas", "fleet": "Flotas", "about": "Nosotros",
                 "reviews": "Reseñas", "faq": "Preguntas", "contact": "Contacto"},
         "call": f"Llamar al {PHONE}", "call_short": "Llamar", "request": "Solicitar una cita", "directions": "Cómo llegar",
         "home_label": "Inicio de Diverse Autoworks", "lang_label": "Idioma", "main_nav": "Navegación principal",
@@ -502,7 +502,7 @@ def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
     items = []
-    for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"):
+    for k in ("brands", "services", "inspections", "moto", "fleet", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if k == key else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
@@ -531,7 +531,7 @@ def header(lang, key):
 
 def footer(lang, key):
     u = UI[lang]
-    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"))
+    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "inspections", "moto", "fleet", "about", "reviews", "faq", "contact"))
     return f'''<footer class="foot on-dark"><div class="wrap">
 <div class="foot-grid">
 <div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
