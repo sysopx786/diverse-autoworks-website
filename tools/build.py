@@ -1246,17 +1246,20 @@ def update_lastmod(page_hashes):
 
 # Cloudflare Pages reads docs/_headers (other hosts serve it as a plain file, harmlessly).
 # No CSP on purpose: the Google Maps embed and the optional form endpoint would need a tested allow-list first.
+# Cloudflare Pages MERGES every matching block, so security headers live only in "/*" (repeating them on a
+# path block doubles the header). Cloudflare itself adds "Access-Control-Allow-Origin: *" to static assets and
+# robots.txt; it cannot be removed from here, and it is harmless on public files.
 _SEC_HEADERS = ["X-Frame-Options: SAMEORIGIN", "Strict-Transport-Security: max-age=31536000",
                 "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()", "! Access-Control-Allow-Origin"]
 _HEADER_BLOCKS = [
-    ("/*", []),
+    ("/*", _SEC_HEADERS),
     ("/assets/fonts/*", ["Cache-Control: public, max-age=31536000, immutable"]),
     ("/assets/img/*", ["Cache-Control: public, max-age=604800"]),
     ("/assets/css/*", ["Cache-Control: public, max-age=86400"]),
     ("/assets/js/*", ["Cache-Control: public, max-age=86400"]),
-    ("/robots.txt", []), ("/sitemap.xml", []), ("/llms.txt", []), ("/favicon.ico", ["Cache-Control: public, max-age=604800"]),
+    ("/favicon.ico", ["Cache-Control: public, max-age=604800"]),
 ]
-HEADERS_FILE = "\n".join(path + "\n" + "\n".join("  " + line for line in _SEC_HEADERS + extra) + "\n" for path, extra in _HEADER_BLOCKS)
+HEADERS_FILE = "\n".join(path + "\n" + "\n".join("  " + line for line in lines) + "\n" for path, lines in _HEADER_BLOCKS)
 
 
 def build():
