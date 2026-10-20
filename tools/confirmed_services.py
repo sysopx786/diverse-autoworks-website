@@ -4,7 +4,7 @@ Services the owner confirmed on Oct 18, 2026 ("they do all the services listed")
 
 These are CONFIRMED offerings. They go in the main services list (not "Also ask us about").
 Each service has its own FAQ category with 5 questions, in English and Spanish.
-Spanish text is a draft until a native speaker reviews it (see README).
+Spanish text was verified by a native speaker (Oct 2026).
 
 Merged into SERVICES and FAQ_CATS by content.py.
 """
