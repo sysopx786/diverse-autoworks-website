@@ -13,6 +13,8 @@ SITE_URL      Final public address (no trailing slash, include repo path for Git
 FORM_ENDPOINT Approved form-handling endpoint (e.g. Formspree). When empty, the request form
               prepares an email to the shop's address instead of posting anywhere.
 """
+import datetime
+import hashlib
 import html
 import json
 import os
@@ -58,7 +60,7 @@ DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
 SLUGS = {  # slug -> directory path (English)
-    "home": "", "services": "services", "inspections": "inspections", "fleet": "fleet-repairs",
+    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs",
     "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
@@ -363,15 +365,23 @@ def structured_data(lang, key):
             {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
              "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang},
         ]}]
-    if key == "privacy" or key not in UI[lang]["nav"]:
+    if key == "privacy" or (key not in UI[lang]["nav"] and key != "moto"):
         return []
+    home_name = "Home" if lang == "en" else "Inicio"
     graph = []
-    if key in ("services", "inspections", "fleet"):
-        graph.append({"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
-                      "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}})
+    if key in ("services", "inspections", "fleet", "moto"):
+        svc = {"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
+               "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}}
+        if key == "moto":
+            svc["serviceType"] = "Motorcycle safety inspection" if lang == "en" else "Inspección de seguridad de motocicletas"
+        graph.append(svc)
+    crumbs = [(home_name, abs_url(lang, "home"))]
+    if key == "moto":
+        crumbs += [(UI[lang]["nav"]["inspections"], abs_url(lang, "inspections")), (L(P["crumb"], lang), url)]
+    else:
+        crumbs.append((UI[lang]["nav"][key], url))
     graph.append({"@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Home" if lang == "en" else "Inicio", "item": abs_url(lang, "home")},
-        {"@type": "ListItem", "position": 2, "name": UI[lang]["nav"][key], "item": url}]})
+        {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
     return [{"@context": "https://schema.org", "@graph": graph}]
 
 
@@ -398,14 +408,23 @@ def head_tags(lang, key, title, desc, extra_ld=""):
         '<meta property="og:type" content="website">',
         f'<meta property="og:site_name" content="{B["short"]}">',
         f'<meta property="og:locale" content="{"es_US" if lang == "es" else "en_US"}">',
-        '<meta name="twitter:card" content="summary">',
     ]
+    if SITE_URL:
+        og_img = SITE_URL + "/assets/img/og-default.jpg"
+        og_alt = "Diverse Autoworks, auto repair and state inspections in Phoenixville, PA" if lang == "en" else "Diverse Autoworks, reparación de autos e inspecciones estatales en Phoenixville, PA"
+        out += [f'<meta property="og:image" content="{og_img}">', '<meta property="og:image:width" content="1200">',
+                '<meta property="og:image:height" content="630">', f'<meta property="og:image:alt" content="{esc(og_alt, quote=True)}">',
+                '<meta name="twitter:card" content="summary_large_image">', f'<meta name="twitter:image" content="{og_img}">']
+    else:
+        out.append('<meta name="twitter:card" content="summary">')
     if SITE_URL:
         out.append(f'<link rel="canonical" href="{abs_url(lang, key)}">')
         out.append(f'<meta property="og:url" content="{abs_url(lang, key)}">')
         out.append(f'<link rel="alternate" hreflang="en" href="{abs_url("en", key)}">')
         out.append(f'<link rel="alternate" hreflang="es" href="{abs_url("es", key)}">')
         out.append(f'<link rel="alternate" hreflang="x-default" href="{abs_url("en", key)}">')
+    if key == "home":
+        out.append(f'<link rel="preload" as="image" imagesrcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" imagesizes="100vw" fetchpriority="high">')
     if SITE_URL:
         for graph in structured_data(lang, key):
             out.append('<script type="application/ld+json">' + json.dumps(graph, ensure_ascii=False) + "</script>")
@@ -455,7 +474,7 @@ SEARCH_ROWS = [
     ("services", "o2sensor", "Oxygen sensors", "Sensores de oxígeno", "oxygen sensor o2 check engine fuel economy", "sensor oxígeno luz motor consumo"),
     ("services", "emissioncontrol", "Emission control repair", "Reparación del control de emisiones", "emission control repair failed emissions test", "control emisiones reparación prueba reprobada"),
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
-    ("inspections", "motorcycle", "Motorcycle inspections", "Inspecciones de motocicletas", "motorcycle bike inspection", "motocicleta moto inspección"),
+    ("moto", "", "Motorcycle inspections (year-round)", "Inspecciones de motocicletas (todo el año)", "motorcycle bike inspection year-round winter act 149", "motocicleta moto inspección todo el año invierno ley 149"),
     ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),
     ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
     ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
@@ -493,7 +512,7 @@ def header(lang, key):
     data = json.dumps({"shop": SHOP, "ui": u["status"], "search": search_index(lang, key)}, ensure_ascii=False).replace("</", "<\\/")
     search_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>'
     return f'''<header class="hdr no-tr" id="hdr"><div class="wrap hdr-in">
-<a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="114" height="60" alt="Diverse Autoworks"></a>
+<a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="114" height="60" alt="Diverse Autoworks"></a>
 <nav class="nav" id="site-nav" aria-label="{u["main_nav"]}"><ul>{"".join(items)}</ul></nav>
 <div class="hdr-end">{sw}<a class="btn btn-sign btn-call" href="{TEL}" aria-label="{u["call"]}">{G.icon("phone", 22)}<span>{PHONE}</span></a>
 <button class="hbtn search-btn" type="button" aria-expanded="false" aria-controls="site-search" aria-label="{u["search"]}">{search_svg}</button>
@@ -515,7 +534,7 @@ def footer(lang, key):
     pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "inspections", "fleet", "about", "reviews", "faq", "contact"))
     return f'''<footer class="foot on-dark"><div class="wrap">
 <div class="foot-grid">
-<div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
+<div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
 <address>{B["name"]}<br>{B["street"]}<br>{B["city"]}, {B["state"]} {B["zip"]}</address></div>
 <div><h2>{u["foot_pages"]}</h2><ul>{pages}</ul></div>
 <div><h2>{u["foot_contact"]}</h2><ul><li><a href="{TEL}">{PHONE}</a></li><li><a href="{MAIL}">{B["email"]}</a></li><li><a href="{DIRECTIONS}" rel="noopener" target="_blank">{u["directions"]}</a></li></ul></div>
@@ -546,11 +565,11 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 '''
 
 
-def phead(lang, key, h1, lead, crumb=True):
+def phead(lang, key, h1, lead, crumb=True, trail=None):
     u = UI[lang]
-    cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {u["nav"].get(key, h1)}</p>' if crumb else "")
+    cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {trail or u["nav"].get(key, h1)}</p>' if crumb else "")
     if key in ("services", "about", "contact"):
-        img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" '
+        img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" '
                f'sizes="(max-width:900px) 100vw, 60vw" width="1600" height="893" alt=""></div>')
         return f'<section class="phead phead-photo">{img}<div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
     return f'<section class="phead on-dark"><div class="wrap">{cr}<h1>{esc(h1)}</h1><p>{esc(lead)}</p></div></section>'
@@ -660,7 +679,7 @@ def page_home(lang):
     types = "".join(f"<span>{t_}</span>" for t_ in u["types"])
     gauge_svg = G.gauge(esc(u["gauge_top"]), esc(u["gauge_sub"]), "").replace(' role="img" aria-label=""', ' aria-hidden="true"')
     hero_alt = "Representación ilustrativa del taller Diverse Autoworks al atardecer" if lang == "es" else "Illustrative rendering of the Diverse Autoworks shop at dusk"
-    hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.jpg")}" srcset="{asset(lang, key, "img/shop-hero-800.jpg")} 800w, {asset(lang, key, "img/shop-hero-1600.jpg")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
+    hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
 <div class="gauge gauge-mini">{gauge_svg}<button class="gauge-btn" id="gauge-btn" type="button" aria-label="{esc(u["gauge_aria"], quote=True)}"></button></div></div>'''
     hero = f'''<section class="hero on-dark hero-has-photo">{hero_photo}<div class="wrap hero-in">
 <div class="hero-copy">
@@ -710,7 +729,7 @@ def page_home(lang):
     # motorcycle
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
-<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a></p></div>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p></div>
 {img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 </div></section>'''
@@ -797,10 +816,36 @@ def page_inspections(lang):
 {img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 <p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
-<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p>
 </div></section>
 <section class="sec sec-paper"><div class="wrap two-col"><div><h2>{esc(L(mot["title"], lang))}</h2>{faq_list(lang, mot)}</div>
 <div class="callout"><h3>{esc(L(PAGES["faq"]["h1"], lang))}</h3><p style="margin-bottom:14px">{esc(L(PAGES["faq"]["lead"], lang))}</p><a class="btn btn-navy" href="{href(lang, key, lang, "faq")}">{u["faq_more"]}</a></div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
+def page_moto(lang):
+    key = "moto"
+    P = PAGES["moto"]
+    u = UI[lang]
+    trail = f'<a href="{href(lang, key, lang, "inspections")}">{u["nav"]["inspections"]}</a> / {esc(L(P["crumb"], lang))}'
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail) + f'''
+<section class="sec sec-paper"><div class="wrap two-col">
+<div><h2>{esc(L(P["short_h"], lang))}</h2>
+<div class="callout"><h3>{esc(L(P["call_h"], lang))}</h3><p>{esc(L(P["call_p"], lang))}</p>
+<p style="margin-top:12px"><a href="{P["src_url"]}" rel="noopener" target="_blank">{esc(L(P["src_t"], lang))}</a></p></div>
+<p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
+<div><h2>{esc(L(P["faq_h"], lang))}</h2>{faq_list(lang, {"items": P["faqs"]})}</div></div></section>
+<section class="sec sec-ink on-dark" id="parts"><div class="wrap">
+<div class="sec-head"><h2>{esc(L(P["covers_h"], lang))}</h2><p>{esc(L(P["covers_p"], lang))}</p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
+{motorcycle_block(lang, key)}
+<p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
+</div></section>
+<section class="sec sec-white"><div class="wrap">
+<div class="sec-head"><h2>{esc(L(P["visit_h"], lang))}</h2><p>{esc(L(P["visit_p"], lang))}</p></div>
+<p><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-navy" href="{href(lang, key, lang, "inspections")}" style="margin-left:6px">{esc(L(P["cars_btn"], lang))}</a></p>
+</div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
@@ -829,7 +874,7 @@ def page_about(lang):
     body = phead(lang, key, L(P["h1"], lang), L(P["p2"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap two-col">
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
-<p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo.png")}" width="320" height="168" alt="Diverse Autoworks logo" loading="lazy"></div>
+<p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo-560.webp")}" width="320" height="168" alt="Diverse Autoworks logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
 <section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
@@ -1120,7 +1165,7 @@ def page_brands(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
-BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "fleet": page_fleet,
+BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 
 
@@ -1161,13 +1206,64 @@ def write(rel, text):
         fh.write(text)
 
 
+LASTMOD_FILE = os.path.join(os.path.dirname(__file__), "lastmod.json")
+
+
+def update_lastmod(page_hashes):
+    """Sitemap <lastmod> per page, from a manifest of page-HTML hashes (tools/lastmod.json).
+    A page's date only changes when its generated HTML changes, so dates are real change dates, not the build date.
+    Only runs for production builds (SITE_URL set): without it the HTML differs and would look like a change."""
+    try:
+        with open(LASTMOD_FILE, encoding="utf-8") as fh:
+            old = json.load(fh)
+    except (OSError, ValueError):
+        old = {}
+    today = datetime.date.today().isoformat()
+    new, dates = {}, {}
+    for pk, h in sorted(page_hashes.items()):
+        prev = old.get(pk)
+        entry = prev if prev and prev.get("hash") == h else {"hash": h, "date": today}
+        new[pk] = entry
+        dates[pk] = entry["date"]
+    if new != old:
+        with open(LASTMOD_FILE, "w", encoding="utf-8", newline="\n") as fh:
+            json.dump(new, fh, indent=1, sort_keys=True)
+            fh.write("\n")
+    return dates
+
+
+# Cloudflare Pages reads docs/_headers (other hosts serve it as a plain file, harmlessly).
+# No CSP on purpose: the Google Maps embed and the optional form endpoint would need a tested allow-list first.
+HEADERS_FILE = """/*
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  ! Access-Control-Allow-Origin
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+/assets/css/*
+  Cache-Control: public, max-age=86400
+
+/assets/js/*
+  Cache-Control: public, max-age=86400
+"""
+
+
 def build():
     check_parity()
     count = 0
+    page_hashes = {}
     for lang in LANGS:
         for key, fn in BUILDERS.items():
             p = path_of(lang, key)
-            write((p + "/" if p else "") + "index.html", fn(lang))
+            page_html = fn(lang)
+            write((p + "/" if p else "") + "index.html", page_html)
+            page_hashes[f"{lang}:{key}"] = hashlib.sha1(page_html.encode("utf-8")).hexdigest()
             count += 1
     # 404 (self-contained: no external assets, so it works at any depth)
     nf = NOT_FOUND
@@ -1182,13 +1278,15 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
 </body></html>''')
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
+    write("_headers", HEADERS_FILE)
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
     if SITE_URL:
+        lastmods = update_lastmod(page_hashes)
         urls = []
         for key in SLUGS:
             en, es = abs_url("en", key), abs_url("es", key)
-            for loc in (en, es):
-                urls.append(f'<url><loc>{loc}</loc><xhtml:link rel="alternate" hreflang="en" href="{en}"/><xhtml:link rel="alternate" hreflang="es" href="{es}"/>'
+            for lg, loc in (("en", en), ("es", es)):
+                urls.append(f'<url><loc>{loc}</loc><lastmod>{lastmods[lg + ":" + key]}</lastmod><xhtml:link rel="alternate" hreflang="en" href="{en}"/><xhtml:link rel="alternate" hreflang="es" href="{es}"/>'
                             f'<xhtml:link rel="alternate" hreflang="x-default" href="{en}"/></url>')
         write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(urls) + "\n</urlset>\n")
     elif os.path.exists(os.path.join(ROOT, "sitemap.xml")):
