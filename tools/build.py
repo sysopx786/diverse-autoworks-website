@@ -1198,6 +1198,28 @@ def update_lastmod(page_hashes):
     return dates
 
 
+# Cloudflare Pages reads docs/_headers (other hosts serve it as a plain file, harmlessly).
+# No CSP on purpose: the Google Maps embed and the optional form endpoint would need a tested allow-list first.
+HEADERS_FILE = """/*
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  ! Access-Control-Allow-Origin
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+/assets/css/*
+  Cache-Control: public, max-age=86400
+
+/assets/js/*
+  Cache-Control: public, max-age=86400
+"""
+
+
 def build():
     check_parity()
     count = 0
@@ -1222,6 +1244,7 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
 </body></html>''')
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
+    write("_headers", HEADERS_FILE)
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
     if SITE_URL:
         lastmods = update_lastmod(page_hashes)
