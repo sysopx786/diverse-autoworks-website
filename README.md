@@ -10,8 +10,9 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 - `docs/` is the built site. Deploy target: see the hosting note above. The GitHub Pages setting is Settings > Pages > Deploy from branch > `main` / `/docs`.
 - Known drift (Oct 18, 2026): the live site's header shows "Shop open Monday–Friday. Call for current hours." with no open/closed strip, but this repo's build includes the strip. Check which build is deployed before treating either as current.
 - `tools/content.py` holds all copy (EN + ES). `tools/build.py` builds the site into `docs/`.
-- Rebuild: `python3 tools/build.py`
-- Optional env vars: `SITE_URL` (canonical, hreflang, sitemap) and `FORM_ENDPOINT` (form backend).
+- Rebuild: `SITE_URL=https://mydiverseauto.com python3 tools/build.py` (on Windows: `python`, and set the variable first, e.g. `$env:SITE_URL="https://mydiverseauto.com"` in PowerShell).
+- **Always build with `SITE_URL` set to the live host.** Without it the build leaves out the canonical and hreflang tags, the sitemap and robots.txt sitemap line, and all structured data (JSON-LD) except a bare business block on the home page. Check `docs/index.html` for `rel="canonical"` and `application/ld+json` after building.
+- Env vars: `SITE_URL` (required for production builds: canonical, hreflang, sitemap, structured data) and the optional `FORM_ENDPOINT` (form backend).
 - Tests: `tests/axe_audit.py` (accessibility), `tests/visual.py` (screenshot compare).
 
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
