@@ -60,7 +60,7 @@ DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
 SLUGS = {  # slug -> directory path (English)
-    "home": "", "services": "services", "inspections": "inspections", "fleet": "fleet-repairs",
+    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs",
     "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
@@ -365,15 +365,23 @@ def structured_data(lang, key):
             {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
              "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang},
         ]}]
-    if key == "privacy" or key not in UI[lang]["nav"]:
+    if key == "privacy" or (key not in UI[lang]["nav"] and key != "moto"):
         return []
+    home_name = "Home" if lang == "en" else "Inicio"
     graph = []
-    if key in ("services", "inspections", "fleet"):
-        graph.append({"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
-                      "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}})
+    if key in ("services", "inspections", "fleet", "moto"):
+        svc = {"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
+               "url": url, "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}}
+        if key == "moto":
+            svc["serviceType"] = "Motorcycle safety inspection" if lang == "en" else "Inspección de seguridad de motocicletas"
+        graph.append(svc)
+    crumbs = [(home_name, abs_url(lang, "home"))]
+    if key == "moto":
+        crumbs += [(UI[lang]["nav"]["inspections"], abs_url(lang, "inspections")), (L(P["crumb"], lang), url)]
+    else:
+        crumbs.append((UI[lang]["nav"][key], url))
     graph.append({"@type": "BreadcrumbList", "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Home" if lang == "en" else "Inicio", "item": abs_url(lang, "home")},
-        {"@type": "ListItem", "position": 2, "name": UI[lang]["nav"][key], "item": url}]})
+        {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
     return [{"@context": "https://schema.org", "@graph": graph}]
 
 
@@ -466,7 +474,7 @@ SEARCH_ROWS = [
     ("services", "o2sensor", "Oxygen sensors", "Sensores de oxígeno", "oxygen sensor o2 check engine fuel economy", "sensor oxígeno luz motor consumo"),
     ("services", "emissioncontrol", "Emission control repair", "Reparación del control de emisiones", "emission control repair failed emissions test", "control emisiones reparación prueba reprobada"),
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
-    ("inspections", "motorcycle", "Motorcycle inspections", "Inspecciones de motocicletas", "motorcycle bike inspection", "motocicleta moto inspección"),
+    ("moto", "", "Motorcycle inspections (year-round)", "Inspecciones de motocicletas (todo el año)", "motorcycle bike inspection year-round winter act 149", "motocicleta moto inspección todo el año invierno ley 149"),
     ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),
     ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
     ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
@@ -557,9 +565,9 @@ def layout(lang, key, title, desc, body, extra_ld="", page_class=""):
 '''
 
 
-def phead(lang, key, h1, lead, crumb=True):
+def phead(lang, key, h1, lead, crumb=True, trail=None):
     u = UI[lang]
-    cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {u["nav"].get(key, h1)}</p>' if crumb else "")
+    cr = (f'<p class="crumbs"><a href="{href(lang, key, lang, "home")}">{"Home" if lang == "en" else "Inicio"}</a> / {trail or u["nav"].get(key, h1)}</p>' if crumb else "")
     if key in ("services", "about", "contact"):
         img = (f'<div class="phead-img" aria-hidden="true"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" '
                f'sizes="(max-width:900px) 100vw, 60vw" width="1600" height="893" alt=""></div>')
@@ -721,7 +729,7 @@ def page_home(lang):
     # motorcycle
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
-<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a></p></div>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(P["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p></div>
 {img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 </div></section>'''
@@ -808,10 +816,36 @@ def page_inspections(lang):
 {img(lang, key, "moto", "fig-img fig-wide")}
 {motorcycle_block(lang, key)}
 <p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
-<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p>
 </div></section>
 <section class="sec sec-paper"><div class="wrap two-col"><div><h2>{esc(L(mot["title"], lang))}</h2>{faq_list(lang, mot)}</div>
 <div class="callout"><h3>{esc(L(PAGES["faq"]["h1"], lang))}</h3><p style="margin-bottom:14px">{esc(L(PAGES["faq"]["lead"], lang))}</p><a class="btn btn-navy" href="{href(lang, key, lang, "faq")}">{u["faq_more"]}</a></div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
+def page_moto(lang):
+    key = "moto"
+    P = PAGES["moto"]
+    u = UI[lang]
+    trail = f'<a href="{href(lang, key, lang, "inspections")}">{u["nav"]["inspections"]}</a> / {esc(L(P["crumb"], lang))}'
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail) + f'''
+<section class="sec sec-paper"><div class="wrap two-col">
+<div><h2>{esc(L(P["short_h"], lang))}</h2>
+<div class="callout"><h3>{esc(L(P["call_h"], lang))}</h3><p>{esc(L(P["call_p"], lang))}</p>
+<p style="margin-top:12px"><a href="{P["src_url"]}" rel="noopener" target="_blank">{esc(L(P["src_t"], lang))}</a></p></div>
+<p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
+<div><h2>{esc(L(P["faq_h"], lang))}</h2>{faq_list(lang, {"items": P["faqs"]})}</div></div></section>
+<section class="sec sec-ink on-dark" id="parts"><div class="wrap">
+<div class="sec-head"><h2>{esc(L(P["covers_h"], lang))}</h2><p>{esc(L(P["covers_p"], lang))}</p></div>
+{img(lang, key, "moto", "fig-img fig-wide")}
+{motorcycle_block(lang, key)}
+<p class="moto-note" style="max-width:68ch;margin-top:22px">{u["moto_caveat"]}</p>
+<p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a></p>
+</div></section>
+<section class="sec sec-white"><div class="wrap">
+<div class="sec-head"><h2>{esc(L(P["visit_h"], lang))}</h2><p>{esc(L(P["visit_p"], lang))}</p></div>
+<p><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-navy" href="{href(lang, key, lang, "inspections")}" style="margin-left:6px">{esc(L(P["cars_btn"], lang))}</a></p>
+</div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
@@ -1131,7 +1165,7 @@ def page_brands(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
-BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "fleet": page_fleet,
+BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 
 

@@ -17,6 +17,16 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
 
+## SEO build notes (Oct 20, 2026)
+- **Always build with `SITE_URL`** (see Rebuild). Production builds also write `docs/sitemap.xml`, `docs/_headers` and update `tools/lastmod.json`.
+- **Titles, descriptions, H1s** live in `PAGES` in `tools/content.py`. Keep titles at 60 characters or fewer and descriptions at 160 or fewer. After building, every page should still have exactly one `rel="canonical"`.
+- **Structured data** is built in `structured_data()` in `tools/build.py`: one `AutoRepair` entity (`/#business`, hours read from `SHOP`, `sameAs` from `YELP_URL`/`CARFAX_URL`, offer catalog from the owner-confirmed services only), plus WebSite/WebPage on the home page and Service + BreadcrumbList on inner pages. Deliberately NOT included until real values exist: `geo` (needs real coordinates), `image` (needs a real shop photo), `priceRange`. Do not add `aggregateRating`: the reviews are third-party.
+- **Motorcycle page** `/motorcycle-inspection/` (`PAGES["moto"]`, `page_moto()`): year-round motorcycle inspections under PA Act 149 of 2024, as stated in the PennDOT announcement linked on the page. No price, walk-in policy or timing is published because the owner has not confirmed them. Spanish is a draft: have a native speaker review it.
+- **Sitemap `lastmod`**: `tools/lastmod.json` holds a hash and a date per page; a date only moves when that page's HTML changes. Commit the file with the build.
+- **Share image**: `python tools/make_og_image.py` rebuilds `docs/assets/img/og-default.jpg` (1200x630). Re-run it, or replace the file, when the owner supplies a real shop photo.
+- **Images**: the logo and hero photos are served as WebP (`diverse-autoworks-logo.webp`, `-560.webp`, `shop-hero-800.webp`, `shop-hero-1600.webp`). The PNG logo stays for the schema `logo` URL. The home hero is preloaded in `head_tags()`.
+- **Hosting headers**: `docs/_headers` (from `HEADERS_FILE` in `tools/build.py`) is read by Cloudflare Pages: security headers and cache lifetimes. No CSP yet. The email obfuscation ("[email protected]") is a Cloudflare dashboard setting (Scrape Shield), not something the repo controls.
+
 ## Header, call bar, rating icons (Oct 7, 2026)
 - Language switch is one round flag button (no dropdown) that shows the OTHER language: Spain flag + ES on the English site, US flag + EN on the Spanish site. One click opens the same page in that language. Art is `flag_svg()` in `tools/build.py`; styles are the `.lang` block in `main.css`.
 - Reviews page in Spanish (Oct 7, 2026): all Google, CARFAX and Yelp reviews plus the featured quotes are translated. Translations live in `tools/reviews_es.py`, matched by position to the source lists; `build.py` asserts the counts, so adding a review to a JSON file fails the build until its Spanish line is added. The Spanish is a draft: have a native speaker review it.
