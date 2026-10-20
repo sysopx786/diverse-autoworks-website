@@ -79,7 +79,8 @@ ul,ol{margin:0;padding:0}
 .brand-txt span{font-family:var(--head);font-weight:600;font-size:1.05rem;color:var(--mist);letter-spacing:.14em}
 .nav{margin-left:auto}
 .nav ul{display:flex;list-style:none;gap:2px}
-.nav a{display:block;padding:10px 12px;color:#E8EEF7;font-family:var(--head);font-weight:600;font-size:1.2rem;text-decoration:none;border-radius:3px;position:relative}
+.nav a{display:block;padding:10px 12px;color:#E8EEF7;font-family:var(--head);font-weight:600;font-size:1.2rem;text-decoration:none;border-radius:3px;position:relative;white-space:nowrap}
+@media (min-width:1181px) and (max-width:1439px){.nav a{padding:10px 8px;font-size:1.1rem}.nav a[aria-current="page"]::after{left:8px;right:8px}}
 .nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
 .nav a[aria-current="page"]{color:var(--sign)}
 .nav a[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:3px;background:var(--sign-fill);border-radius:2px}
