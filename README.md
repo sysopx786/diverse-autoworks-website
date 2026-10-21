@@ -25,6 +25,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - **Sitemap `lastmod`**: `tools/lastmod.json` holds a hash and a date per page; a date only moves when that page's HTML changes. Commit the file with the build.
 - **Share image**: `python tools/make_og_image.py` rebuilds `docs/assets/img/og-default.jpg` (1200x630). Re-run it, or replace the file, when the owner supplies a real shop photo.
 - **Images**: the logo and hero photos are served as WebP (`diverse-autoworks-logo.webp`, `-560.webp`, `shop-hero-800.webp`, `shop-hero-1600.webp`). The PNG logo stays for the schema `logo` URL. The home hero is preloaded in `head_tags()`.
+- **Cache-busting**: the CSS and JS links carry `?v=<hash of the file>` (`asset()` in `tools/build.py`), so a changed stylesheet or script is fetched straight away. Edit `docs/assets/css/main.css` or `docs/assets/js/main.js` directly, then rebuild; the version in every page updates by itself. Without this the 1-day cache could serve new HTML with an old stylesheet.
 - **Hosting headers**: `docs/_headers` (from `HEADERS_FILE` in `tools/build.py`) is read by Cloudflare Pages: security headers and cache lifetimes. No CSP yet. The email obfuscation ("[email protected]") is a Cloudflare dashboard setting (Scrape Shield), not something the repo controls.
 
 ## Header, call bar, rating icons (Oct 7, 2026)

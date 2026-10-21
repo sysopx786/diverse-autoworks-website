@@ -219,8 +219,18 @@ def href(cur_lang, cur_key, lang, key, anchor="", query=""):
     return r + (("?" + query) if query else "") + (("#" + anchor) if anchor else "")
 
 
+_ASSET_VER = {}
+
+
 def asset(cur_lang, cur_key, name):
-    return "../" * depth(cur_lang, cur_key) + "assets/" + name
+    url = "../" * depth(cur_lang, cur_key) + "assets/" + name
+    if name in ("css/main.css", "js/main.js"):
+        # Versioned by content, so a changed file is fetched again straight away instead of waiting for the 1-day cache to expire.
+        if name not in _ASSET_VER:
+            with open(os.path.join(ROOT, "assets", name), "rb") as fh:
+                _ASSET_VER[name] = hashlib.md5(fh.read()).hexdigest()[:8]
+        url += "?v=" + _ASSET_VER[name]
+    return url
 
 
 def img(lang, key, name, cls="", eager=False, alt=None):
