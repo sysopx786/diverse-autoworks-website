@@ -706,8 +706,24 @@ def page_home(lang):
     hero_alt = "Representación ilustrativa del taller Diverse Autoworks al atardecer" if lang == "es" else "Illustrative rendering of the Diverse Autoworks shop at dusk"
     hero_photo = f'''<div class="hero-photo"><img src="{asset(lang, key, "img/shop-hero-1600.webp")}" srcset="{asset(lang, key, "img/shop-hero-800.webp")} 800w, {asset(lang, key, "img/shop-hero-1600.webp")} 1600w" sizes="100vw" width="1600" height="893" alt="{hero_alt}" fetchpriority="high">
 <div class="gauge gauge-mini">{gauge_svg}<button class="gauge-btn" id="gauge-btn" type="button" aria-label="{esc(u["gauge_aria"], quote=True)}"></button></div></div>'''
+    g_r = next(r for r in RATINGS if r["name"] == "Google")
+    c_r = next(r for r in RATINGS if r["name"] == "CARFAX")
+    asof = L(RATINGS_ASOF, lang)
+    if lang == "en":
+        rating_txt = f'<b>{g_r["avg"]}</b> from {g_r["count"]} Google reviews · <b>{c_r["avg"]}</b> from {c_r["count"]} verified CARFAX reviews'
+        asof_txt = f"as of {asof}"
+    else:
+        rating_txt = f'<b>{g_r["avg"]}</b> de {g_r["count"]} reseñas en Google · <b>{c_r["avg"]}</b> de {c_r["count"]} reseñas verificadas en CARFAX'
+        asof_txt = f"al {asof}"
+    g_txt = f'<b>{g_r["avg"]}</b> from {g_r["count"]} Google reviews' if lang == "en" else f'<b>{g_r["avg"]}</b> de {g_r["count"]} reseñas en Google'
+    c_txt = f'<b>{c_r["avg"]}</b> from {c_r["count"]} verified CARFAX reviews' if lang == "en" else f'<b>{c_r["avg"]}</b> de {c_r["count"]} reseñas verificadas en CARFAX'
+    # .more is hidden on phones so the strip stays two short lines and the Call button stays near the first screen
+    trust = (f'<p class="hero-trust rise d1"><a class="rt" href="{href(lang, key, lang, "reviews")}"><span class="stars" aria-hidden="true">★★★★★</span> {g_txt}'
+             f'<span class="more"> · {c_txt}</span></a> <span class="asof more">({asof_txt})</span><br>'
+             f'<a class="addr" href="{DIRECTIONS}" rel="noopener" target="_blank">{ADDR_ONE}</a></p>')
     hero = f'''<section class="hero on-dark hero-has-photo">{hero_photo}<div class="wrap hero-in">
 <div class="hero-copy">
+{trust}
 <h1 class="rise d1">{esc(L(P["h1"], lang))}</h1>
 <p class="lead rise d2">{esc(L(P["lead"], lang))}</p>
 <div class="hero-cta rise d3"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a>
