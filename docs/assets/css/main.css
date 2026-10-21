@@ -530,7 +530,7 @@ details.q .a p{margin:0}
 @media (max-width:900px){
   .hero-has-photo .hero-photo{-webkit-mask-image:none;mask-image:none;left:auto}
   .hero-has-photo{display:flex;flex-direction:column}
-  .hero-has-photo .hero-photo{position:relative;inset:auto;z-index:0;aspect-ratio:16/10;order:-1}
+  .hero-has-photo .hero-photo{position:relative;inset:auto;z-index:0;aspect-ratio:2/1;order:-1}
   .hero-has-photo .hero-photo img{object-position:50% 50%}
   .hero-has-photo .hero-photo::after{background:linear-gradient(180deg,rgba(15,16,18,0) 55%,rgba(15,16,18,1) 100%)}
   .hero-has-photo .hero-in{padding-top:8px}
@@ -658,3 +658,11 @@ details.q .a p{margin:0}
 /* links inside paragraphs on dark sections (not breadcrumbs, which already use a light grey): lighter red (5.2:1 on #0F1012) and a visible hover, instead of the dark-red default (2.9:1) */
 .on-dark p:not(.crumbs) a:not(.btn){color:var(--sign)}
 .on-dark p:not(.crumbs) a:not(.btn):hover{color:#fff}
+/* trust strip above the home headline (plain text; figures come from RATINGS in tools/content.py) */
+.hero-trust{margin:0 0 16px;font-size:1rem;line-height:1.55;color:var(--mist)}
+.hero-trust b{color:#fff}
+.hero-trust .stars{color:#F5B301;letter-spacing:.06em}
+.hero-trust .asof{white-space:nowrap}
+.on-dark p.hero-trust a:not(.btn){color:#fff;text-decoration-color:rgba(255,255,255,.45)}
+.on-dark p.hero-trust a:not(.btn):hover{color:var(--sign)}
+@media (max-width:700px){.hero-trust .more{display:none}}
