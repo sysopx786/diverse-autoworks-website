@@ -369,6 +369,17 @@ def business_node(lang):
     }
 
 
+def business_stub():
+    """Short copy of the business entity for inner pages. Same @id as the full node on the home page, so engines that read a single page still see who the Service provider is."""
+    return {"@type": ["AutoRepair", "LocalBusiness"], "@id": SITE_URL + "/#business", "name": B["name"], "url": SITE_URL + "/", "telephone": B["phone_tel"],
+            "address": {"@type": "PostalAddress", "streetAddress": B["street"], "addressLocality": B["city"], "addressRegion": B["state"],
+                        "postalCode": B["zip"], "addressCountry": "US"}}
+
+
+def website_stub():
+    return {"@type": "WebSite", "@id": SITE_URL + "/#website", "name": B["short"], "url": SITE_URL + "/"}
+
+
 def structured_data(lang, key):
     """JSON-LD graphs for a page. Only emitted when SITE_URL is set (absolute URLs required).
     Not included on purpose until real values exist: geo, image, priceRange. No aggregateRating: reviews are third-party."""
@@ -382,7 +393,7 @@ def structured_data(lang, key):
             {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
              "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang, "dateModified": LASTMOD_MARK},
         ]}]
-    if key == "privacy" or (key not in UI[lang]["nav"] and key != "moto"):
+    if key not in UI[lang]["nav"] and key not in ("moto", "privacy"):
         return []
     home_name = "Home" if lang == "en" else "Inicio"
     page_type = {"about": "AboutPage", "contact": "ContactPage", "brands": "CollectionPage", "reviews": "CollectionPage"}.get(key, "WebPage")
@@ -393,7 +404,7 @@ def structured_data(lang, key):
         "moto": ("Motorcycle safety inspection", "Inspección de seguridad de motocicletas"),
     }.get(key)
     has_service = service_type is not None
-    graph = [{"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang, "dateModified": LASTMOD_MARK,
+    graph = [business_stub(), website_stub(), {"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang, "dateModified": LASTMOD_MARK,
               "isPartOf": {"@id": SITE_URL + "/#website"}, "breadcrumb": {"@id": url + "#breadcrumb"},
               "about": {"@id": (url + "#service") if has_service else (SITE_URL + "/#business")}}]
     if has_service:
@@ -404,7 +415,7 @@ def structured_data(lang, key):
     if key == "moto":
         crumbs += [(UI[lang]["nav"]["inspections"], abs_url(lang, "inspections")), (L(P["crumb"], lang), url)]
     else:
-        crumbs.append((UI[lang]["nav"][key], url))
+        crumbs.append((UI[lang]["nav"].get(key) or L(P["h1"], lang), url))
     graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": [
         {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
     return [{"@context": "https://schema.org", "@graph": graph}]
@@ -842,7 +853,9 @@ def page_inspections(lang):
     P = PAGES["inspections"]
     u = UI[lang]
     types = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in P["types"])
-    ins = faq_cat_by_id("inspections")
+    facts_html = "".join(f'<h3>{esc(L(h, lang))}</h3><p>{esc(L(p_, lang))}</p>' for h, p_ in P["facts"])
+    facts_html += ('<p class="src-note">' + esc(L(P["src_lead"], lang)) + " " + " · ".join(
+        f'<a href="{url_}" rel="noopener" target="_blank">{esc(L(lab, lang))}</a>' for lab, url_ in P["src"]) + "</p>")
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["two_h"], lang))}</h2><p>{esc(L(P["two_p"], lang))}</p></div>
@@ -852,7 +865,7 @@ def page_inspections(lang):
 <div><h2>{esc(L(P["types_h"], lang))}</h2>{img(lang, key, "svc-inspections", "fig-img")}<ul class="vtypes">{types}</ul>
 <div class="callout"><h3>{esc(L(P["price_h"], lang))}</h3><p>{esc(L(P["price_p"], lang))}</p></div>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
-<div><h2>{esc(L(ins["title"], lang))}</h2>{faq_list(lang, ins)}</div></div></section>
+<div><h2>{esc(L(P["facts_h"], lang))}</h2>{facts_html}</div></div></section>
 <section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p></div>
 <p class="moto-cta"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{esc(L(PAGES["home"]["moto_btn"], lang))}</a> <a class="btn btn-line" href="{href(lang, key, lang, "moto")}" style="margin-left:6px">{esc(L(PAGES["moto"]["more_btn"], lang))}</a></p>
@@ -1302,14 +1315,24 @@ def update_lastmod(page_hashes):
 # Cloudflare Pages MERGES every matching block, so security headers live only in "/*" (repeating them on a
 # path block doubles the header). Cloudflare itself adds "Access-Control-Allow-Origin: *" to static assets and
 # robots.txt; it cannot be removed from here, and it is harmless on public files.
+# Old Wix paths. The old domain (diverseautoworks.org) redirects here and keeps the path, so these used to end on a 404.
+# Add a line here when Cloudflare's AI Crawl Control / Analytics shows another old path being requested.
+REDIRECTS_FILE = "\n".join([
+    "/about-us /about/ 301",
+    "/contact-us /contact/ 301",
+    "/book-online /contact/ 301",
+    "/services-1 /services/ 301",
+    "/blank / 301",
+]) + "\n"
+
 _SEC_HEADERS = ["X-Frame-Options: SAMEORIGIN", "Strict-Transport-Security: max-age=31536000",
                 "Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()", "! Access-Control-Allow-Origin"]
 _HEADER_BLOCKS = [
     ("/*", _SEC_HEADERS),
     ("/assets/fonts/*", ["Cache-Control: public, max-age=31536000, immutable"]),
     ("/assets/img/*", ["Cache-Control: public, max-age=604800"]),
-    ("/assets/css/*", ["Cache-Control: public, max-age=86400"]),
-    ("/assets/js/*", ["Cache-Control: public, max-age=86400"]),
+    ("/assets/css/*", ["Cache-Control: public, max-age=31536000, immutable"]),
+    ("/assets/js/*", ["Cache-Control: public, max-age=31536000, immutable"]),
     ("/favicon.ico", ["Cache-Control: public, max-age=604800"]),
 ]
 HEADERS_FILE = "\n".join(path + "\n" + "\n".join("  " + line for line in lines) + "\n" for path, lines in _HEADER_BLOCKS)
@@ -1346,9 +1369,10 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
     write("assets/img/favicon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44"><circle cx="22" cy="22" r="21" fill="#26282C"/><circle cx="22" cy="22" r="20" fill="none" stroke="#E4372F" stroke-width="2"/><path d="M8.5 29A15 15 0 0 1 35.5 29" fill="none" stroke="#D5D7DA" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.3"/><path d="M22 25L30 12" stroke="#E4372F" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="25" r="3.6" fill="#E4372F"/></svg>')
     write(".nojekyll", "")
     write("_headers", HEADERS_FILE)
+    write("_redirects", REDIRECTS_FILE)
     if SITE_URL:
         llm_pages = [("services", "Services"), ("inspections", "State inspections and emissions"), ("moto", "Motorcycle inspection (year-round in PA)"),
-                     ("fleet", "Fleet repairs"), ("contact", "Contact, directions and notary"), ("reviews", "Customer reviews"), ("faq", "FAQs"), ("about", "About")]
+                     ("fleet", "Fleet repairs"), ("brands", "Brands we work on"), ("contact", "Contact, directions and notary"), ("reviews", "Customer reviews"), ("faq", "FAQs"), ("about", "About")]
         llm_lines = [f"# {B['name']}", "", f"> Auto repair, maintenance, PA state inspections and emissions (including motorcycles), fleet repairs and notary services in {B['city']}, {B['state']}. "
                      f"{ADDR_ONE}. Phone {PHONE}. English and Spanish.", "", "## Main pages", ""]
         llm_lines += [f"- [{name}]({abs_url('en', k)}): {L(PAGES[PAGEKEY[k]]['desc'], 'en')}" for k, name in llm_pages]

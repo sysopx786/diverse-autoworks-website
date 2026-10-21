@@ -142,7 +142,7 @@
       var ttOn = function () { tt.classList.toggle("show", window.pageYOffset > 400); };
       var ttTick = false;
       window.addEventListener("scroll", function () { if (ttTick) return; ttTick = true; requestAnimationFrame(function () { ttTick = false; ttOn(); }); }, { passive: true });
-      ttOn();
+      window.requestAnimationFrame(ttOn); /* first frame: avoids a forced layout while the script starts */
       tt.addEventListener("click", function () {
         var rm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         window.scrollTo({ top: 0, behavior: rm ? "auto" : "smooth" });

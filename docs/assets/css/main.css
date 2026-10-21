@@ -666,3 +666,4 @@ details.q .a p{margin:0}
 .on-dark p.hero-trust a:not(.btn){color:#fff;text-decoration-color:rgba(255,255,255,.45)}
 .on-dark p.hero-trust a:not(.btn):hover{color:var(--sign)}
 @media (max-width:700px){.hero-trust .more{display:none}}
+.src-note{font-size:.95rem;margin-top:18px}
