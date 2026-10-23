@@ -930,6 +930,8 @@ def page_about(lang):
 <div><p style="font-size:1.2rem">{esc(L(P["p1"], lang))}</p>
 <p style="margin-top:26px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a> <a class="btn btn-line" href="{href(lang, key, lang, "services")}" style="margin-left:6px">{u["all_services"]}</a></p><img class="logo-card" style="margin-top:28px" src="{asset(lang, key, "img/diverse-autoworks-logo-560.webp")}" width="320" height="168" alt="Diverse Autoworks logo" loading="lazy"></div>
 <div><h2>{esc(L(P["range_h"], lang))}</h2><ul class="checklist">{rng}</ul></div></div></section>
+<section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["hist_h"], lang))}</h2><p>{esc(L(P["hist_p1"], lang))}</p></div>
+<p style="font-size:1.1rem;max-width:760px">{esc(L(P["hist_p2"], lang))}</p></div></section>
 <section class="sec sec-ink on-dark"><div class="wrap"><ul class="gallery">{"".join(f'<li>{img(lang, key, n, "fig-img")}</li>' for n in ("about-storefront", "about-interior", "about-mechanic", "about-hands"))}</ul></div></section>
 <section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(P["themes_h"], lang))}</h2><p>{esc(L(P["themes_p"], lang))}</p></div>
 <ul class="themes">{themes}</ul><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div></section>'''
