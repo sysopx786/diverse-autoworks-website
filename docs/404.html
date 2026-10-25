@@ -9,10 +9,27 @@ h1{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}p{color:#DADCDF;max-width:
     gtag('config', 'G-R4MYP7LT9Z');
     gtag('config', 'AW-18451378396');
   </script>
+  <!-- Google Ads event snippet: Click to call -->
+  <script>
+  function gtag_report_conversion(url) {
+    var done = false;
+    var go = function () {
+      if (done) return;
+      done = true;
+      if (typeof(url) != 'undefined') { window.location = url; }
+    };
+    setTimeout(go, 1000);
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18451378396/1PeoCK7moKkdENzhpt5E',
+      'event_callback': go
+    });
+    return false;
+  }
+  </script>
 </head>
 <body><main>
-<section lang="en" data-l="en"><h1>That page isn't here</h1><p>The link may be old or mistyped. Try the home page, or call the shop at <a href="tel:+16106500316">610-650-0316</a>.</p></section>
-<section lang="es" data-l="es"><h1>Esa página no existe</h1><p>Es posible que el enlace sea antiguo o tenga un error. Pruebe la página de inicio o llame al taller al <a href="tel:+16106500316">610-650-0316</a>.</p></section>
-<p><a href="tel:+16106500316">610-650-0316</a></p></main>
+<section lang="en" data-l="en"><h1>That page isn't here</h1><p>The link may be old or mistyped. Try the home page, or call the shop at <a href="tel:+16106500316" onclick="return gtag_report_conversion(this.href);">610-650-0316</a>.</p></section>
+<section lang="es" data-l="es"><h1>Esa página no existe</h1><p>Es posible que el enlace sea antiguo o tenga un error. Pruebe la página de inicio o llame al taller al <a href="tel:+16106500316" onclick="return gtag_report_conversion(this.href);">610-650-0316</a>.</p></section>
+<p><a href="tel:+16106500316" onclick="return gtag_report_conversion(this.href);">610-650-0316</a></p></main>
 <script>(function(){if(/\/es(\/|$)/.test(location.pathname)){document.documentElement.lang="es";document.title="Página no encontrada | Diverse Autoworks";var e=document.querySelector('[data-l="en"]');if(e)e.hidden=true;}})();</script>
 </body></html>
