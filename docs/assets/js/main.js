@@ -228,7 +228,7 @@
       if (d.note) html += '<p class="note">' + d.note + '</p>';
       html += '<div class="acts"><a class="btn btn-sign" href="' + d.request + '">' + P.ui.request + '</a>' +
         '<a class="btn btn-line" href="' + d.learn + '">' + P.ui.learn + '</a>' +
-        '<a class="btn btn-line" href="' + P.tel + '">' + P.ui.call + '</a></div>';
+        '<a class="btn btn-line" href="' + P.tel + '" onclick="return gtag_report_conversion(this.href);">' + P.ui.call + '</a></div>';
       res.innerHTML = html;
       var ic = res.querySelector(".res-ic svg"); if (ic) { ic.classList.add("res-ic"); ic.removeAttribute("width"); ic.removeAttribute("height"); }
     };
