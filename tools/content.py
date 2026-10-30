@@ -795,4 +795,4 @@ SVC_IMG = {"inspections": "svc-inspections", "maintenance": "svc-oil", "engine":
            "tires": "svc-tires", "rotation": "svc-tires", "suspension": "svc-suspension",
            "ac": "svc-ac", "fleet": "svc-fleet", "electrical": "svc-battery"}
 SVC_IMG.update(NEW_SVC_IMG)
-SVC_IMG.update({"tags": "svc-tags", "notary": "svc-notary", "ev": "svc-ev", "prepurchase": "svc-prepurchase", "bodywork": "svc-bodywork", "corrosion": "svc-corrosion", "computer": "svc-computer", "towing": "svc-towing", "sparkplugs": "svc-sparkplugs", "emissioncontrol": "svc-emissioncontrol", "fuelsys": "svc-fuelsys", "heater": "svc-heater"})
+SVC_IMG.update({"tags": "svc-tags", "notary": "svc-notary", "ev": "svc-ev", "prepurchase": "svc-prepurchase", "corrosion": "svc-corrosion", "computer": "svc-computer", "towing": "svc-towing", "sparkplugs": "svc-sparkplugs", "emissioncontrol": "svc-emissioncontrol", "fuelsys": "svc-fuelsys", "heater": "svc-heater"})
