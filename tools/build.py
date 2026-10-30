@@ -27,6 +27,7 @@ from content import *  # noqa
 from notary import NOTARY  # noqa
 import graphics as G
 import reviews_es as RES
+from brand_pages import BRAND_PAGES, BRAND_PAGE_BY_NAME, BRAND_PAGE_BY_KEY  # noqa
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -66,6 +67,10 @@ SLUGS = {  # slug -> directory path (English)
     "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs",
     "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
+# Dedicated brand pages (/brands/<brand>/): slugs and page copy live in brand_pages.py.
+for _b in BRAND_PAGES:
+    SLUGS[_b["key"]] = _b["slug"]
+    PAGES[_b["key"]] = _b["page"]
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
 PAGEKEY = {k: k for k in SLUGS}
 
@@ -295,7 +300,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -309,6 +314,9 @@ def check_parity():
     expected = 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS) + 2
     if n != expected:
         problems.append(f"expected {expected} service FAQs, found {n}")
+    for _b in BRAND_PAGES:
+        if len(_b["faq"]) != 5:
+            problems.append(f'brand page {_b["key"]}: expected 5 FAQs, found {len(_b["faq"])}')
     if problems:
         raise SystemExit("PARITY CHECK FAILED:\n  " + "\n  ".join(problems))
 
@@ -395,6 +403,19 @@ def structured_data(lang, key):
             {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang),
              "isPartOf": {"@id": SITE_URL + "/#website"}, "about": {"@id": SITE_URL + "/#business"}, "inLanguage": lang, "dateModified": LASTMOD_MARK},
         ]}]
+    if key in BRAND_PAGE_BY_KEY:
+        bp = BRAND_PAGE_BY_KEY[key]
+        home_name = "Home" if lang == "en" else "Inicio"
+        graph = [business_stub(), website_stub(),
+                 {"@type": "WebPage", "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang, "dateModified": LASTMOD_MARK,
+                  "isPartOf": {"@id": SITE_URL + "/#website"}, "breadcrumb": {"@id": url + "#breadcrumb"}, "about": {"@id": url + "#service"}},
+                 {"@type": "Service", "@id": url + "#service", "name": L(P["h1"], lang), "description": L(P["desc"], lang),
+                  "serviceType": L(bp["service_type"], lang), "url": url,
+                  "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "City", "name": B["city"]}}]
+        crumbs = [(home_name, abs_url(lang, "home")), (UI[lang]["nav"]["brands"], abs_url(lang, "brands")), (L(P["crumb"], lang), url)]
+        graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": [
+            {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
+        return [{"@context": "https://schema.org", "@graph": graph}]
     if key not in UI[lang]["nav"] and key not in ("moto", "privacy"):
         return []
     home_name = "Home" if lang == "en" else "Inicio"
@@ -524,6 +545,12 @@ SEARCH_ROWS = [
 ]
 
 
+SEARCH_ROWS += [
+    (b["key"], "", (b["name"] + (" service" if b["name"] == "Tesla" else " repair")),
+     (("Servicio " if b["name"] == "Tesla" else "Reparación ") + b["name"]), b["search"][0], b["search"][1])
+    for b in BRAND_PAGES]
+
+
 def search_index(lang, key):
     rows = []
     for pk, anchor, ten, tes, ken, kes in SEARCH_ROWS:
@@ -541,7 +568,7 @@ def header(lang, key):
     other = "es" if lang == "en" else "en"
     items = []
     for k in ("brands", "services", "inspections", "moto", "fleet", "about", "reviews", "faq", "contact"):
-        cur = ' aria-current="page"' if k == key else ""
+        cur = ' aria-current="page"' if (k == key or (k == "brands" and key in BRAND_PAGE_BY_KEY)) else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
     names = {"en": "English", "es": "Español"}
@@ -1218,7 +1245,8 @@ def page_brands(lang):
     u = UI[lang]
     groups = []
     for gtitle, items in BRAND_GROUPS:
-        lis = "".join(f"<li>{esc(name)}" + (f" ({esc(L(origin, lang))})" if origin else "") + "</li>" for name, origin in items)
+        lis = "".join("<li><span>" + (f'<a href="{href(lang, key, lang, BRAND_PAGE_BY_NAME[name]["key"])}">{esc(name)}</a>' if name in BRAND_PAGE_BY_NAME else esc(name))
+                      + (f" ({esc(L(origin, lang))})" if origin else "") + "</span></li>" for name, origin in items)
         groups.append(f'<section><h2>{esc(L(gtitle, lang))}</h2><ul class="checklist">{lis}</ul></section>')
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap"><div style="max-width:820px">{"".join(groups)}
@@ -1227,8 +1255,49 @@ def page_brands(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
+_LINK_RE = re.compile(r"\[([^\]]+)\]\(([a-z_]+)(?:#([a-z0-9-]+))?\)")
+
+
+def rich(lang, key, text):
+    """Escape text, then turn [label](pagekey#anchor) into internal links."""
+    return _LINK_RE.sub(lambda m: f'<a href="{href(lang, key, lang, m.group(2), anchor=m.group(3) or "")}">{m.group(1)}</a>', esc(text))
+
+
+def brand_blocks(lang, key, blocks):
+    out = []
+    for blk in blocks:
+        kind = blk[0]
+        if kind in ("h2", "h3"):
+            out.append(f"<{kind}>{esc(L(blk[1], lang))}</{kind}>")
+        elif kind == "p":
+            out.append(f"<p>{rich(lang, key, L(blk[1], lang))}</p>")
+        elif kind == "ul":
+            out.append('<ul class="checklist">' + "".join(f"<li>{rich(lang, key, L(i, lang))}</li>" for i in blk[1]) + "</ul>")
+        elif kind == "table":
+            head = "".join(f'<th scope="col">{esc(L(h, lang))}</th>' for h in blk[1])
+            rows = "".join("<tr>" + "".join(f"<td>{esc(L(c, lang))}</td>" for c in row) + "</tr>" for row in blk[2])
+            out.append(f'<div class="table-wrap"><table class="spec-table"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>')
+    return "".join(out)
+
+
+def page_brand(lang, key):
+    bp = BRAND_PAGE_BY_KEY[key]
+    P = PAGES[key]
+    u = UI[lang]
+    trail = f'<a href="{href(lang, key, lang, "brands")}">{u["nav"]["brands"]}</a> / {esc(L(P["crumb"], lang))}'
+    req = f'<p style="margin-top:22px"><a class="btn btn-sign" href="{href(lang, key, lang, "contact", anchor="request")}">{u["request"]}</a></p>'
+    faq_h = f'{bp["name"]} FAQs' if lang == "en" else f'Preguntas frecuentes sobre {bp["name"]}'
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + f'''
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, bp["blocks"])}</div></div></section>
+<section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": bp["faq"]})}</div></div></section>
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, bp["cta"])}{req}</div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
 BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
+for _b in BRAND_PAGES:
+    BUILDERS[_b["key"]] = (lambda lang, _k=_b["key"]: page_brand(lang, _k))
 
 
 def linkify(html_text):
@@ -1421,6 +1490,8 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
         llm_lines = [f"# {B['name']}", "", f"> Auto repair, maintenance, PA state inspections and emissions (including motorcycles), fleet repairs and notary services in {B['city']}, {B['state']}. "
                      f"{ADDR_ONE}. Phone {PHONE}. English and Spanish.", "", "## Main pages", ""]
         llm_lines += [f"- [{name}]({abs_url('en', k)}): {L(PAGES[PAGEKEY[k]]['desc'], 'en')}" for k, name in llm_pages]
+        llm_lines += ["", "## Brand pages", ""]
+        llm_lines += [f"- [{b['name']}]({abs_url('en', b['key'])}): {L(b['page']['desc'], 'en')}" for b in BRAND_PAGES]
         llm_lines += ["", "## Spanish", "", f"- [Versión en español]({abs_url('es', 'home')})", ""]
         write("llms.txt", "\n".join(llm_lines))
     write("robots.txt", "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else ""))
