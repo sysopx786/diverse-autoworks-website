@@ -84,3 +84,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 ## Body work removed; PennDOT authorized agent (Oct 30, 2026)
 - Owner: the shop does not do body work. The Body work card and its FAQ category are gone from `tools/more_services.py`, and the home "See all services" subtext no longer mentions it. `docs/assets/img/svc-bodywork.webp` is unused. Do not add body work, dent, paint or collision services back without the owner's OK.
 - Owner confirmed the shop is a PennDOT authorized agent. The notary FAQ "Do you complete the title application and issue plates?" now says so (EN + ES). Owner also confirmed the shop issues plates (Oct 30, 2026); the answer says so.
+
+## Brands not serviced (Oct 30, 2026)
+- Joe confirmed: no repairs on Tesla, Rivian, Lucid, Karma, Polestar (factory software and high-voltage training), and no service on Rolls-Royce, McLaren, Bentley, Aston Martin, Lotus (specialized tools). They are removed from `BRAND_GROUPS` in `tools/content.py`, and the Brands note, the Electric & hybrid card and its first FAQ say so (EN + ES).
+- The Google review about a Tesla state inspection and tire rotation stays: it is a real review, and those are not repairs.
