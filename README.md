@@ -87,4 +87,5 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 
 ## Brands not serviced (Oct 30, 2026)
 - Joe confirmed: no repairs on Tesla, Rivian, Lucid, Karma, Polestar (factory software and high-voltage training), and no service on Rolls-Royce, McLaren, Bentley, Aston Martin, Lotus (specialized tools). They are removed from `BRAND_GROUPS` in `tools/content.py`, and the Brands note, the Electric & hybrid card and its first FAQ say so (EN + ES).
+- Joe also confirmed no state inspections on those five luxury brands. The Inspections page lead, the inspections service card and the "which vehicles" inspection FAQ say so (EN + ES).
 - The Google review about a Tesla state inspection and tire rotation stays: it is a real review, and those are not repairs.
