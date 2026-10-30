@@ -667,3 +667,14 @@ details.q .a p{margin:0}
 .on-dark p.hero-trust a:not(.btn):hover{color:var(--sign)}
 @media (max-width:700px){.hero-trust .more{display:none}}
 .src-note{font-size:.95rem;margin-top:18px}
+
+/* Brand pages (/brands/<brand>/), Oct 30, 2026 */
+.brand-body{max-width:820px}
+.brand-body h2{margin-top:1.6em}
+.brand-body h2:first-child{margin-top:0}
+.brand-body h3{margin-top:1.3em}
+.table-wrap{overflow-x:auto;margin:14px 0 22px}
+.spec-table{width:100%;border-collapse:collapse;background:#fff;font-size:1rem;line-height:1.45}
+.spec-table th,.spec-table td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+.spec-table th{background:var(--ink);color:#fff;font-weight:700}
+.spec-table td:first-child{font-weight:600}

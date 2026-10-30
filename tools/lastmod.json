@@ -3,9 +3,37 @@
   "date": "2026-10-23",
   "hash": "2219213bc9d5190be4e3407f79dc0974eb9a528a"
  },
+ "en:brand_buick": {
+  "date": "2026-10-30",
+  "hash": "3598fac25181376e2e0ce84a25cc3109174d0f55"
+ },
+ "en:brand_cadillac": {
+  "date": "2026-10-30",
+  "hash": "7df32a0bebf188f506a0eb7f00cf8aa8273120c1"
+ },
+ "en:brand_chevrolet": {
+  "date": "2026-10-30",
+  "hash": "a95cc88bfbec40d747985c5dc5b143c067ac1c70"
+ },
+ "en:brand_ford": {
+  "date": "2026-10-30",
+  "hash": "87b228ea2834cd297dfc87cd5b2c5ce79d08ce0e"
+ },
+ "en:brand_gmc": {
+  "date": "2026-10-30",
+  "hash": "d732f4325ad4ac796a61763db2bc7841bb3736c6"
+ },
+ "en:brand_lincoln": {
+  "date": "2026-10-30",
+  "hash": "fcb682f0b6fb2ce36b35aa57b66c5acda7c4ab71"
+ },
+ "en:brand_tesla": {
+  "date": "2026-10-30",
+  "hash": "e5b95d023cdfa631cf3dc20501d8a884b68ccdc1"
+ },
  "en:brands": {
   "date": "2026-10-30",
-  "hash": "02d7aaa570d6c5606f1d4d10ccb06bc80ad02b92"
+  "hash": "eb4b7ded7bf9675505c6c3390ed42c1e5681fe4f"
  },
  "en:contact": {
   "date": "2026-10-30",
@@ -47,9 +75,37 @@
   "date": "2026-10-23",
   "hash": "fb70b341145d8f67289ba1f1606881b80f40924f"
  },
+ "es:brand_buick": {
+  "date": "2026-10-30",
+  "hash": "ae98dd12ecfcb1037a8ffcd6f03762cf68c9cc72"
+ },
+ "es:brand_cadillac": {
+  "date": "2026-10-30",
+  "hash": "d41bfd9f1c9f7ebeb8311433204efe5b374653c0"
+ },
+ "es:brand_chevrolet": {
+  "date": "2026-10-30",
+  "hash": "2ffe34f0922305e616049b68f66988acec06691a"
+ },
+ "es:brand_ford": {
+  "date": "2026-10-30",
+  "hash": "4596b7b99d9283ae8bbee15f2cd0440d92ca575b"
+ },
+ "es:brand_gmc": {
+  "date": "2026-10-30",
+  "hash": "dcc57731d4c203318d3d48f7b380f0e5660e846b"
+ },
+ "es:brand_lincoln": {
+  "date": "2026-10-30",
+  "hash": "8a1c28c9284cf40d3089ffffc4091ff2b690730c"
+ },
+ "es:brand_tesla": {
+  "date": "2026-10-30",
+  "hash": "d4973ed0fcbede8723a87ed682fb20f63ed278c8"
+ },
  "es:brands": {
   "date": "2026-10-30",
-  "hash": "ab8bef988bec3afe7b5f4747259ab352ba167733"
+  "hash": "af77eacd2486b8bba53c40bcf982713511b83fdf"
  },
  "es:contact": {
   "date": "2026-10-30",

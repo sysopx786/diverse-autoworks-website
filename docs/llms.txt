@@ -14,6 +14,16 @@
 - [FAQs](https://mydiverseauto.com/faq/): Answers about state and motorcycle inspections, oil changes, brakes, tires, A/C, batteries, fleet repairs and notary services at Diverse Autoworks.
 - [About](https://mydiverseauto.com/about/): Diverse Autoworks, Inc. provides mechanical repair, maintenance, and inspection services at 1415 Pawlings Road in Phoenixville, PA.
 
+## Brand pages
+
+- [Ford](https://mydiverseauto.com/brands/ford/): Ford truck, SUV and car repair in Phoenixville, PA: oil-life monitor service, brakes, engine repair and fleet work by ASE-certified technicians.
+- [Lincoln](https://mydiverseauto.com/brands/lincoln/): Lincoln service in Phoenixville, PA: oil-life monitor maintenance, brakes, suspension and engine repair for Corsair, Nautilus, Aviator and Navigator.
+- [Chevrolet](https://mydiverseauto.com/brands/chevrolet/): Chevy truck, SUV and car repair in Phoenixville, PA: oil life system service, brakes, suspension, engine repair and fleet work by ASE-certified techs.
+- [GMC](https://mydiverseauto.com/brands/gmc/): GMC Sierra, Canyon, Yukon, Acadia and Terrain repair in Phoenixville, PA: oil life service, brakes, suspension and differential work.
+- [Buick](https://mydiverseauto.com/brands/buick/): Buick Encore GX, Envista, Envision and Enclave repair in Phoenixville, PA: oil life service, brakes, A/C and engine repair by ASE-certified techs.
+- [Cadillac](https://mydiverseauto.com/brands/cadillac/): Cadillac Escalade, XT4, XT5, XT6, CT4 and CT5 service in Phoenixville, PA: oil life system service, brakes, suspension and engine repair.
+- [Tesla](https://mydiverseauto.com/brands/tesla/): Tesla tires, brakes, suspension and PA state inspections in Phoenixville, PA. Model 3, Model Y, Model S and Model X. No high-voltage repairs.
+
 ## Spanish
 
 - [Versión en español](https://mydiverseauto.com/es/)
