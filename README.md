@@ -92,10 +92,12 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Update (Oct 30, 2026): Joe does service Teslas (inspections, tires, brakes, suspension) but not high-voltage battery or software repairs. Tesla is back on the Brands list, and the Brands note, Electric & hybrid card and FAQ state that limit. Rivian, Lucid, Karma and Polestar stay excluded.
 
 ## Brand pages (Oct 30, 2026)
-- Dedicated pages at `/brands/<brand>/` (Spanish at `/es/brands/<brand>/`). Live so far: Ford, Lincoln, Chevrolet, GMC, Buick, Cadillac, Tesla.
-- Copy (EN + ES), SEO fields, repair lists and 5 FAQs per brand live in `tools/brand_pages.py`. `build.py` adds each page to `SLUGS`, `PAGES`, `BUILDERS`, the search index, `llms.txt` and the sitemap automatically.
+- Dedicated pages at `/brands/<brand>/` (Spanish at `/es/brands/<brand>/`). All 35 brands on the `/brands/` hub have a page (70 URLs with Spanish).
+- Copy (EN + ES), SEO fields, repair lists and 5 FAQs per brand: US brands in `tools/brand_pages.py` (shared helpers live there too); Stellantis, mainstream foreign, luxury and Italian brands in `tools/bp_stellantis.py`, `bp_mainstream.py`, `bp_luxury.py` and `bp_italian.py`, appended to `BRAND_PAGES`. `build.py` adds each page to `SLUGS`, `PAGES`, `BUILDERS`, the search index, `llms.txt` and the sitemap automatically.
 - Schema per page: WebPage + Service + a 3-level BreadcrumbList (Home › Brands › Brand). The `/brands/` hub links every brand that has a page; Brands stays highlighted in the menu on brand pages.
 - Body blocks: `h2`, `h3`, `p`, `ul`, `table`. Internal links in text use `[label](pagekey#anchor)`.
 - Rules: owner-confirmed services only, no body work, no hybrid/EV repair claims; Tesla is inspections, tires, brakes and suspension only. No phone number in page copy. `check_parity()` requires both languages and exactly 5 FAQs per brand.
 - Facts and sources: RepairPal brand pages, owner manuals and manufacturer support pages (full list in the brand-pages spec in the Claude project). Re-check RepairPal figures when updating.
+- `tests/es_audit.py` allows the multi-word brand names Mercedes-Benz, Land Rover and Alfa Romeo to match English.
+- Spanish titles over 60 characters use "Servicio" or "Taller" instead of "Reparación".
 - The Spanish for these pages has not had a native-speaker review yet.

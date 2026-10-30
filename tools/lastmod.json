@@ -3,6 +3,22 @@
   "date": "2026-10-23",
   "hash": "2219213bc9d5190be4e3407f79dc0974eb9a528a"
  },
+ "en:brand_acura": {
+  "date": "2026-10-30",
+  "hash": "b220b9c1f1b110457112342f32b4325f85a6995c"
+ },
+ "en:brand_alfa_romeo": {
+  "date": "2026-10-30",
+  "hash": "02af27bf9cd18b5c890a2c6a9e309f020ca6758f"
+ },
+ "en:brand_audi": {
+  "date": "2026-10-30",
+  "hash": "666f9dbdccf70f1987b1c2c118838e880dec468d"
+ },
+ "en:brand_bmw": {
+  "date": "2026-10-30",
+  "hash": "34b8fae5062f32dc4f5dd38032a61662367d34b9"
+ },
  "en:brand_buick": {
   "date": "2026-10-30",
   "hash": "3598fac25181376e2e0ce84a25cc3109174d0f55"
@@ -15,25 +31,121 @@
   "date": "2026-10-30",
   "hash": "a95cc88bfbec40d747985c5dc5b143c067ac1c70"
  },
+ "en:brand_chrysler": {
+  "date": "2026-10-30",
+  "hash": "189a0a01b2032fe716b81b50bfab3070a50604ec"
+ },
+ "en:brand_dodge": {
+  "date": "2026-10-30",
+  "hash": "433f3ebb3fb769a6b2e72e3eb40437e34f37d103"
+ },
+ "en:brand_fiat": {
+  "date": "2026-10-30",
+  "hash": "24b38f5bee2b982212ad5d3b746fd9ef71388981"
+ },
  "en:brand_ford": {
   "date": "2026-10-30",
   "hash": "87b228ea2834cd297dfc87cd5b2c5ce79d08ce0e"
+ },
+ "en:brand_genesis": {
+  "date": "2026-10-30",
+  "hash": "55cbdfbcca9c83a0667499892e645ffd010c725f"
  },
  "en:brand_gmc": {
   "date": "2026-10-30",
   "hash": "d732f4325ad4ac796a61763db2bc7841bb3736c6"
  },
+ "en:brand_honda": {
+  "date": "2026-10-30",
+  "hash": "3470035c3ca314aabd6e0cbd80fb301be606c2bc"
+ },
+ "en:brand_hyundai": {
+  "date": "2026-10-30",
+  "hash": "04c82540622e8c5a3aa4957f188a7548f6ecae47"
+ },
+ "en:brand_infiniti": {
+  "date": "2026-10-30",
+  "hash": "cf6fedbd5e5fe2608cfbd642eeef72fb18a894cc"
+ },
+ "en:brand_jaguar": {
+  "date": "2026-10-30",
+  "hash": "4127e27818b84063443e65a1e6c61df1ea10f178"
+ },
+ "en:brand_jeep": {
+  "date": "2026-10-30",
+  "hash": "063bfd91484620c45a6d2c6661e4762e6e85afdb"
+ },
+ "en:brand_kia": {
+  "date": "2026-10-30",
+  "hash": "575713bb5703492cab4823b42189e261514f31be"
+ },
+ "en:brand_land_rover": {
+  "date": "2026-10-30",
+  "hash": "6e8b7d49c2ddbee908c1af18b15dad09c7f0a677"
+ },
+ "en:brand_lexus": {
+  "date": "2026-10-30",
+  "hash": "444972903f879565adc2cea6564b7a6cd22a26c4"
+ },
  "en:brand_lincoln": {
   "date": "2026-10-30",
   "hash": "fcb682f0b6fb2ce36b35aa57b66c5acda7c4ab71"
+ },
+ "en:brand_maserati": {
+  "date": "2026-10-30",
+  "hash": "c0a91f05c0c7e6f1fc904c04dceff9cd0fcd87ca"
+ },
+ "en:brand_mazda": {
+  "date": "2026-10-30",
+  "hash": "86338ef759a33bcfc2bda760103927b74e5aab16"
+ },
+ "en:brand_mercedes_benz": {
+  "date": "2026-10-30",
+  "hash": "55efd695572d6cdc22c1436845eabe00a072e45a"
+ },
+ "en:brand_mini": {
+  "date": "2026-10-30",
+  "hash": "fa1b060ff7b8732403d92786188bd5ad509d502c"
+ },
+ "en:brand_mitsubishi": {
+  "date": "2026-10-30",
+  "hash": "ce09f3959a1d128a1e9c19257bcbc51aa1abeb7a"
+ },
+ "en:brand_nissan": {
+  "date": "2026-10-30",
+  "hash": "f4c8411b2a39e7421c26483dc4c51cd515b1bf6d"
+ },
+ "en:brand_porsche": {
+  "date": "2026-10-30",
+  "hash": "e29682c546077ba95d8c06eae7b3645532e8b5ce"
+ },
+ "en:brand_ram": {
+  "date": "2026-10-30",
+  "hash": "273b987f4c94ca8c3668a05a8d375dc09f13620c"
+ },
+ "en:brand_subaru": {
+  "date": "2026-10-30",
+  "hash": "ec38eef64cd1b080b581a7c83e5ac6395e11a5f7"
  },
  "en:brand_tesla": {
   "date": "2026-10-30",
   "hash": "e5b95d023cdfa631cf3dc20501d8a884b68ccdc1"
  },
+ "en:brand_toyota": {
+  "date": "2026-10-30",
+  "hash": "f59a3ad809da99a4ad7f50e2f28d5d62083b7456"
+ },
+ "en:brand_volkswagen": {
+  "date": "2026-10-30",
+  "hash": "87ba1f04150c5cfd41c429d5ff7b4be230298498"
+ },
+ "en:brand_volvo": {
+  "date": "2026-10-30",
+  "hash": "a98151b7253dba1bb0601544840f0eef5d1da287"
+ },
  "en:brands": {
   "date": "2026-10-30",
-  "hash": "eb4b7ded7bf9675505c6c3390ed42c1e5681fe4f"
+  "hash": "471c98af933bb20ffc9a8da83208bf8c484b2ae8"
  },
  "en:contact": {
   "date": "2026-10-30",
@@ -75,6 +187,22 @@
   "date": "2026-10-23",
   "hash": "fb70b341145d8f67289ba1f1606881b80f40924f"
  },
+ "es:brand_acura": {
+  "date": "2026-10-30",
+  "hash": "7f9e3718f85617d01435732cf670736a0060ccc1"
+ },
+ "es:brand_alfa_romeo": {
+  "date": "2026-10-30",
+  "hash": "90b06fe96fcbf435fd8c311653816b178d1bce0b"
+ },
+ "es:brand_audi": {
+  "date": "2026-10-30",
+  "hash": "584133dc656eae2fa9a5d4e513ad185fae44141d"
+ },
+ "es:brand_bmw": {
+  "date": "2026-10-30",
+  "hash": "9fc81cd168ed5a3d2fe1bf315c911255dbb26acd"
+ },
  "es:brand_buick": {
   "date": "2026-10-30",
   "hash": "ae98dd12ecfcb1037a8ffcd6f03762cf68c9cc72"
@@ -87,25 +215,121 @@
   "date": "2026-10-30",
   "hash": "2ffe34f0922305e616049b68f66988acec06691a"
  },
+ "es:brand_chrysler": {
+  "date": "2026-10-30",
+  "hash": "1cfad6a4bd98b1e5c7b0b2e0426bd80424c37f05"
+ },
+ "es:brand_dodge": {
+  "date": "2026-10-30",
+  "hash": "3ab1eb261bb06278a72a1bc4d87bf363852781ad"
+ },
+ "es:brand_fiat": {
+  "date": "2026-10-30",
+  "hash": "fcf766f8cb9de2c3cc3d9400420775fc8a2a46ce"
+ },
  "es:brand_ford": {
   "date": "2026-10-30",
   "hash": "4596b7b99d9283ae8bbee15f2cd0440d92ca575b"
+ },
+ "es:brand_genesis": {
+  "date": "2026-10-30",
+  "hash": "cec1256d063c5637942cee1bb8b912af385d6a24"
  },
  "es:brand_gmc": {
   "date": "2026-10-30",
   "hash": "dcc57731d4c203318d3d48f7b380f0e5660e846b"
  },
+ "es:brand_honda": {
+  "date": "2026-10-30",
+  "hash": "92537a0e182ff7233aac5fc8e3856f19dfe8b975"
+ },
+ "es:brand_hyundai": {
+  "date": "2026-10-30",
+  "hash": "e809374a9c23968d2a5331397f6778e844e7a229"
+ },
+ "es:brand_infiniti": {
+  "date": "2026-10-30",
+  "hash": "cfb7286082d91b1c95a62fb5d58d6cdeab048c5e"
+ },
+ "es:brand_jaguar": {
+  "date": "2026-10-30",
+  "hash": "54cdbc4eb0196d483052e4f795838ce8352add64"
+ },
+ "es:brand_jeep": {
+  "date": "2026-10-30",
+  "hash": "7609d58d29829e90749b3e5fba675481708c632d"
+ },
+ "es:brand_kia": {
+  "date": "2026-10-30",
+  "hash": "addb9059bbe5fd16141c3cf63cbd837a40b7f911"
+ },
+ "es:brand_land_rover": {
+  "date": "2026-10-30",
+  "hash": "5afc7408f34b4dccc7bfac29e8d88b05599b1b2b"
+ },
+ "es:brand_lexus": {
+  "date": "2026-10-30",
+  "hash": "fe3d68003561e651fb2f738f26bc0448aed7d767"
+ },
  "es:brand_lincoln": {
   "date": "2026-10-30",
   "hash": "8a1c28c9284cf40d3089ffffc4091ff2b690730c"
+ },
+ "es:brand_maserati": {
+  "date": "2026-10-30",
+  "hash": "ba9958192e2c445bc04d583a91bf567405b81ba0"
+ },
+ "es:brand_mazda": {
+  "date": "2026-10-30",
+  "hash": "45ba0dcb12bcc4a623764b49227363b7e905a983"
+ },
+ "es:brand_mercedes_benz": {
+  "date": "2026-10-30",
+  "hash": "1e66f07f1c9afd7d70c7010acc94fc0ad7070871"
+ },
+ "es:brand_mini": {
+  "date": "2026-10-30",
+  "hash": "0e1d1192a8e7d0006ee81079f05b0a58bf0864a0"
+ },
+ "es:brand_mitsubishi": {
+  "date": "2026-10-30",
+  "hash": "c3a43d729f0625e14f84ef0ef2b03e9393eaf3f4"
+ },
+ "es:brand_nissan": {
+  "date": "2026-10-30",
+  "hash": "fcea116f1cda19f591b88cd64ebcb47ae19ff714"
+ },
+ "es:brand_porsche": {
+  "date": "2026-10-30",
+  "hash": "2270214b0b54182c2d8679d8e78082f9a735ec9e"
+ },
+ "es:brand_ram": {
+  "date": "2026-10-30",
+  "hash": "24817f02e4ae6678481ba3ec669b680e17cb6c01"
+ },
+ "es:brand_subaru": {
+  "date": "2026-10-30",
+  "hash": "da48ce10b21425af3989d75f4e96b8734e6e7528"
  },
  "es:brand_tesla": {
   "date": "2026-10-30",
   "hash": "d4973ed0fcbede8723a87ed682fb20f63ed278c8"
  },
+ "es:brand_toyota": {
+  "date": "2026-10-30",
+  "hash": "58e7eb29bcc7946e27d035c49778b6994ea4c05a"
+ },
+ "es:brand_volkswagen": {
+  "date": "2026-10-30",
+  "hash": "953ea31931f97e433933d4af8384d56947e67d84"
+ },
+ "es:brand_volvo": {
+  "date": "2026-10-30",
+  "hash": "8c183addb690b5f709ab1936c517d07be740e3c2"
+ },
  "es:brands": {
   "date": "2026-10-30",
-  "hash": "af77eacd2486b8bba53c40bcf982713511b83fdf"
+  "hash": "a0670461a98cd67125706116ee0fdb926ea54ebc"
  },
  "es:contact": {
   "date": "2026-10-30",
