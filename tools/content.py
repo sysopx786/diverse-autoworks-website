@@ -597,8 +597,8 @@ PAGES = {
         "h1": t("Domestic and Foreign Brands We Work On", "Marcas nacionales y extranjeras con las que trabajamos"),
         "lead": t("We work on domestic and foreign cars. Find your brand below, then call 610-650-0316 with your year, make, and model to schedule.",
                   "Trabajamos con autos nacionales y extranjeros. Busque su marca abajo y llame al 610-650-0316 con el año, la marca y el modelo para programar su cita."),
-        "note": t("Don't see your make? Call us to ask. Hybrid and electric vehicles: we service these too. Call with the year, make, and model to discuss the work.",
-                  "¿No ve su marca? Llámenos para preguntar. Vehículos híbridos y eléctricos: también les damos servicio. Llame con el año, la marca y el modelo para hablar del trabajo."),
+        "note": t("Don't see your make? Call us to ask. Hybrid and electric vehicles: we service these too, except repairs on Tesla, Rivian, Lucid, Karma, and Polestar, which need factory software and high-voltage training. We don't service Rolls-Royce, McLaren, Bentley, Aston Martin, or Lotus, which need specialized tools.",
+                  "¿No ve su marca? Llámenos para preguntar. Vehículos híbridos y eléctricos: también les damos servicio, excepto reparaciones de Tesla, Rivian, Lucid, Karma y Polestar, que requieren software de fábrica y capacitación en alto voltaje. No damos servicio a Rolls-Royce, McLaren, Bentley, Aston Martin ni Lotus, que requieren herramientas especializadas."),
     },
     "privacy": {
         "title": t("Privacy Notice | Diverse Autoworks", "Aviso de privacidad | Diverse Autoworks"),
@@ -613,10 +613,10 @@ _SE = t("Sweden", "Suecia"); _GB = t("UK", "Reino Unido"); _US = t("US", "EE. UU
 BRAND_GROUPS = [
     (t("Brands with hybrid models", "Marcas con modelos híbridos"), [
         ("Toyota", _JP), ("Honda", _JP), ("Ford", _US), ("Jeep", None), ("Volkswagen", _DE),
-        ("Mercedes-Benz", _DE), ("Audi", _DE), ("Karma", _US)]),
+        ("Mercedes-Benz", _DE), ("Audi", _DE)]),
     (t("US-headquartered brands", "Marcas con sede en EE. UU."), [
         ("Ford", _US), ("Lincoln", _US), ("Chevrolet", _US), ("GMC", _US), ("Buick", _US),
-        ("Cadillac", _US), ("Tesla", _US), ("Rivian", _US), ("Lucid", _US)]),
+        ("Cadillac", _US)]),
     (t("Stellantis brands, built mainly in the US", "Marcas de Stellantis, fabricadas principalmente en EE. UU."), [
         ("Chrysler", None), ("Dodge", None), ("Jeep", None), ("Ram", None)]),
     (t("Mainstream foreign brands", "Marcas extranjeras populares"), [
@@ -625,8 +625,7 @@ BRAND_GROUPS = [
         ("Mercedes-Benz", _DE), ("Volvo", _SE), ("Audi", _DE)]),
     (t("Luxury and specialty brands", "Marcas de lujo y especializadas"), [
         ("Lexus", _JP), ("Acura", _JP), ("Infiniti", _JP), ("Genesis", _KR), ("Porsche", _DE),
-        ("MINI", t("UK, BMW", "Reino Unido, BMW")), ("Polestar", _SE), ("Jaguar", _GB), ("Land Rover", _GB),
-        ("Bentley", _GB), ("Rolls-Royce", _GB), ("Aston Martin", _GB), ("McLaren", _GB), ("Lotus", _GB)]),
+        ("MINI", t("UK, BMW", "Reino Unido, BMW")), ("Jaguar", _GB), ("Land Rover", _GB)]),
     (t("Italian brands", "Marcas italianas"), [
         ("Fiat", t("Italy, Stellantis", "Italia, Stellantis")), ("Alfa Romeo", t("Italy, Stellantis", "Italia, Stellantis")),
         ("Maserati", t("Italy", "Italia"))]),
@@ -654,8 +653,8 @@ ASK_SERVICES = [
      "title": t("Electric and hybrid vehicles", "Vehículos eléctricos e híbridos"),
      "card": t("Electric & Hybrid", "Eléctricos e híbridos"),
      "line": t("Ask about electric and hybrid vehicles.", "Pregunte por vehículos eléctricos e híbridos."),
-     "desc": t("We service electric and hybrid vehicles. Call with the year, make, and model to discuss the work you need. This is not a manufacturer certification or a brand-specialist claim.",
-               "Damos servicio a vehículos eléctricos e híbridos. Llame con el año, la marca y el modelo para hablar del trabajo que necesita. No es una certificación del fabricante ni una afirmación de especialidad en una marca."),
+     "desc": t("We service electric and hybrid vehicles, except repairs on Tesla, Rivian, Lucid, Karma, and Polestar, which need factory software and high-voltage training. Call with the year, make, and model to discuss the work you need. This is not a manufacturer certification or a brand-specialist claim.",
+               "Damos servicio a vehículos eléctricos e híbridos, excepto reparaciones de Tesla, Rivian, Lucid, Karma y Polestar, que requieren software de fábrica y capacitación en alto voltaje. Llame con el año, la marca y el modelo para hablar del trabajo que necesita. No es una certificación del fabricante ni una afirmación de especialidad en una marca."),
      "faq": "ev", "group": "ask"},
     {"id": "rotation", "icon": "tire",
      "title": t("Tire rotation & balancing", "Rotación y balanceo de llantas"),
@@ -696,8 +695,8 @@ ASK_FAQ_CATS = [
     ]},
     {"id": "ev", "title": t("Electric and hybrid vehicles", "Vehículos eléctricos e híbridos"), "items": [
         (t("Do you service electric and hybrid vehicles?", "¿Dan servicio a vehículos eléctricos e híbridos?"),
-         t("Yes. We service electric and hybrid vehicles. Call with your vehicle's year, make, and model to discuss the work you need.",
-           "Sí. Damos servicio a vehículos eléctricos e híbridos. Llame con el año, la marca y el modelo de su vehículo para hablar del trabajo que necesita.")),
+         t("Yes, except repairs on Tesla, Rivian, Lucid, Karma, and Polestar, which need factory software and high-voltage training. Call with your vehicle's year, make, and model to discuss the work you need.",
+           "Sí, excepto reparaciones de Tesla, Rivian, Lucid, Karma y Polestar, que requieren software de fábrica y capacitación en alto voltaje. Llame con el año, la marca y el modelo de su vehículo para hablar del trabajo que necesita.")),
         (t("Are you certified for a particular electric vehicle brand?", "¿Están certificados para alguna marca de vehículos eléctricos?"),
          t("We do not claim manufacturer certification or brand-specialist status. Call to discuss the work your vehicle needs.",
            "No afirmamos tener certificación del fabricante ni especialidad en una marca. Llame para hablar del trabajo que necesita su vehículo.")),
