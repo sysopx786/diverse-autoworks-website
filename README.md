@@ -80,3 +80,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - All "call to confirm" / "llame para confirmar" / "not listed" / "not a confirmed service" wording is gone from the site (EN + ES). The group heading "Also ask us about (call to confirm)" is now "More services" / "Más servicios". Cards stay in that group; copy and FAQs are in `tools/content.py` (`ASK_SERVICES`, `ASK_FAQ_CATS`) and `tools/more_services.py`.
 - Structured data: the offer catalog in `business_node()` now lists every service except pickup/drop-off (a visit arrangement, not a service).
 - Google tag (GA4 `G-R4MYP7LT9Z`, Google Ads `AW-18451378396`) and the click-to-call conversion (`gtag_report_conversion`) were added to `docs/` by hand in PRs #17-#19, so any rebuild would have deleted them. They now live in `GTAG_HEAD` / `add_tracking()` in `tools/build.py`, which runs on every page in `write()`. Never add tracking by editing `docs/` directly.
+
+## Body work removed; PennDOT authorized agent (Oct 30, 2026)
+- Owner: the shop does not do body work. The Body work card and its FAQ category are gone from `tools/more_services.py`, and the home "See all services" subtext no longer mentions it. `docs/assets/img/svc-bodywork.webp` is unused. Do not add body work, dent, paint or collision services back without the owner's OK.
+- Owner confirmed the shop is a PennDOT authorized agent. The notary FAQ "Do you complete the title application and issue plates?" now says so (EN + ES). Plate issuing is not stated; it has not been confirmed.

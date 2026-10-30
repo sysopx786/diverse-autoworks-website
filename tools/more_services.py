@@ -9,7 +9,6 @@ Deduplicated against what the site already has:
   - tire rotation & balancing, alternators & starters -> already in ASK_SERVICES (content.py)
   - gas tank + fuel system repair                     -> one card (fuelsys)
   - differential + axles                              -> one card (diff); axle bearings/seals stay under Drivetrain
-  - body work                                         -> one card (bodywork); replaces the old FAQ_GENERAL bodywork item
 Each service gets its own FAQ category with 5 questions.
 """
 
@@ -189,22 +188,6 @@ _ITEMS = [
          (t("Are ball joints part of steering and suspension service?", "¿Las rótulas forman parte del servicio de dirección y suspensión?"),
           t("Yes. Ball joints are part of our steering and suspension work, along with shocks and struts.",
             "Sí. Las rótulas forman parte de nuestro trabajo de dirección y suspensión, junto con los amortiguadores y los puntales."))),
-
-    # ---------------------------------------------------------------- body work
-    _svc("bodywork", "van",
-         t("Body work", "Carrocería"),
-         t("Body Work", "Carrocería"),
-         t("Ask about body work.", "Pregunte por trabajos de carrocería."),
-         t("We do body work, including dents, panels, paint, and collision-related repairs. Call to describe the damage.",
-           "Hacemos trabajos de carrocería, incluidas abolladuras, paneles, pintura y reparaciones relacionadas con colisiones. Llame para describir el daño."),
-         t("Body work", "Carrocería"),
-         "body work", "los trabajos de carrocería", "de los trabajos de carrocería",
-         (t("Do you do dent repair, painting, or collision repair?", "¿Hacen reparación de abolladuras, pintura o reparación por colisión?"),
-          t("Yes. We do dent repair, painting, and collision-related work. Call to describe the damage.",
-            "Sí. Hacemos reparación de abolladuras, pintura y trabajos relacionados con colisiones. Llame para describir el daño.")),
-         (t("Do you work with insurance claims?", "¿Trabajan con reclamos de seguro?"),
-          t("Insurance-claim work is not specified in our published information. Ask the shop before assuming a claim can be handled.",
-            "El trabajo con reclamos de seguro no está especificado en nuestra información publicada. Pregunte al taller antes de dar por hecho que se puede atender un reclamo."))),
 ]
 
 NEW_ASK_SERVICES = [s for s, _ in _ITEMS]
