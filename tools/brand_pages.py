@@ -2,7 +2,8 @@
 """
 Dedicated brand pages (/brands/<brand>/), added Oct 30, 2026.
 
-Batch: US brands (Ford, Lincoln, Chevrolet, GMC, Buick, Cadillac, Tesla).
+All 35 hub brands. US brands are defined here; Stellantis, mainstream foreign, luxury and Italian
+brands are in bp_stellantis.py, bp_mainstream.py, bp_luxury.py and bp_italian.py.
 Spec: diverse-autoworks-brand-pages-all.md (SEO fields, sources). Facts come from RepairPal,
 the manufacturers' owner manuals / support pages and PennDOT-region sources listed there.
 
@@ -497,6 +498,14 @@ BRAND_PAGES = [
             "Con el frenado regenerativo, los frenos de fricción se usan menos y las mordazas pueden trabarse, sobre todo con la sal de las calles. Tesla indica limpiarlas y lubricarlas cada año o 12,500 millas en zonas donde se usa sal.")),
      ]},
 ]
+
+# Remaining hub groups live in their own modules (imported here, after the shared helpers exist).
+from bp_stellantis import STELLANTIS_PAGES  # noqa: E402
+from bp_mainstream import MAINSTREAM_PAGES  # noqa: E402
+from bp_luxury import LUXURY_PAGES  # noqa: E402
+from bp_italian import ITALIAN_PAGES  # noqa: E402
+
+BRAND_PAGES += STELLANTIS_PAGES + MAINSTREAM_PAGES + LUXURY_PAGES + ITALIAN_PAGES
 
 BRAND_PAGE_BY_NAME = {b["name"]: b for b in BRAND_PAGES}
 BRAND_PAGE_BY_KEY = {b["key"]: b for b in BRAND_PAGES}
