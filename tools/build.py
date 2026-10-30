@@ -341,7 +341,9 @@ def _opening_hours():
 
 def business_node(lang):
     """The single AutoRepair entity. Same @id on every page and in both languages."""
-    confirmed = [sv for sv in SERVICES if sv["id"] not in {a["id"] for a in ASK_SERVICES}]  # owner-confirmed only
+    # All listed services are owner-confirmed (the "More services" group since Oct 30, 2026).
+    # Pickup/drop-off is a visit arrangement, not a service, so it stays out of the offer catalog.
+    confirmed = [sv for sv in SERVICES if sv["id"] != "pickup"]
     offers = []
     for sv in confirmed:
         url = _slug_url(lang, sv["page"], sv.get("anchor", "")) if sv.get("page") else _slug_url(lang, "services", sv["id"])
@@ -1257,9 +1259,50 @@ def linkify(html_text):
     return "".join(out)
 
 
+# Google tag (GA4 G-R4MYP7LT9Z + Google Ads AW-18451378396) and the click-to-call
+# conversion (PRs #17-#19, Oct 2026). Those PRs edited docs/ by hand; it lives here
+# so a rebuild keeps it. Goes right before </head> on every page.
+GTAG_HEAD = """  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4MYP7LT9Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R4MYP7LT9Z');
+    gtag('config', 'AW-18451378396');
+  </script>
+  <!-- Google Ads event snippet: Click to call -->
+  <script>
+  function gtag_report_conversion(url) {
+    var done = false;
+    var go = function () {
+      if (done) return;
+      done = true;
+      if (typeof(url) != 'undefined') { window.location = url; }
+    };
+    setTimeout(go, 1000);
+    gtag('event', 'conversion', {
+      'send_to': 'AW-18451378396/1PeoCK7moKkdENzhpt5E',
+      'event_callback': go
+    });
+    return false;
+  }
+  </script>
+"""
+CALL_ONCLICK = ' onclick="return gtag_report_conversion(this.href);"'
+_TEL_RE = re.compile(r'(<a\b[^>]*?href="tel:\+16106500316")(?![^>]*onclick)')
+
+
+def add_tracking(text):
+    """Add the Google tag before </head> and the call-conversion handler to every tel: link."""
+    if "googletagmanager.com/gtag/js" not in text:
+        text = text.replace("</head>", GTAG_HEAD + "</head>", 1)
+    return _TEL_RE.sub(lambda m: m.group(1) + CALL_ONCLICK, text)
+
+
 def write(rel, text):
     if rel.endswith(".html"):
-        text = linkify(text)
+        text = add_tracking(linkify(text))
     full = os.path.join(ROOT, rel)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as fh:

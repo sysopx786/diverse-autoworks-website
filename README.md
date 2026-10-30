@@ -61,8 +61,8 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - The older three-question notary FAQ in `FAQ_CATS` still feeds `/faq/`; it was left as is.
 
 ## More "ask us about" services (Oct 8, 2026)
-- 14 services from the owner checklist (Part B) are on `/services/` under "Also ask us about (call to confirm)": towing, pre-purchase inspections, cylinder head & block, fuel system & gas tank, spark plugs, onboard computer, differential, emission control repair, heater, corrosion, wheels, tire retreads, ball joints, body work. Copy and FAQs (5 questions each, EN + ES) live in `tools/more_services.py`.
-- They are NOT confirmed offerings. Wording is "call to confirm," same as tags/title, EV/hybrid, tire rotation, and alternators. When the owner marks one Yes, move it from `more_services.py` into `SERVICES` in `tools/content.py` with confirmed wording.
+- 14 services from the owner checklist (Part B) are on `/services/` under "Also ask us about (call to confirm)" (renamed "More services" on Oct 30, 2026): towing, pre-purchase inspections, cylinder head & block, fuel system & gas tank, spark plugs, onboard computer, differential, emission control repair, heater, corrosion, wheels, tire retreads, ball joints, body work. Copy and FAQs (5 questions each, EN + ES) live in `tools/more_services.py`.
+- Superseded Oct 30, 2026: the owner confirmed every service in this group. See "All services confirmed" below.
 - Deduplicated: tire rotation and alternators/starters already existed; gas tank + fuel system and differential + axles are one card each; the old general "bodywork" FAQ became the Body work card; a repeated alternator question under Batteries was replaced.
 - Part A: Engine, Oil/maintenance (fuel), Tires, Steering & suspension, A/C and Drivetrain descriptions now say what is listed and point to the call-to-confirm cards for the rest.
 - The Spanish was verified by a native speaker (Oct 2026).
@@ -74,3 +74,9 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - **Shop hours are confirmed by the owner (Oct 18, 2026): Mon-Fri 7:30 a.m.-4:30 p.m., Sat and Sun closed.** `sample` is `False`. Change them only in `SHOP`, then run `python3 tools/build.py`.
 - Search button opens a local-index search (EN/ES, accent-insensitive). Index is `SEARCH_ROWS` in `tools/build.py`.
 - Status wording (EN/ES) lives in `UI[...]["status"]`.
+
+## All services confirmed; Google tag moved into the build (Oct 30, 2026)
+- The owner confirmed every service that was worded "call to confirm" (tags & title, EV/hybrid, tire rotation & balancing, alternators & starters, pickup/drop-off/after-hours, towing, pre-purchase inspections, gas tanks, differential, heater, corrosion, wheels, retreads, ball joints, body work, transmission rebuild/replacement, no-start diagnosis).
+- All "call to confirm" / "llame para confirmar" / "not listed" / "not a confirmed service" wording is gone from the site (EN + ES). The group heading "Also ask us about (call to confirm)" is now "More services" / "Más servicios". Cards stay in that group; copy and FAQs are in `tools/content.py` (`ASK_SERVICES`, `ASK_FAQ_CATS`) and `tools/more_services.py`.
+- Structured data: the offer catalog in `business_node()` now lists every service except pickup/drop-off (a visit arrangement, not a service).
+- Google tag (GA4 `G-R4MYP7LT9Z`, Google Ads `AW-18451378396`) and the click-to-call conversion (`gtag_report_conversion`) were added to `docs/` by hand in PRs #17-#19, so any rebuild would have deleted them. They now live in `GTAG_HEAD` / `add_tracking()` in `tools/build.py`, which runs on every page in `write()`. Never add tracking by editing `docs/` directly.
