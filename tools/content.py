@@ -329,8 +329,8 @@ FAQ_CATS = [
     ]},
     {"id": "ac", "title": t("Air conditioning & cooling systems", "Aire acondicionado y sistemas de enfriamiento"), "items": [
         (t("Do you service automotive air conditioning?", "¿Dan servicio al aire acondicionado automotriz?"),
-         t("Yes. A/C service is listed among our services. Call with your vehicle details and describe the problem so we can confirm the appropriate service.",
-           "Sí. El servicio de A/C figura entre nuestros servicios. Llame con los datos de su vehículo y describa el problema para que podamos confirmar el servicio adecuado.")),
+         t("Yes. A/C service is listed among our services. Call with your vehicle details and describe the problem to schedule.",
+           "Sí. El servicio de A/C figura entre nuestros servicios. Llame con los datos de su vehículo y describa el problema para programar.")),
         (t("Do you also work on the engine cooling system?", "¿También trabajan en el sistema de enfriamiento del motor?"),
          t("Yes. Cooling-system service is included in our published service range. Contact us about the particular issue or component you need assessed.",
            "Sí. El servicio del sistema de enfriamiento está incluido en nuestra gama de servicios publicada. Comuníquese con nosotros sobre el problema o el componente específico que necesita evaluar.")),
@@ -611,24 +611,21 @@ PAGES = {
 _JP = t("Japan", "Japón"); _KR = t("South Korea", "Corea del Sur"); _DE = t("Germany", "Alemania")
 _SE = t("Sweden", "Suecia"); _GB = t("UK", "Reino Unido"); _US = t("US", "EE. UU.")
 BRAND_GROUPS = [
-    (t("Brands with hybrid models", "Marcas con modelos híbridos"), [
-        ("Toyota", _JP), ("Honda", _JP), ("Ford", _US), ("Jeep", None), ("Volkswagen", _DE),
-        ("Mercedes-Benz", _DE), ("Audi", _DE)]),
     (t("US-headquartered brands", "Marcas con sede en EE. UU."), [
         ("Ford", _US), ("Lincoln", _US), ("Chevrolet", _US), ("GMC", _US), ("Buick", _US),
         ("Cadillac", _US), ("Tesla", _US)]),
-    (t("Stellantis brands, built mainly in the US", "Marcas de Stellantis, fabricadas principalmente en EE. UU."), [
+    (t("US brands owned by Stellantis", "Marcas estadounidenses de Stellantis"), [
         ("Chrysler", None), ("Dodge", None), ("Jeep", None), ("Ram", None)]),
     (t("Mainstream foreign brands", "Marcas extranjeras populares"), [
         ("Toyota", _JP), ("Honda", _JP), ("Nissan", _JP), ("Mazda", _JP), ("Subaru", _JP),
-        ("Mitsubishi", _JP), ("Hyundai", _KR), ("Kia", _KR), ("Volkswagen", _DE), ("BMW", _DE),
-        ("Mercedes-Benz", _DE), ("Volvo", _SE), ("Audi", _DE)]),
+        ("Mitsubishi", _JP), ("Hyundai", _KR), ("Kia", _KR), ("Volkswagen", _DE)]),
     (t("Luxury and specialty brands", "Marcas de lujo y especializadas"), [
+        ("Mercedes-Benz", _DE), ("BMW", _DE), ("Audi", _DE), ("Volvo", _SE),
         ("Lexus", _JP), ("Acura", _JP), ("Infiniti", _JP), ("Genesis", _KR), ("Porsche", _DE),
         ("MINI", t("UK, BMW", "Reino Unido, BMW")), ("Jaguar", _GB), ("Land Rover", _GB)]),
     (t("Italian brands", "Marcas italianas"), [
         ("Fiat", t("Italy, Stellantis", "Italia, Stellantis")), ("Alfa Romeo", t("Italy, Stellantis", "Italia, Stellantis")),
-        ("Maserati", t("Italy", "Italia"))]),
+        ("Maserati", t("Italy, Stellantis", "Italia, Stellantis"))]),
 ]
 
 NOT_FOUND = {
