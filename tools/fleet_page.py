@@ -218,7 +218,7 @@ BLOCKS = [
         t("Drivetrain and transmission maintenance", "Mantenimiento del tren motriz y de la transmisión"),
         t("Cooling system, water pump and thermostat; A/C and heater service", "Sistema de enfriamiento, bomba de agua y termostato; servicio de aire acondicionado y calefacción"),
         t("Batteries, alternators and starters", "Baterías, alternadores y motores de arranque"),
-        t("Timing belt and chain service, oil leaks and gaskets, motor and transmission mounts", "Correa y cadena de distribución, fugas de aceite y empaques, soportes de motor y de transmisión"),
+        t("Timing belt and chain service, oil leaks and gaskets, motor and transmission mounts", "Correa y cadena de distribución, fugas de aceite y juntas, soportes de motor y de transmisión"),
         t("Exhaust, catalytic converters, oxygen sensors and emission control repair", "Escape, convertidores catalíticos, sensores de oxígeno y reparación del control de emisiones"),
         t("Corrosion and rust control", "Control de corrosión y óxido"),
     ]),
