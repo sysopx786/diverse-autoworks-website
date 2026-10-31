@@ -11,6 +11,8 @@ Every text is a dict {"en": ..., "es": ...}. build.py fails if either side is mi
 def t(en, es):
     return {"en": en, "es": es}
 
+import fleet_page as _FLEET  # noqa: E402  (fleet page copy, Oct 31, 2026)
+
 
 # ---------------------------------------------------------------- business
 BUSINESS = {
@@ -120,8 +122,8 @@ SERVICES = [
         "title": t("Fleet repairs", "Reparaciones para flotas"),
         "card": t("Fleet Repairs", "Reparaciones para flotas"),
         "line": t("Repairs for business vehicles.", "Reparaciones para vehículos de negocios."),
-        "desc": t("Keep your business vehicles on your maintenance radar. Diverse Autoworks offers fleet repairs; call to discuss your vehicles, repair needs, and scheduling.",
-                  "Mantenga los vehículos de su negocio en su radar de mantenimiento. Diverse Autoworks ofrece reparaciones para flotas; llame para hablar de sus vehículos, sus necesidades de reparación y la programación."),
+        "desc": t("Maintenance, repairs, PA state inspections, and tag and title work for business pickups, vans and trucks, gas and diesel. See the fleet repairs page for the vehicles we service.",
+                  "Mantenimiento, reparaciones, inspecciones estatales de Pennsylvania y trámites de placas y títulos para pickups, vans y camiones de negocio, de gasolina y diésel. Vea la página de flotas para conocer los vehículos que atendemos."),
         "faq": "fleet", "page": "fleet-repairs", "group": "biz",
     },
     {
@@ -360,17 +362,7 @@ FAQ_CATS = [
          t("Yes. We service rear-axle bearings and seals, and we rebuild and replace transmissions. Call with your vehicle details to discuss the work.",
            "Sí. Damos servicio a los cojinetes y sellos del eje trasero, y reconstruimos y reemplazamos transmisiones. Llame con los datos de su vehículo para hablar del trabajo.")),
     ]},
-    {"id": "fleet", "title": t("Fleet repairs", "Reparaciones para flotas"), "items": [
-        (t("Do you work with business fleets?", "¿Trabajan con flotas de empresas?"),
-         t("Yes. Diverse Autoworks advertises fleet repairs. Call to discuss your business vehicles and repair needs.",
-           "Sí. Diverse Autoworks anuncia reparaciones para flotas. Llame para hablar de los vehículos de su empresa y de sus necesidades de reparación.")),
-        (t("What information should I provide for a fleet inquiry?", "¿Qué información debo dar al consultar por una flota?"),
-         t("Tell us the number of vehicles, their years/makes/models, the work needed, and your preferred scheduling arrangements. Include a contact person for your business.",
-           "Indíquenos la cantidad de vehículos, el año, la marca y el modelo de cada uno, el trabajo necesario y sus preferencias de programación. Incluya una persona de contacto de su empresa.")),
-        (t("Do fleet customers receive special rates, account billing, or priority appointments?", "¿Los clientes con flotas reciben tarifas especiales, facturación por cuenta o citas prioritarias?"),
-         t("Those arrangements are not specified in our published information. Discuss pricing, billing, and scheduling directly with the shop before relying on a particular fleet arrangement.",
-           "Esos arreglos no se especifican en nuestra información publicada. Hable directamente con el taller sobre precios, facturación y programación antes de contar con un arreglo en particular.")),
-    ]},
+    {"id": "fleet", "title": t("Fleet repairs", "Reparaciones para flotas"), "items": list(_FLEET.FAQ)},
     {"id": "notary", "title": t("Notary services", "Servicios de notario público"), "items": [
         (t("Do you offer notary services?", "¿Ofrecen servicios de notario público?"),
          t("Yes. Diverse Autoworks advertises notary services in addition to automotive services.",
@@ -520,20 +512,16 @@ PAGES = {
     "fleet": {
         "title": t("Fleet Repairs in Phoenixville, PA | Diverse Autoworks",
                    "Reparaciones para flotas | Diverse Autoworks, Phoenixville"),
-        "desc": t("Diverse Autoworks offers fleet repairs for business vehicles in Phoenixville, PA. Contact the shop to discuss your vehicles, repair needs, and scheduling.",
-                  "Reparaciones para flotas de vehículos de negocio en Phoenixville, PA. Hable con el taller sobre sus vehículos y la programación."),
-        "h1": t("Fleet Repairs in Phoenixville, PA", "Reparaciones para flotas en Phoenixville, PA"),
-        "lead": t("Keep your business vehicles on your maintenance radar. Diverse Autoworks offers fleet repairs; call to discuss your vehicles, repair needs, and scheduling.",
-                  "Mantenga los vehículos de su negocio en su radar de mantenimiento. Diverse Autoworks ofrece reparaciones para flotas; llame para hablar de sus vehículos, sus necesidades de reparación y la programación."),
+        "desc": _FLEET.PAGE["desc"],
+        "h1": _FLEET.PAGE["h1"],
+        "lead": _FLEET.PAGE["lead"],
         "tell_h": t("What to tell us", "Qué debe indicarnos"),
         "tell": [t("The number of vehicles", "La cantidad de vehículos"),
                  t("Year, make, and model of each", "Año, marca y modelo de cada uno"),
                  t("The work needed", "El trabajo necesario"),
                  t("Your preferred scheduling arrangements", "Sus preferencias de programación"),
                  t("A contact person for your business", "Una persona de contacto de su empresa")],
-        "terms_h": t("Rates, billing, and scheduling", "Tarifas, facturación y programación"),
-        "terms_p": t("Those arrangements are not specified in our published information. Discuss pricing, billing, and scheduling directly with the shop before relying on a particular fleet arrangement.",
-                     "Esos arreglos no se especifican en nuestra información publicada. Hable directamente con el taller sobre precios, facturación y programación antes de contar con un arreglo en particular."),
+        "setup_p": _FLEET.SETUP_NOTE,
         "form_h": t("Send a fleet inquiry", "Envíe una consulta para su flota"),
     },
     "about": {

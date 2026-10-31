@@ -678,3 +678,31 @@ details.q .a p{margin:0}
 .spec-table th,.spec-table td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
 .spec-table th{background:var(--ink);color:#fff;font-weight:700}
 .spec-table td:first-child{font-weight:600}
+
+/* ---------- fleet page: vehicle lookup (Oct 31, 2026) ---------- */
+.vl{background:#fff;border:1px solid var(--line);border-top:6px solid var(--sign);padding:clamp(22px,4vw,40px);max-width:880px}
+.vl-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:18px}
+.vl-head .ic{width:56px;height:56px;flex:none;color:var(--navy-2)}
+.vl-head h2{margin-bottom:.15em}
+.vl-head p{margin:0;color:var(--steel)}
+.vl-label{display:block;font-weight:600;margin-bottom:6px}
+.vl-box{position:relative}
+.vl-ic{position:absolute;left:16px;top:50%;width:24px;height:24px;transform:translateY(-50%);color:var(--steel);pointer-events:none}
+.vl-box input{width:100%;min-height:58px;padding:0 16px 0 52px;border:2px solid var(--ink);border-radius:3px;background:#fff;color:var(--ink);font:500 1.15rem var(--body);-webkit-appearance:none;appearance:none}
+.vl-box input:focus{outline:3px solid var(--navy-2);outline-offset:2px}
+.vl-try{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.vl-try span{font-weight:600;color:var(--steel);margin-right:2px}
+.vl-try button{min-height:40px;padding:0 14px;border:2px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:600 .98rem var(--body);cursor:pointer;transition:border-color .15s,background-color .15s}
+.vl-try button:hover{border-color:var(--navy-2)}
+.vl-count{margin:18px 0 8px;font-weight:600;color:var(--steel);min-height:1.6em}
+.vl-res{list-style:none;display:grid;gap:10px}
+.vl-row{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:start;padding:14px 16px;border:1px solid var(--line);border-left:5px solid var(--navy);background:var(--paper)}
+.vl-row.is-hybrid{border-left-color:var(--steel)}
+.vl-name{font-family:var(--head);font-weight:700;font-size:1.45rem;line-height:1.1}
+.vl-type{grid-column:1;color:var(--steel);font-size:.98rem}
+.vl-scope{grid-column:1/-1;margin:2px 0 0;font-size:1rem;max-width:none}
+.vl-badge{grid-column:2;grid-row:1;justify-self:end;padding:3px 10px;border-radius:999px;background:var(--navy);color:#fff;font:700 .85rem/1.4 var(--body);letter-spacing:.02em;white-space:nowrap}
+.vl-row.is-hybrid .vl-badge{background:#fff;color:var(--ink);border:2px solid var(--steel);padding:1px 8px}
+.vl-row a{grid-column:1/-1;justify-self:start;font-weight:600}
+.vl-empty{margin:6px 0 0;padding:14px 16px;border-left:5px solid var(--sign);background:var(--paper);max-width:none}
+@media (max-width:560px){.vl-head .ic{display:none}.vl-row{grid-template-columns:1fr}.vl-badge{grid-column:1;grid-row:auto;justify-self:start}}

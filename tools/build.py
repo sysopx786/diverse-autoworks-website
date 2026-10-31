@@ -28,6 +28,7 @@ from notary import NOTARY  # noqa
 import graphics as G
 import reviews_es as RES
 from brand_pages import BRAND_PAGES, BRAND_PAGE_BY_NAME, BRAND_PAGE_BY_KEY  # noqa
+import fleet_page as FLEET  # noqa
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -277,6 +278,9 @@ def learn_href(lang, cur_key, sid):
     return href(lang, cur_key, lang, "services", anchor=sid)
 
 
+FLEET_COPY = [FLEET.LOOKUP, FLEET.TYPES, FLEET.BLOCKS, FLEET.CTA, FLEET.FAQ, FLEET.VEHICLES]
+
+
 def check_parity():
     """Every user-facing dict must have both languages with non-empty text (except flagged blanks)."""
     problems = []
@@ -300,7 +304,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES", "FLEET_COPY"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -311,7 +315,8 @@ def check_parity():
     n = sum(len(c["items"]) for c in FAQ_CATS)
     # 36 original FAQs + 65 for the 13 confirmed services added Oct 18, 2026 (5 each).
     # 36 original + 65 for the 13 confirmed services (Oct 18, 2026) + 2 engine repair FAQs (Oct 18, 2026).
-    expected = 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS) + 2
+    # + 3: the fleet category went from 3 to 6 questions (Oct 31, 2026).
+    expected = 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS) + 2 + 3
     if n != expected:
         problems.append(f"expected {expected} service FAQs, found {n}")
     for _b in BRAND_PAGES:
@@ -423,7 +428,7 @@ def structured_data(lang, key):
     service_type = {
         "services": ("Auto repair and maintenance", "Reparación y mantenimiento de autos"),
         "inspections": ("Vehicle state inspection and emissions testing", "Inspección estatal y pruebas de emisiones de vehículos"),
-        "fleet": ("Fleet vehicle repair", "Reparación de vehículos de flotas"),
+        "fleet": ("Fleet vehicle maintenance and repair", "Mantenimiento y reparación de vehículos de flota"),
         "moto": ("Motorcycle safety inspection", "Inspección de seguridad de motocicletas"),
     }.get(key)
     has_service = service_type is not None
@@ -534,7 +539,7 @@ SEARCH_ROWS = [
     ("services", "emissioncontrol", "Emission control repair", "Reparación del control de emisiones", "emission control repair failed emissions test", "control emisiones reparación prueba reprobada"),
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
     ("moto", "", "Motorcycle inspections (year-round)", "Inspecciones de motocicletas (todo el año)", "motorcycle bike inspection year-round winter act 149", "motocicleta moto inspección todo el año invierno ley 149"),
-    ("fleet", "", "Fleet repairs", "Reparaciones de flotas", "fleet business vehicles commercial vans trucks", "flota negocio vehículos comerciales camionetas"),
+    ("fleet", "", "Fleet repairs", "Reparaciones de flotas", FLEET.SEARCH[0], FLEET.SEARCH[1]),
     ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
     ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
     ("contact", "", "Contact, phone & hours", "Contacto, teléfono y horario", "contact phone email address hours location", "contacto teléfono correo dirección horario ubicación"),
@@ -932,19 +937,55 @@ def page_moto(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
+def fleet_lookup(lang, key):
+    """Vehicle lookup on the fleet page: make/model search over FLEET.VEHICLES plus one row per brand page."""
+    LK = FLEET.LOOKUP
+    u = UI[lang]
+    rows = []
+    for b in BRAND_PAGES:
+        if b["name"] in FLEET.LOOKUP_EXCLUDE_BRANDS:
+            continue
+        models = " ".join(L(v[0], lang) if isinstance(v[0], dict) else v[0] for v in FLEET.VEHICLES if v[1] == b["name"])
+        rows.append([b["name"], L(FLEET.TYPES["brand"], lang), "full", b["name"], href(lang, key, lang, b["key"]),
+                     b["name"] + " " + models + " " + b["search"][0]])
+    for name, brand, typ, scope, extra in FLEET.VEHICLES:
+        name = L(name, lang) if isinstance(name, dict) else name
+        bp = BRAND_PAGE_BY_NAME[brand]
+        rows.append([name, L(FLEET.TYPES[typ], lang), scope, brand, href(lang, key, lang, bp["key"]), name + " " + extra])
+    data = {"rows": rows,
+            "scope": {k: L(v, lang) for k, v in LK["scope"].items()},
+            "badge": {k: L(v, lang) for k, v in LK["badge"].items()},
+            "details": L(LK["details"], lang), "count1": L(LK["count1"], lang), "countn": L(LK["countn"], lang)}
+    blob = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+    chips = "".join(f'<button type="button" data-vl-chip>{esc(c)}</button>' for c in LK["chips"])
+    return f'''<section class="sec sec-paper" aria-labelledby="vl-h"><div class="wrap"><div class="vl" data-vl>
+<div class="vl-head">{G.icon("van", 56)}<div><h2 id="vl-h">{esc(L(LK["h"], lang))}</h2><p>{esc(L(LK["p"], lang))}</p></div></div>
+<label class="vl-label" for="vl-q">{esc(L(LK["label"], lang))}</label>
+<div class="vl-box"><svg class="vl-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+<input id="vl-q" type="search" autocomplete="off" spellcheck="false" placeholder="{esc(L(LK["ph"], lang), quote=True)}" aria-controls="vl-res" aria-describedby="vl-count"></div>
+<div class="vl-try"><span>{esc(L(LK["try"], lang))}</span>{chips}</div>
+<p class="vl-count" id="vl-count" role="status" aria-live="polite"></p>
+<ul class="vl-res" id="vl-res"></ul>
+<p class="vl-empty" id="vl-empty" hidden>{rich(lang, key, L(LK["empty"], lang))}</p>
+<script type="application/json" id="vl-data">{blob}</script>
+</div></div></section>'''
+
+
 def page_fleet(lang):
     key = "fleet"
     P = PAGES["fleet"]
     u = UI[lang]
     tell = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in P["tell"])
     fc = faq_cat_by_id("fleet")
-    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + fleet_lookup(lang, key) + f'''
+<section class="sec sec-white"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, FLEET.BLOCKS)}</div></div></section>
 <section class="sec sec-paper"><div class="wrap two-col">
 <div>{img(lang, key, "svc-fleet", "fig-img")}<h2>{esc(L(P["tell_h"], lang))}</h2><ul class="checklist">{tell}</ul>
-<div class="callout" style="margin-top:28px"><h3>{esc(L(P["terms_h"], lang))}</h3><p>{esc(L(P["terms_p"], lang))}</p></div>
+<p style="margin-top:22px">{esc(L(P["setup_p"], lang))}</p>
 <p style="margin-top:22px"><a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a></p></div>
 <div><h2 style="margin-bottom:.5em">{esc(L(P["form_h"], lang))}</h2>{form_html(lang, key, fleet=True)}</div></div></section>
-<section class="sec sec-white"><div class="wrap"><div class="sec-head"><h2>{esc(L(fc["title"], lang))}</h2></div><div style="max-width:820px">{faq_list(lang, fc)}</div></div></section>'''
+<section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{"Fleet repair FAQs" if lang == "en" else "Preguntas frecuentes sobre flotas"}</h2></div><div style="max-width:820px">{faq_list(lang, fc)}</div></div></section>
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, FLEET.CTA)}</div></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 

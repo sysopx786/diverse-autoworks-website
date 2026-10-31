@@ -252,6 +252,57 @@
     $$(".parts button").forEach(function (b) { b.addEventListener("click", function () { pick(b.getAttribute("data-part")); }); });
   }
 
+  /* fleet page: vehicle lookup (make/model), accent- and punctuation-insensitive */
+  var vl = $("[data-vl]");
+  if (vl) {
+    var vlData; try { vlData = JSON.parse($("#vl-data").textContent); } catch (e) { vlData = null; }
+    var vq = $("#vl-q"), vres = $("#vl-res"), vcount = $("#vl-count"), vempty = $("#vl-empty");
+    if (vlData && vq) {
+      var vnorm = function (t) { return String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim(); };
+      var rows = vlData.rows.map(function (r) {
+        var name = vnorm(r[0]), hay = vnorm(r[0] + " " + r[3] + " " + r[1] + " " + r[5]);
+        return { r: r, name: name, hay: " " + hay + " ", flat: hay.replace(/ /g, ""), brand: r[0] === r[3] };
+      });
+      var vrun = function () {
+        var q = vnorm(vq.value), flatq = q.replace(/ /g, "");
+        vres.textContent = ""; vempty.hidden = true; vcount.textContent = "";
+        if (!q) return;
+        var tokens = q.split(" "), hits = [];
+        rows.forEach(function (o) {
+          var all = tokens.every(function (t) { return t.length === 1 ? o.hay.indexOf(" " + t + " ") > -1 : o.hay.indexOf(" " + t) > -1; });
+          if (!all && !(/\d/.test(flatq) && flatq.length > 2 && o.flat.indexOf(flatq) > -1)) return;
+          var score = 0;
+          if (o.name === q) score += 100;
+          if (o.name.indexOf(q) === 0) score += 20;
+          if (o.brand) score += (o.name === q ? 50 : -1);
+          tokens.forEach(function (t) { if ((" " + o.name).indexOf(" " + t) > -1) score += 5; });
+          if (/\d/.test(flatq) && o.flat.indexOf(flatq) > -1) score += 5;
+          hits.push({ o: o, s: score });
+        });
+        hits.sort(function (a, b) { return b.s - a.s || a.o.r[0].localeCompare(b.o.r[0]); });
+        hits.slice(0, 8).forEach(function (h) {
+          var r = h.o.r, li = document.createElement("li");
+          li.className = "vl-row" + (r[2] === "hybrid" ? " is-hybrid" : "");
+          var nm = document.createElement("span"); nm.className = "vl-name"; nm.textContent = r[0];
+          var bd = document.createElement("span"); bd.className = "vl-badge"; bd.textContent = vlData.badge[r[2]];
+          var ty = document.createElement("span"); ty.className = "vl-type"; ty.textContent = r[1];
+          var sc = document.createElement("p"); sc.className = "vl-scope"; sc.textContent = vlData.scope[r[2]];
+          var a = document.createElement("a"); a.href = r[4]; a.textContent = vlData.details.replace("{brand}", r[3]);
+          li.appendChild(nm); li.appendChild(bd); li.appendChild(ty); li.appendChild(sc); li.appendChild(a);
+          vres.appendChild(li);
+        });
+        var n = Math.min(hits.length, 8);
+        vcount.textContent = n ? (n === 1 ? vlData.count1 : vlData.countn.replace("{n}", n)) : "";
+        vempty.hidden = n > 0;
+      };
+      var vt; vq.addEventListener("input", function () { clearTimeout(vt); vt = setTimeout(vrun, 80); });
+      vq.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); vrun(); } });
+      $$("[data-vl-chip]", vl).forEach(function (b) {
+        b.addEventListener("click", function () { vq.value = b.textContent; vrun(); vq.focus(); });
+      });
+    }
+  }
+
   /* FAQ filter + search */
   var fq = $("#faq-root");
   if (fq) {

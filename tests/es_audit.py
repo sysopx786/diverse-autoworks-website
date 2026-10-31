@@ -11,7 +11,7 @@ ROOT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.pat
 EN = set("the and to of for with your you is are we our in on at it this that or from can will have has be as by an if not what when how where who which about more all any also up out new get used must should would could only just then than their they them these those there here into over per day days hours hour open closed free fast".split())
 ES = set("el la los las de y para con su sus un una es en que por del al se nos le lo muy más como cuando donde qué cómo si no sí o u también pero sin sobre entre desde hasta hay son ser está están tiene tienen puede pueden llame llámenos nuestro nuestra nuestros nuestras cuál cuáles usted ustedes".split())
 
-ALLOW = re.compile(r"^(Diverse Auto ?[Ww]orks( logo)?(, Inc\.)?|Diverseautoworks@verizon\.net|1415 Pawlings (Road|Rd)(, Phoenixville, PA 19460\.?)?|Phoenixville, PA( 19460)?|[A-Z][\w'’.\- ]+ [A-Z]\.|Dark Storm C\.|CARFAX|Google|Yelp|PennDOT|General|(/ )?(Mercedes-Benz|Land Rover|Alfa Romeo))$")  # multi-word brand names are the same in both languages
+ALLOW = re.compile(r"^(Diverse Auto ?[Ww]orks( logo)?(, Inc\.)?|Diverseautoworks@verizon\.net|1415 Pawlings (Road|Rd)(, Phoenixville, PA 19460\.?)?|Phoenixville, PA( 19460)?|[A-Z][\w'’.\- ]+ [A-Z]\.|Dark Storm C\.|CARFAX|Google|Yelp|PennDOT|General|(/ )?(Mercedes-Benz|Land Rover|Alfa Romeo)|Super Duty)$")  # multi-word brand names are the same in both languages
 SKIP_TAGS = {"script", "style", "noscript"}
 class P(HTMLParser):
     def __init__(s):

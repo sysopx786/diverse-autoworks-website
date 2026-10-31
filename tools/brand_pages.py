@@ -34,6 +34,12 @@ PA_P = t(
     "Pennsylvania requires an annual safety inspection. Vehicles registered in Chester and Montgomery counties also need an emissions test, done at the same visit. See [state inspections](inspections).",
     "Pennsylvania exige una inspección de seguridad anual. Los vehículos registrados en los condados de Chester y Montgomery también necesitan una prueba de emisiones, que se hace en la misma visita. Vea [inspecciones estatales](inspections).")
 
+# Truck brands: PA emissions covers gas vehicles with a GVWR of 9,000 lb or less (67 Pa. Code 177.101),
+# so heavy gas trucks and diesels need only the safety inspection. Fixed Oct 31, 2026.
+PA_P_TRUCK = t(
+    "Pennsylvania requires an annual safety inspection. Gas vehicles with a gross vehicle weight rating (GVWR) of 9,000 lb or less that are registered in Chester and Montgomery counties also need an emissions test, done at the same visit. Diesel trucks and heavier gas trucks need only the safety inspection. See [state inspections](inspections).",
+    "Pennsylvania exige una inspección de seguridad anual. Los vehículos de gasolina con un peso bruto vehicular nominal (GVWR) de 9,000 lb o menos registrados en los condados de Chester y Montgomery también necesitan una prueba de emisiones, que se hace en la misma visita. Las camionetas diésel y las de gasolina más pesadas solo necesitan la inspección de seguridad. Vea [inspecciones estatales](inspections).")
+
 INDUSTRY = t("compared with an industry average of about $652", "frente a un promedio de la industria de unos $652")
 
 
@@ -107,7 +113,7 @@ BRAND_PAGES = [
          ("h3", t("The monitor must be reset", "El monitor debe reiniciarse")),
          ("p", t("The monitor has to be reset after every oil change so the next reminder is accurate.",
                  "El monitor debe reiniciarse después de cada cambio de aceite para que el siguiente aviso sea correcto.")),
-         ("h3", PA_H3), ("p", PA_P),
+         ("h3", PA_H3), ("p", PA_P_TRUCK),
          ("h2", t("Ford repair in Phoenixville, PA", "Reparación Ford en Phoenixville, PA")),
          ("p", t("Ford work we do:", "Trabajos que hacemos en vehículos Ford:")),
          ("ul", [t("Check engine light diagnosis and engine repair, including EcoBoost engines", "Diagnóstico de la luz de revisión del motor y reparación del motor, incluidos los motores EcoBoost"),
@@ -233,7 +239,7 @@ BRAND_PAGES = [
          ]),
          ("p", t("Under easy driving, the system may not call for service for more than a year, which is why the once-a-year rule matters. Your owner's manual lists the tire rotation and other intervals for your model.",
                  "Con un manejo suave, el sistema puede no pedir servicio en más de un año; por eso importa la regla de una vez al año. El manual del propietario indica la rotación de llantas y los demás intervalos de su modelo.")),
-         ("h3", PA_H3), ("p", PA_P),
+         ("h3", PA_H3), ("p", PA_P_TRUCK),
          ("h2", t("Chevrolet repair in Phoenixville, PA", "Reparación Chevrolet en Phoenixville, PA")),
          ("p", t("Chevrolet work we do:", "Trabajos que hacemos en vehículos Chevrolet:")),
          ("ul", [I_ENGINE, I_OIL, I_BRAKES, I_TIRES,
@@ -291,7 +297,7 @@ BRAND_PAGES = [
          ("table", GM_HEAD, GM_ROWS),
          ("p", t("Your owner's manual lists tire rotation, transmission and differential fluid intervals for your truck. Towing and plowing usually call for the shorter, severe-service intervals.",
                  "El manual del propietario indica los intervalos de rotación de llantas y de líquidos de transmisión y diferencial de su camioneta. Remolcar y quitar nieve suelen requerir los intervalos más cortos de servicio severo.")),
-         ("h3", PA_H3), ("p", PA_P),
+         ("h3", PA_H3), ("p", PA_P_TRUCK),
          ("h2", t("GMC repair in Phoenixville, PA", "Reparación GMC en Phoenixville, PA")),
          ("p", t("GMC work we do:", "Trabajos que hacemos en vehículos GMC:")),
          ("ul", [I_ENGINE, I_BRAKES, I_DRIVE,

@@ -101,3 +101,12 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - `tests/es_audit.py` allows the multi-word brand names Mercedes-Benz, Land Rover and Alfa Romeo to match English.
 - Spanish titles over 60 characters use "Servicio" or "Taller" instead of "Reparación".
 - The Spanish for these pages has not had a native-speaker review yet.
+
+## Fleet page rewrite and vehicle lookup (Oct 31, 2026)
+- `/fleet-repairs/` copy (EN + ES) lives in `tools/fleet_page.py`: lead, body blocks (same block types as the brand pages, rendered with `brand_blocks()`), 6 FAQs (also feed the fleet category on `/faq/`), CTA and the vehicle lookup data. The FAQ count check in `build.py` is +3.
+- Scope (Mujtaba, Oct 31, 2026): all common fleet vehicles, gas and diesel, including heavy-duty pickups, chassis cabs, dual-rear-wheel trucks and E-Series/Transit cutaways. Hybrids on this page: inspections, tires, brakes and suspension only. No EVs on this page (Tesla is left out of the lookup).
+- Removed: "advertises fleet repairs", "not specified in our published information", and the "Rates, billing, and scheduling" callout. Not added until the owner confirms: billing terms, fleet pricing, daily capacity, pickup/drop-off, service records, and the 90-day "keep your inspection month" rule.
+- Vehicle lookup ("Check your vehicle"): `fleet_lookup()` in `build.py` writes the rows as inline JSON (`#vl-data`); the filter is the "fleet page: vehicle lookup" block in `main.js` (accent- and punctuation-insensitive, so "f250" finds F-250); styles are the `.vl-*` block in `main.css`. One row per brand page (except Tesla) plus every model in `FLEET.VEHICLES`. Model names with English words are `t()` pairs so the Spanish page shows Spanish.
+- Brand pages: the Ford, Chevrolet, GMC and Ram inspection paragraphs now say the emissions test covers gas vehicles of 9,000 lb GVWR or less (`PA_P_TRUCK` in `brand_pages.py`; Ram in `bp_stellantis.py`). Heavier gas trucks and diesels need only the safety inspection (67 Pa. Code 177.101).
+- `tests/es_audit.py` allows "Super Duty" to match English.
+- The fleet page Spanish has not had a native-speaker review yet.

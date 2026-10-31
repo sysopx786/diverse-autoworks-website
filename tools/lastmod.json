@@ -28,8 +28,8 @@
   "hash": "7df32a0bebf188f506a0eb7f00cf8aa8273120c1"
  },
  "en:brand_chevrolet": {
-  "date": "2026-10-30",
-  "hash": "a95cc88bfbec40d747985c5dc5b143c067ac1c70"
+  "date": "2026-10-31",
+  "hash": "7ca7d823c7f152851890208b75a0358f46807331"
  },
  "en:brand_chrysler": {
   "date": "2026-10-30",
@@ -44,16 +44,16 @@
   "hash": "24b38f5bee2b982212ad5d3b746fd9ef71388981"
  },
  "en:brand_ford": {
-  "date": "2026-10-30",
-  "hash": "87b228ea2834cd297dfc87cd5b2c5ce79d08ce0e"
+  "date": "2026-10-31",
+  "hash": "e5c15d4d7bd309e1add1774604a5de1af836771b"
  },
  "en:brand_genesis": {
   "date": "2026-10-30",
   "hash": "55cbdfbcca9c83a0667499892e645ffd010c725f"
  },
  "en:brand_gmc": {
-  "date": "2026-10-30",
-  "hash": "d732f4325ad4ac796a61763db2bc7841bb3736c6"
+  "date": "2026-10-31",
+  "hash": "30fef44e9e70ff92df02d14186fb3869186759bc"
  },
  "en:brand_honda": {
   "date": "2026-10-30",
@@ -120,8 +120,8 @@
   "hash": "e29682c546077ba95d8c06eae7b3645532e8b5ce"
  },
  "en:brand_ram": {
-  "date": "2026-10-30",
-  "hash": "273b987f4c94ca8c3668a05a8d375dc09f13620c"
+  "date": "2026-10-31",
+  "hash": "394c283ba8a7d7f80ffed4d62c014890648421cd"
  },
  "en:brand_subaru": {
   "date": "2026-10-30",
@@ -152,16 +152,16 @@
   "hash": "0e98c481790fad036a435e29fc5708b914f69aa3"
  },
  "en:faq": {
-  "date": "2026-10-30",
-  "hash": "d0165a127af0e55fa135a4a4541fc2f7ce01e117"
+  "date": "2026-10-31",
+  "hash": "e5524221423db78950b988683e72214978b7fa10"
  },
  "en:fleet": {
-  "date": "2026-10-30",
-  "hash": "330ce6ae63be43099d09cdd12e8083ef4eae17b9"
+  "date": "2026-10-31",
+  "hash": "a1017239c56e16682616c3e574142561122b9591"
  },
  "en:home": {
-  "date": "2026-10-30",
-  "hash": "8e7dc4bae281894e3f48ab1a10be01e2b026507c"
+  "date": "2026-10-31",
+  "hash": "249e455974739f3e92c8004c6f3b09d413a21052"
  },
  "en:inspections": {
   "date": "2026-10-30",
@@ -180,8 +180,8 @@
   "hash": "4035eb0e878a0bd533a0cd2fb859eacf943abd75"
  },
  "en:services": {
-  "date": "2026-10-30",
-  "hash": "a540dc560bcae9892a085db1926dad99f69d2304"
+  "date": "2026-10-31",
+  "hash": "6d2800bf23d971dda1c1c72b977a17d8dfa1986d"
  },
  "es:about": {
   "date": "2026-10-23",
@@ -212,8 +212,8 @@
   "hash": "d41bfd9f1c9f7ebeb8311433204efe5b374653c0"
  },
  "es:brand_chevrolet": {
-  "date": "2026-10-30",
-  "hash": "2ffe34f0922305e616049b68f66988acec06691a"
+  "date": "2026-10-31",
+  "hash": "23b0faf06005d0ca03d1614d1f3c655ea4bd5a1c"
  },
  "es:brand_chrysler": {
   "date": "2026-10-30",
@@ -228,16 +228,16 @@
   "hash": "fcf766f8cb9de2c3cc3d9400420775fc8a2a46ce"
  },
  "es:brand_ford": {
-  "date": "2026-10-30",
-  "hash": "4596b7b99d9283ae8bbee15f2cd0440d92ca575b"
+  "date": "2026-10-31",
+  "hash": "f0f2e6bb5ea4a754566e67223d8bd13c07bdcce3"
  },
  "es:brand_genesis": {
   "date": "2026-10-30",
   "hash": "cec1256d063c5637942cee1bb8b912af385d6a24"
  },
  "es:brand_gmc": {
-  "date": "2026-10-30",
-  "hash": "dcc57731d4c203318d3d48f7b380f0e5660e846b"
+  "date": "2026-10-31",
+  "hash": "140bc9f0726bd651f26459f72df3336f8f467236"
  },
  "es:brand_honda": {
   "date": "2026-10-30",
@@ -304,8 +304,8 @@
   "hash": "2270214b0b54182c2d8679d8e78082f9a735ec9e"
  },
  "es:brand_ram": {
-  "date": "2026-10-30",
-  "hash": "24817f02e4ae6678481ba3ec669b680e17cb6c01"
+  "date": "2026-10-31",
+  "hash": "b674e6b7f5b8d0ebc8097975402111bb67a6a976"
  },
  "es:brand_subaru": {
   "date": "2026-10-30",
@@ -336,16 +336,16 @@
   "hash": "acade21e433cb7dd83fb1407f36b73daf7474576"
  },
  "es:faq": {
-  "date": "2026-10-30",
-  "hash": "18b6cb16fd98c72be2dbe3a1413e65837f598764"
+  "date": "2026-10-31",
+  "hash": "99916c9a0501725cd2c2295d40c7ce36056a0ab3"
  },
  "es:fleet": {
-  "date": "2026-10-30",
-  "hash": "9b5ecfcdefd73d5d35362636b916c626850e2a3e"
+  "date": "2026-10-31",
+  "hash": "b0ddf78fcbd7d7676b0dd6b56e2d2b9bb0562729"
  },
  "es:home": {
-  "date": "2026-10-30",
-  "hash": "4122a9c00d7d7af889e0e0ea53e36c295ce46f31"
+  "date": "2026-10-31",
+  "hash": "170c44effb4438c3c1ab0301ff6b6483fc28eb97"
  },
  "es:inspections": {
   "date": "2026-10-30",
@@ -364,7 +364,7 @@
   "hash": "daaa4c443b6b7bb9a4093bb26dedeb8a0b1f36a5"
  },
  "es:services": {
-  "date": "2026-10-30",
-  "hash": "2da7d57f3ad0dd40366041e53c80dfb8b223f47f"
+  "date": "2026-10-31",
+  "hash": "9d5a03642e61eab58e6c514e7d11f5eef0beb09f"
  }
 }
