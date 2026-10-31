@@ -30,6 +30,8 @@ import reviews_es as RES
 from brand_pages import BRAND_PAGES, BRAND_PAGE_BY_NAME, BRAND_PAGE_BY_KEY  # noqa
 import fleet_page as FLEET  # noqa
 import tags_page as TAGS  # noqa
+from service_pages import SERVICE_PAGES  # noqa
+SERVICE_PAGE_BY_KEY = {p["key"]: p for p in SERVICE_PAGES}
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -73,6 +75,10 @@ SLUGS = {  # slug -> directory path (English)
 for _b in BRAND_PAGES:
     SLUGS[_b["key"]] = _b["slug"]
     PAGES[_b["key"]] = _b["page"]
+# Dedicated service pages (oil-change, clutch-repair, etc.): slugs and page copy live in service_pages_*.py
+for _s in SERVICE_PAGES:
+    SLUGS[_s["key"]] = _s["slug"]
+    PAGES[_s["key"]] = _s["page"]
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
 PAGEKEY = {k: k for k in SLUGS}
 
@@ -1371,10 +1377,26 @@ def page_brand(lang, key):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
+def page_service(lang, key):
+    sp = SERVICE_PAGE_BY_KEY[key]
+    P = PAGES[key]
+    u = UI[lang]
+    trail = f'<a href="{href(lang, key, lang, "services")}">{u["nav"]["services"]}</a> / {esc(L(P["crumb"], lang))}'
+    req = f'<p style="margin-top:22px"><a class="btn btn-sign" href="{href(lang, key, lang, "contact", anchor="request")}">{u["request"]}</a></p>'
+    faq_h = "Frequently asked questions" if lang == "en" else "Preguntas frecuentes"
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + f'''
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["blocks"])}</div></div></section>
+<section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": sp["faq"]})}</div></div></section>
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["cta"])}{req}</div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
 BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet, "tags": page_tags,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 for _b in BRAND_PAGES:
     BUILDERS[_b["key"]] = (lambda lang, _k=_b["key"]: page_brand(lang, _k))
+for _s in SERVICE_PAGES:
+    BUILDERS[_s["key"]] = (lambda lang, _k=_s["key"]: page_service(lang, _k))
 
 
 def linkify(html_text):
