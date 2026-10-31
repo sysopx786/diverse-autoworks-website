@@ -240,8 +240,8 @@ BLOCKS = [
             "El GVWR aparece en la etiqueta del marco de la puerta del conductor. Hacemos la inspección de seguridad y la prueba de emisiones en la misma visita. Vea [inspecciones estatales](inspections).")),
 
     ("h2", t("Tag, title and notary services", "Placas, títulos y notario")),
-    ("p", t("Diverse Autoworks is a PennDOT authorized agent. We handle tag and title work and license plates for the vehicles your business buys and sells, at the same shop that maintains them. Our notary is available Monday through Friday, 8 a.m. to 3 p.m. See [notary services](contact#notary).",
-            "Diverse Autoworks es agente autorizado de PennDOT. Hacemos los trámites de placas y títulos de los vehículos que su negocio compra y vende, en el mismo taller que les da mantenimiento. Nuestro notario atiende de lunes a viernes, de 8 a. m. a 3 p. m. Vea [servicios de notario](contact#notary).")),
+    ("p", t("Diverse Autoworks is a PennDOT authorized agent. We handle [tag and title work](tags) and license plates for the vehicles your business buys and sells, at the same shop that maintains them. Our notary is available Monday through Friday, 8 a.m. to 3 p.m. See [notary services](contact#notary).",
+            "Diverse Autoworks es agente autorizado de PennDOT. Hacemos los [trámites de placas y títulos](tags) de los vehículos que su negocio compra y vende, en el mismo taller que les da mantenimiento. Nuestro notario atiende de lunes a viernes, de 8 a. m. a 3 p. m. Vea [servicios de notario](contact#notary).")),
 ]
 
 FAQ = [

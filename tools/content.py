@@ -12,6 +12,7 @@ def t(en, es):
     return {"en": en, "es": es}
 
 import fleet_page as _FLEET  # noqa: E402  (fleet page copy, Oct 31, 2026)
+import tags_page as _TAGS  # noqa: E402  (tag and title page copy, Oct 31, 2026)
 
 
 # ---------------------------------------------------------------- business
@@ -524,6 +525,7 @@ PAGES = {
         "setup_p": _FLEET.SETUP_NOTE,
         "form_h": t("Send a fleet inquiry", "Envíe una consulta para su flota"),
     },
+    "tags": dict(_TAGS.PAGE),
     "about": {
         "title": t("About Diverse Autoworks | Auto Repair in Phoenixville, PA",
                    "Sobre Diverse Autoworks | Taller en Phoenixville, PA"),
@@ -630,10 +632,10 @@ ASK_SERVICES = [
     {"id": "tags", "icon": "seal",
      "title": t("Tags & title work", "Placas y trámites de título"),
      "card": t("Tags & Title Work", "Placas y títulos"),
-     "line": t("Tag and title paperwork, done at the shop.", "Trámites de placas y título, en el taller."),
-     "desc": t("Diverse Autoworks handles vehicle tag and title paperwork, and you can take care of it alongside a notary visit. Call before you come to find out what to bring.",
-               "Diverse Autoworks realiza trámites de placas y título de vehículos, y puede hacerlos junto con su visita al notario. Llame antes de venir para saber qué debe llevar."),
-     "faq": "tags", "group": "ask"},
+     "line": t("Title transfers, registration and plates from a PennDOT authorized agent.", "Traspasos de título, registros y placas con un agente autorizado de PennDOT."),
+     "desc": t("Diverse Autoworks is a PennDOT authorized agent. We handle title transfers, registration and license plates, and you can take care of the notary step in the same visit. See the tag and title page for what to bring.",
+               "Diverse Autoworks es agente autorizado de PennDOT. Hacemos traspasos de título, registros y placas, y puede hacer el paso del notario en la misma visita. Vea la página de placas y títulos para saber qué debe traer."),
+     "faq": "tags", "page": "tag-and-title", "group": "biz"},
     {"id": "ev", "icon": "gear",
      "title": t("Electric and hybrid vehicles", "Vehículos eléctricos e híbridos"),
      "card": t("Electric & Hybrid", "Eléctricos e híbridos"),
@@ -667,17 +669,7 @@ ASK_SERVICES = [
 ASK_GROUP = ("ask", t("More services", "Más servicios"))
 
 ASK_FAQ_CATS = [
-    {"id": "tags", "title": t("Tags & title work", "Placas y trámites de título"), "items": [
-        (t("Do you handle vehicle tags and titles?", "¿Realizan trámites de placas y título de vehículos?"),
-         t("Yes. We handle vehicle tag and title transactions at the shop. Call before your visit to find out what to bring.",
-           "Sí. Tramitamos placas y títulos de vehículos en el taller. Llame antes de su visita para saber qué debe llevar.")),
-        (t("What should I bring for a tag or title transaction?", "¿Qué debo llevar para un trámite de placas o título?"),
-         t("Requirements depend on the transaction. When you call, ask which identification, documents, fees, and signer attendance apply.",
-           "Los requisitos dependen del trámite. Cuando llame, pregunte qué identificación, documentos, tarifas y asistencia de firmantes aplican.")),
-        (t("Is this the same as your notary service?", "¿Es lo mismo que su servicio de notario público?"),
-         t("No. Notary service is a separate offering with its own hours, Monday–Friday, 8 a.m.–3 p.m. Tag and title work is a separate service, and you can ask for both when you call.",
-           "No. El servicio de notario público es una oferta aparte con su propio horario, de lunes a viernes, de 8 a. m. a 3 p. m. Los trámites de placas y título son un servicio aparte, y puede pedir ambos cuando llame.")),
-    ]},
+    {"id": "tags", "title": t("Tags & title work", "Placas y trámites de título"), "items": list(_TAGS.FAQ)},
     {"id": "ev", "title": t("Electric and hybrid vehicles", "Vehículos eléctricos e híbridos"), "items": [
         (t("Do you service electric and hybrid vehicles?", "¿Dan servicio a vehículos eléctricos e híbridos?"),
          t("Yes, for basic work: state inspections, tires and alignments, brakes and suspension, including on Teslas. We don't do high-voltage battery, electric drive or software repairs. We don't repair Rivian, Lucid, Karma, or Polestar, which need factory software and high-voltage training. Call with your vehicle's year, make, and model to discuss the work you need.",

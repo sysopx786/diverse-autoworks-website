@@ -29,6 +29,7 @@ import graphics as G
 import reviews_es as RES
 from brand_pages import BRAND_PAGES, BRAND_PAGE_BY_NAME, BRAND_PAGE_BY_KEY  # noqa
 import fleet_page as FLEET  # noqa
+import tags_page as TAGS  # noqa
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
@@ -65,7 +66,7 @@ DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
 SLUGS = {  # slug -> directory path (English)
-    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs",
+    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs", "tags": "tag-and-title",
     "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
 # Dedicated brand pages (/brands/<brand>/): slugs and page copy live in brand_pages.py.
@@ -273,12 +274,15 @@ def learn_href(lang, cur_key, sid):
         return href(lang, cur_key, lang, "inspections")
     if s.get("page") == "fleet-repairs":
         return href(lang, cur_key, lang, "fleet")
+    if s.get("page") == "tag-and-title":
+        return href(lang, cur_key, lang, "tags")
     if s.get("page") == "contact":
         return href(lang, cur_key, lang, "contact", anchor=s.get("anchor", ""))
     return href(lang, cur_key, lang, "services", anchor=sid)
 
 
 FLEET_COPY = [FLEET.LOOKUP, FLEET.TYPES, FLEET.BLOCKS, FLEET.CTA, FLEET.FAQ, FLEET.VEHICLES]
+TAGS_COPY = [TAGS.PAGE, TAGS.BLOCKS, TAGS.BRING_H, TAGS.BRING, TAGS.BRING_NOTE, TAGS.SRC_LEAD, TAGS.SOURCES, TAGS.SRC_NOTE, TAGS.FAQ, TAGS.CTA]
 
 
 def check_parity():
@@ -304,7 +308,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES", "FLEET_COPY"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES", "FLEET_COPY", "TAGS_COPY"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -319,6 +323,8 @@ def check_parity():
     expected = 36 + sum(len(c["items"]) for c in NEW_MAIN_FAQ_CATS) + 2 + 3
     if n != expected:
         problems.append(f"expected {expected} service FAQs, found {n}")
+    if len(TAGS.FAQ) < 5:
+        problems.append(f"tag and title page: expected at least 5 FAQs, found {len(TAGS.FAQ)}")
     for _b in BRAND_PAGES:
         if len(_b["faq"]) != 5:
             problems.append(f'brand page {_b["key"]}: expected 5 FAQs, found {len(_b["faq"])}')
@@ -421,7 +427,7 @@ def structured_data(lang, key):
         graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": [
             {"@type": "ListItem", "position": n, "name": name, "item": item} for n, (name, item) in enumerate(crumbs, start=1)]})
         return [{"@context": "https://schema.org", "@graph": graph}]
-    if key not in UI[lang]["nav"] and key not in ("moto", "privacy"):
+    if key not in UI[lang]["nav"] and key not in ("moto", "tags", "privacy"):
         return []
     home_name = "Home" if lang == "en" else "Inicio"
     page_type = {"about": "AboutPage", "contact": "ContactPage", "brands": "CollectionPage", "reviews": "CollectionPage"}.get(key, "WebPage")
@@ -430,6 +436,7 @@ def structured_data(lang, key):
         "inspections": ("Vehicle state inspection and emissions testing", "Inspección estatal y pruebas de emisiones de vehículos"),
         "fleet": ("Fleet vehicle maintenance and repair", "Mantenimiento y reparación de vehículos de flota"),
         "moto": ("Motorcycle safety inspection", "Inspección de seguridad de motocicletas"),
+        "tags": ("Vehicle title transfer, registration and license plates", "Traspaso de título, registro y placas de vehículos"),
     }.get(key)
     has_service = service_type is not None
     graph = [business_stub(), website_stub(), {"@type": page_type, "@id": url + "#webpage", "url": url, "name": L(P["title"], lang), "inLanguage": lang, "dateModified": LASTMOD_MARK,
@@ -442,6 +449,8 @@ def structured_data(lang, key):
     crumbs = [(home_name, abs_url(lang, "home"))]
     if key == "moto":
         crumbs += [(UI[lang]["nav"]["inspections"], abs_url(lang, "inspections")), (L(P["crumb"], lang), url)]
+    elif key == "tags":
+        crumbs += [(UI[lang]["nav"]["services"], abs_url(lang, "services")), (L(P["crumb"], lang), url)]
     else:
         crumbs.append((UI[lang]["nav"].get(key) or L(P["h1"], lang), url))
     graph.append({"@type": "BreadcrumbList", "@id": url + "#breadcrumb", "itemListElement": [
@@ -540,6 +549,7 @@ SEARCH_ROWS = [
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
     ("moto", "", "Motorcycle inspections (year-round)", "Inspecciones de motocicletas (todo el año)", "motorcycle bike inspection year-round winter act 149", "motocicleta moto inspección todo el año invierno ley 149"),
     ("fleet", "", "Fleet repairs", "Reparaciones de flotas", FLEET.SEARCH[0], FLEET.SEARCH[1]),
+    ("tags", "", "Tag & title service (PennDOT agent)", "Placas y títulos (agente de PennDOT)", TAGS.SEARCH[0], TAGS.SEARCH[1]),
     ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
     ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
     ("contact", "", "Contact, phone & hours", "Contacto, teléfono y horario", "contact phone email address hours location", "contacto teléfono correo dirección horario ubicación"),
@@ -561,7 +571,9 @@ def search_index(lang, key):
     for pk, anchor, ten, tes, ken, kes in SEARCH_ROWS:
         rows.append([ten if lang == "en" else tes, href(lang, key, lang, pk, anchor=anchor), ken if lang == "en" else kes])
     for sv in ASK_SERVICES:
-        rows.append([L(sv["title"], lang), href(lang, key, lang, "services", anchor=sv["id"]),
+        if sv["id"] == "tags":  # has its own row in SEARCH_ROWS (dedicated page)
+            continue
+        rows.append([L(sv["title"], lang), learn_href(lang, key, sv["id"]),
                      (L(sv["card"], lang) + " " + L(sv["line"], lang)).lower()])
     rows.append([UI[lang]["directions"], DIRECTIONS,
                  "cómo llegar mapa dirección pawlings road" if lang == "es" else "directions map address pawlings road"])
@@ -989,6 +1001,28 @@ def page_fleet(lang):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
+def page_tags(lang):
+    key = "tags"
+    P = PAGES["tags"]
+    u = UI[lang]
+    trail = f'<a href="{href(lang, key, lang, "services")}">{u["nav"]["services"]}</a> / {esc(L(P["crumb"], lang))}'
+    call = f'<a class="btn btn-sign" href="{TEL}">{G.icon("phone", 22)}{u["call"]}</a>'
+    bring = "".join(f"<li>{esc(L(t_, lang))}</li>" for t_ in TAGS.BRING)
+    srcs = " · ".join(f'<a href="{url_}" rel="noopener" target="_blank">{esc(L(lab, lang))}</a>' for lab, url_ in TAGS.SOURCES)
+    faq_h = "Tag and title FAQs" if lang == "en" else "Preguntas frecuentes sobre placas y títulos"
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=f'<p style="margin-top:22px">{call}</p>') + f'''
+<section class="sec sec-white"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, TAGS.BLOCKS)}
+<p class="src-note">{esc(L(TAGS.SRC_LEAD, lang))} {srcs}. {esc(L(TAGS.SRC_NOTE, lang))}</p></div></div></section>
+<section class="sec sec-paper"><div class="wrap two-col">
+<div>{img(lang, key, "svc-tags", "fig-img")}</div>
+<div><h2>{esc(L(TAGS.BRING_H, lang))}</h2><ul class="checklist">{bring}</ul>
+<p style="margin-top:22px">{esc(L(TAGS.BRING_NOTE, lang))}</p>
+<p style="margin-top:22px">{call}</p></div></div></section>
+<section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": TAGS.FAQ})}</div></div></section>
+<section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, TAGS.CTA)}<p style="margin-top:22px">{call}</p></div></div></section>'''
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
+
+
 def page_about(lang):
     key = "about"
     P = PAGES["about"]
@@ -1313,7 +1347,9 @@ def brand_blocks(lang, key, blocks):
         elif kind == "p":
             out.append(f"<p>{rich(lang, key, L(blk[1], lang))}</p>")
         elif kind == "ul":
-            out.append('<ul class="checklist">' + "".join(f"<li>{rich(lang, key, L(i, lang))}</li>" for i in blk[1]) + "</ul>")
+            # An item with a link is wrapped in a span: .checklist li is a flex row, which would otherwise split the text around the link.
+            items = (rich(lang, key, L(i, lang)) for i in blk[1])
+            out.append('<ul class="checklist">' + "".join(f"<li><span>{h}</span></li>" if "<a " in h else f"<li>{h}</li>" for h in items) + "</ul>")
         elif kind == "table":
             head = "".join(f'<th scope="col">{esc(L(h, lang))}</th>' for h in blk[1])
             rows = "".join("<tr>" + "".join(f"<td>{esc(L(c, lang))}</td>" for c in row) + "</tr>" for row in blk[2])
@@ -1335,7 +1371,7 @@ def page_brand(lang, key):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
-BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet,
+BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet, "tags": page_tags,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 for _b in BRAND_PAGES:
     BUILDERS[_b["key"]] = (lambda lang, _k=_b["key"]: page_brand(lang, _k))
@@ -1527,7 +1563,7 @@ h1{{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 .3em}}p{{color:#DADCDF;max-wid
     write("_redirects", REDIRECTS_FILE)
     if SITE_URL:
         llm_pages = [("services", "Services"), ("inspections", "State inspections and emissions"), ("moto", "Motorcycle inspection (year-round in PA)"),
-                     ("fleet", "Fleet repairs"), ("brands", "Brands we work on"), ("contact", "Contact, directions and notary"), ("reviews", "Customer reviews"), ("faq", "FAQs"), ("about", "About")]
+                     ("fleet", "Fleet repairs"), ("tags", "Tag and title service (PennDOT authorized agent)"), ("brands", "Brands we work on"), ("contact", "Contact, directions and notary"), ("reviews", "Customer reviews"), ("faq", "FAQs"), ("about", "About")]
         llm_lines = [f"# {B['name']}", "", f"> Auto repair, maintenance, PA state inspections and emissions (including motorcycles), fleet repairs and notary services in {B['city']}, {B['state']}. "
                      f"{ADDR_ONE}. Phone {PHONE}. English and Spanish.", "", "## Main pages", ""]
         llm_lines += [f"- [{name}]({abs_url('en', k)}): {L(PAGES[PAGEKEY[k]]['desc'], 'en')}" for k, name in llm_pages]

@@ -114,3 +114,11 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 ## Electric and hybrid scope (Oct 31, 2026)
 - Mujtaba: mention only basic electric and hybrid work. The Brands note, the Electric & hybrid card, its FAQs, the fleet page and the Ford and Toyota brand pages now say: state inspections, tires and alignments, brakes and suspension, with no high-voltage battery, electric drive or software repairs. Rivian, Lucid, Karma and Polestar stay excluded.
 - The EV inspection FAQ now states the rule: EVs and hybrids need the safety inspection; hybrids in Chester and Montgomery counties also need the emissions test; fully electric vehicles don't.
+
+## Tag and title page (Oct 31, 2026)
+- Dedicated page `/tag-and-title/` (`/es/tag-and-title/`), page key `tags`. Copy (EN + ES), fee table, sources and 8 FAQs live in `tools/tags_page.py`; markup is `page_tags()` in `build.py` (body blocks rendered with `brand_blocks()`). The 8 FAQs also feed the "Tags & title work" category on `/faq/` (it had 3, below the 5-per-service rule).
+- The Tags & title card moved from "More services" to "Business & paperwork" on `/services/` and links to the page. The fleet page links to it.
+- Owner-confirmed facts only: PennDOT authorized agent, tag and title work, issues plates, notary Mon-Fri 8-3, inspections. PennDOT rules (20-day title deadline, 10-day inspection after a sale or new registration, plate rules, new-resident documents, 6% sales tax, agent service fees) and the $72 title / $48 registration fees are sourced on the page; re-check the fees when PennDOT changes them.
+- Not claimed until Joe confirms: temporary 90-day plates, in-transit plates, registration renewals, duplicate titles, lien recording, disability placards, VIN verification at the shop, tag and title hours, payment methods, the shop's service fee, same-day plates.
+- `brand_blocks()` wraps a checklist item in a `<span>` when it contains a link (the flex row split the text around the link). `.brand-body .checklist` now has a bottom margin.
+- The Spanish for this page has not had a native-speaker review yet.
