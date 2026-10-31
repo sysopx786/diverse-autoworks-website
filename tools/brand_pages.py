@@ -8,7 +8,7 @@ Spec: diverse-autoworks-brand-pages-all.md (SEO fields, sources). Facts come fro
 the manufacturers' owner manuals / support pages and PennDOT-region sources listed there.
 
 Rules followed:
-- Only owner-confirmed services. No body work. No hybrid/EV repair claims.
+- Only owner-confirmed services. No body work. Hybrids and EVs: basic work only (inspections, tires, alignments, brakes, suspension).
 - Tesla: inspections, tires, brakes and suspension only (no high-voltage battery or software repairs).
 - No phone number in page copy, no "call to confirm".
 - Shop-practice claims that the owner has not confirmed are left out.
@@ -120,6 +120,8 @@ BRAND_PAGES = [
                  I_OIL, I_DRIVE, t("CV axles and joints", "Ejes CV y juntas"), I_BRAKES,
                  t("Steering and suspension, ball joints, power steering and wheel bearings", "Dirección y suspensión, rótulas, dirección asistida y baleros de rueda"),
                  I_TIRES, I_ELEC, I_COOL, I_EXHAUST]),
+         ("p", t("Ford hybrids, such as the Maverick Hybrid and F-150 PowerBoost: we do basic work, such as state inspections, tires, alignments, brakes and suspension. We don't repair hybrid batteries or high-voltage systems.",
+                 "Híbridos Ford, como la Maverick Hybrid y la F-150 PowerBoost: hacemos trabajos básicos, como inspecciones estatales, llantas, alineación, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje.")),
          ("p", t("Lincoln is Ford's luxury brand; see [Lincoln repair](brand_lincoln). See all our [auto repair services](services).",
                  "Lincoln es la marca de lujo de Ford; vea [reparación Lincoln](brand_lincoln). Vea todos nuestros [servicios de reparación](services).")),
          ("h2", t("Average cost of Ford maintenance", "Costo promedio del mantenimiento Ford")),

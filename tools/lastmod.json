@@ -45,7 +45,7 @@
  },
  "en:brand_ford": {
   "date": "2026-10-31",
-  "hash": "e5c15d4d7bd309e1add1774604a5de1af836771b"
+  "hash": "47d7ca7564b0d3fc0c54fa651f00a9bd8a7245f4"
  },
  "en:brand_genesis": {
   "date": "2026-10-30",
@@ -132,8 +132,8 @@
   "hash": "e5b95d023cdfa631cf3dc20501d8a884b68ccdc1"
  },
  "en:brand_toyota": {
-  "date": "2026-10-30",
-  "hash": "f59a3ad809da99a4ad7f50e2f28d5d62083b7456"
+  "date": "2026-10-31",
+  "hash": "b47d1f87524960e1e5944bea748aa9878b594758"
  },
  "en:brand_volkswagen": {
   "date": "2026-10-30",
@@ -144,8 +144,8 @@
   "hash": "a98151b7253dba1bb0601544840f0eef5d1da287"
  },
  "en:brands": {
-  "date": "2026-10-30",
-  "hash": "471c98af933bb20ffc9a8da83208bf8c484b2ae8"
+  "date": "2026-10-31",
+  "hash": "307506057d56f7300640e91928266c4298edeadc"
  },
  "en:contact": {
   "date": "2026-10-30",
@@ -153,11 +153,11 @@
  },
  "en:faq": {
   "date": "2026-10-31",
-  "hash": "e5524221423db78950b988683e72214978b7fa10"
+  "hash": "feb33740cb445b8f96cdd832ec0f1698e17d1ee4"
  },
  "en:fleet": {
   "date": "2026-10-31",
-  "hash": "a1017239c56e16682616c3e574142561122b9591"
+  "hash": "eef49720b2fd9b4e7de0995d1f696370520a1dac"
  },
  "en:home": {
   "date": "2026-10-31",
@@ -181,7 +181,7 @@
  },
  "en:services": {
   "date": "2026-10-31",
-  "hash": "6d2800bf23d971dda1c1c72b977a17d8dfa1986d"
+  "hash": "455660b0436328b88aa488990d7b253128c26269"
  },
  "es:about": {
   "date": "2026-10-23",
@@ -229,7 +229,7 @@
  },
  "es:brand_ford": {
   "date": "2026-10-31",
-  "hash": "f0f2e6bb5ea4a754566e67223d8bd13c07bdcce3"
+  "hash": "4425fa4931bf0e1ae994881f14d62e32f7e28ddd"
  },
  "es:brand_genesis": {
   "date": "2026-10-30",
@@ -316,8 +316,8 @@
   "hash": "d4973ed0fcbede8723a87ed682fb20f63ed278c8"
  },
  "es:brand_toyota": {
-  "date": "2026-10-30",
-  "hash": "58e7eb29bcc7946e27d035c49778b6994ea4c05a"
+  "date": "2026-10-31",
+  "hash": "d4860f85afd9a47639553c487f195108026e3069"
  },
  "es:brand_volkswagen": {
   "date": "2026-10-30",
@@ -328,8 +328,8 @@
   "hash": "8c183addb690b5f709ab1936c517d07be740e3c2"
  },
  "es:brands": {
-  "date": "2026-10-30",
-  "hash": "a0670461a98cd67125706116ee0fdb926ea54ebc"
+  "date": "2026-10-31",
+  "hash": "3388b899bc2db13c7f76e31cf3d621e061eadde2"
  },
  "es:contact": {
   "date": "2026-10-30",
@@ -337,11 +337,11 @@
  },
  "es:faq": {
   "date": "2026-10-31",
-  "hash": "99916c9a0501725cd2c2295d40c7ce36056a0ab3"
+  "hash": "15405cd4cd014d2d9bb1c99c40034453841b8cfe"
  },
  "es:fleet": {
   "date": "2026-10-31",
-  "hash": "b0ddf78fcbd7d7676b0dd6b56e2d2b9bb0562729"
+  "hash": "740064763f3209e68d311e5f48cacd66ba2597e0"
  },
  "es:home": {
   "date": "2026-10-31",
@@ -365,6 +365,6 @@
  },
  "es:services": {
   "date": "2026-10-31",
-  "hash": "9d5a03642e61eab58e6c514e7d11f5eef0beb09f"
+  "hash": "212d2dc5c6dc4ddf1670760a3f2d426788c62847"
  }
 }

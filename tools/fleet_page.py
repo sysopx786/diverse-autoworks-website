@@ -35,8 +35,8 @@ LOOKUP = {
     "details": t("{brand} service details", "Servicio {brand}"),
     "scope": {
         "full": t("Maintenance, repairs and PA inspections", "Mantenimiento, reparaciones e inspecciones de Pennsylvania"),
-        "hybrid": t("PA inspections, tires, brakes and suspension. No hybrid battery or high-voltage repairs.",
-                    "Inspecciones de Pennsylvania, llantas, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje."),
+        "hybrid": t("Basic work: PA inspections, tires, alignments, brakes and suspension. No hybrid battery or high-voltage repairs.",
+                    "Trabajos básicos: inspecciones de Pennsylvania, llantas, alineación, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje."),
     },
     "badge": {"full": t("Full service", "Servicio completo"), "hybrid": t("Hybrid", "Híbrido")},
 }
@@ -183,8 +183,8 @@ BLOCKS = [
     ("p", t("We service gas and diesel models. See the maintenance details for [Ford](brand_ford), [Chevrolet](brand_chevrolet), [GMC](brand_gmc), [Ram](brand_ram) and [Mercedes-Benz](brand_mercedes_benz), or browse [all the brands we service](brands).",
             "Atendemos modelos de gasolina y diésel. Vea los detalles de mantenimiento de [Ford](brand_ford), [Chevrolet](brand_chevrolet), [GMC](brand_gmc), [Ram](brand_ram) y [Mercedes-Benz](brand_mercedes_benz), o consulte [todas las marcas que atendemos](brands).")),
     ("h3", t("Hybrid fleet vehicles", "Vehículos híbridos de flota")),
-    ("p", t("For hybrids, such as the Toyota Camry, Toyota Sienna and Ford Maverick Hybrid, we handle Pennsylvania inspections, tires, brakes and suspension. We don't repair hybrid batteries or high-voltage systems.",
-            "En los híbridos, como el Toyota Camry, el Toyota Sienna y la Ford Maverick Hybrid, hacemos las inspecciones de Pennsylvania y el servicio de llantas, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje.")),
+    ("p", t("For hybrids, such as the Toyota Camry, Toyota Sienna and Ford Maverick Hybrid, we do basic work: Pennsylvania inspections, tires, alignments, brakes and suspension. We don't repair hybrid batteries or high-voltage systems.",
+            "En los híbridos, como el Toyota Camry, el Toyota Sienna y la Ford Maverick Hybrid, hacemos trabajos básicos: inspecciones de Pennsylvania, llantas, alineación, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje.")),
 
     ("h2", t("Fleet maintenance for work use", "Mantenimiento de flotas para uso de trabajo")),
     ("p", t("Towing, hauling, idling on job sites, short trips and stop-and-go routes all count as severe service in most owner's manuals. Most fleet vehicles fall into that group, so they need service sooner than the same model driven gently.",

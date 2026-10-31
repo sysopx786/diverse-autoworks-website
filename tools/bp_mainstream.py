@@ -51,6 +51,8 @@ p["blocks"] = [
             I_CLIMATE, t("Water pump and thermostat", "Bomba de agua y termostato"), I_ELEC,
             t("Timing belt and chain service", "Servicio de correa y cadena de distribución"), I_EXHAUST,
             t("Emission control repair after a failed emissions test", "Reparación del control de emisiones después de una prueba reprobada")]),
+    ("p", t("Toyota hybrids, including the Prius, RAV4 Hybrid, Camry (2025 and newer) and Sienna (2021 and newer): we do basic work, such as state inspections, tires, alignments, brakes and suspension. We don't repair hybrid batteries or high-voltage systems.",
+            "Híbridos Toyota, incluidos el Prius, el RAV4 Hybrid, el Camry (2025 y posteriores) y la Sienna (2021 y posteriores): hacemos trabajos básicos, como inspecciones estatales, llantas, alineación, frenos y suspensión. No reparamos baterías híbridas ni sistemas de alto voltaje.")),
     ("p", t("Lexus is Toyota's luxury brand; see [Lexus repair](brand_lexus). See all our [auto repair services](services).",
             "Lexus es la marca de lujo de Toyota; vea [reparación Lexus](brand_lexus). Vea todos nuestros [servicios de reparación](services).")),
     ("h2", t("Average cost of Toyota maintenance", "Costo promedio del mantenimiento Toyota")),

@@ -110,3 +110,7 @@ Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and ap
 - Brand pages: the Ford, Chevrolet, GMC and Ram inspection paragraphs now say the emissions test covers gas vehicles of 9,000 lb GVWR or less (`PA_P_TRUCK` in `brand_pages.py`; Ram in `bp_stellantis.py`). Heavier gas trucks and diesels need only the safety inspection (67 Pa. Code 177.101).
 - `tests/es_audit.py` allows "Super Duty" to match English.
 - The fleet page Spanish has not had a native-speaker review yet.
+
+## Electric and hybrid scope (Oct 31, 2026)
+- Mujtaba: mention only basic electric and hybrid work. The Brands note, the Electric & hybrid card, its FAQs, the fleet page and the Ford and Toyota brand pages now say: state inspections, tires and alignments, brakes and suspension, with no high-voltage battery, electric drive or software repairs. Rivian, Lucid, Karma and Polestar stay excluded.
+- The EV inspection FAQ now states the rule: EVs and hybrids need the safety inspection; hybrids in Chester and Montgomery counties also need the emissions test; fully electric vehicles don't.
