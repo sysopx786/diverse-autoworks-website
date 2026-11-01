@@ -1,0 +1,89 @@
+name: Build and publish bilingual service pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/service_pages.py"
+      - "tools/service_pages_batch*.py"
+      - ".github/workflows/build-service-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-service-pages-main
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check service keys and translations
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "tools")
+          from service_pages import SERVICE_PAGES
+          from pathlib import Path
+          keys, slugs, covers = set(), set(), set()
+          expected = {"svc_engine", "svc_battery", "svc_transmission", "svc_steering", "svc_fuel", "svc_rust", "svc_prepurchase", "svc_hybrid"}
+          assert expected.issubset({p["key"] for p in SERVICE_PAGES})
+          for p in SERVICE_PAGES:
+              assert p["key"] not in keys, p["key"]
+              assert p["slug"] not in slugs, p["slug"]
+              assert not covers.intersection(p.get("covers", [])), p["key"]
+              keys.add(p["key"])
+              slugs.add(p["slug"])
+              covers.update(p.get("covers", []))
+              assert 5 <= len(p["faq"]) <= 8, p["key"]
+              for f, limit in (("title", 60), ("desc", 160)):
+                  assert all(len(p["page"][f][lang]) <= limit for lang in ("en", "es")), (p["key"], f)
+          print(f"PASS: {len(keys)} distinct bilingual service pages")
+          PY
+      - name: Build production pages
+        env:
+          SITE_URL: https://mydiverseauto.com
+        run: python tools/build.py
+      - name: Verify generated pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          slugs = ["engine-repair", "battery-replacement", "transmission-repair", "steering-components",
+                   "fuel-system-gas-tank", "rust-corrosion-control", "pre-purchase-inspection", "hybrid-ev-service"]
+          for slug in slugs:
+              for prefix in ("", "es/"):
+                  path = Path("docs") / prefix / slug / "index.html"
+                  assert path.is_file(), f"Missing {path}"
+                  html = path.read_text(encoding="utf-8")
+                  assert 'rel="canonical"' in html, f"Missing canonical: {path}"
+                  assert 'hreflang="es"' in html, f"Missing hreflang: {path}"
+          xml = Path("docs/sitemap.xml").read_text(encoding="utf-8")
+          ET.fromstring(xml)
+          for slug in slugs:
+              assert f"https://mydiverseauto.com/{slug}/" in xml, slug
+              assert f"https://mydiverseauto.com/es/{slug}/" in xml, slug
+          print("PASS: 16 EN/ES page outputs and sitemap")
+          PY
+      - name: Check Spanish content
+        run: python tests/es_audit.py
+      - name: Commit and push generated site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs tools/lastmod.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Build eight bilingual service pages and refresh sitemap"
+            git push origin HEAD:main
+          else
+            echo "Generated pages already up to date."
+          fi

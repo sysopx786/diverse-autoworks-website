@@ -17,5 +17,6 @@ def _load(name):
 
 SERVICE_PAGES = []
 for _n in ("service_pages_batch1.py", "service_pages_batch2.py", "service_pages_batch3.py",
-           "service_pages_batch4.py", "service_pages_batch5.py"):
+           "service_pages_batch4.py", "service_pages_batch5.py",
+           "service_pages_batch6.py", "service_pages_batch7.py"):
     SERVICE_PAGES.extend(_load(_n))
