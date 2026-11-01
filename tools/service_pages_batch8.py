@@ -30,16 +30,16 @@ SERVICE_PAGES = [
                 "Reparación de autos clásicos en Phoenixville, PA"
             ),
             "desc": t(
-                "Classic car repair in Phoenixville, PA. Ask Diverse Autoworks about mechanical maintenance, brakes, engine, cooling and electrical work on your vehicle.",
-                "Reparación de autos clásicos en Phoenixville, PA. Consulte por mantenimiento, frenos, motor, enfriamiento y electricidad según su vehículo."
+                "Keep your classic on the road. Ask Diverse Autoworks in Phoenixville, PA about vintage-car engine, brake, cooling, electrical and maintenance needs.",
+                "Mantenga su auto clásico en marcha. Consulte en Diverse Autoworks, Phoenixville, sobre motor, frenos, enfriamiento, electricidad y mantenimiento."
             ),
             "h1": t(
-                "Classic Car Repair & Maintenance in Phoenixville, PA",
-                "Reparación y mantenimiento de autos clásicos en Phoenixville, PA"
+                "Keeping Legends on the Road: Classic Car Repair in Phoenixville, PA",
+                "Clásicos que siguen rodando: reparación de autos clásicos en Phoenixville, PA"
             ),
             "lead": t(
-                "Keeping an older car on the road starts with understanding its condition, history and mechanical needs. Diverse Autoworks in Phoenixville offers a range of general mechanical repairs. Contact our team with the year, make, model and requested work so we can confirm what we can handle on your particular classic or vintage vehicle.",
-                "Mantener un auto antiguo en circulación comienza por conocer su estado, historial y necesidades mecánicas. Diverse Autoworks en Phoenixville ofrece distintos servicios de reparación mecánica. Comuníquese con el taller e indique el año, la marca, el modelo y el trabajo solicitado para confirmar qué podemos atender en su vehículo clásico o antiguo."
+                "Some cars get you from A to B. Others make every drive worth remembering. From American muscle and European roadsters to Japanese classics and family heirlooms, we understand why you want to keep yours moving. At Diverse Autoworks in Phoenixville, we focus on mechanical maintenance and repair, not paint or restoration. Tell us about your car and the work it needs so we can confirm the right service for your model.",
+                "Algunos autos solo sirven para trasladarse. Otros convierten cada salida en un recuerdo. Desde los deportivos estadounidenses y europeos hasta los clásicos japoneses y autos familiares conservados por generaciones, sabemos por qué quiere mantener el suyo en marcha. En Diverse Autoworks, Phoenixville, nos centramos en mantenimiento y reparación mecánica, no en pintura ni restauración. Cuéntenos sobre su auto para confirmar el servicio adecuado."
             ),
             "crumb": t("Classic car repair", "Autos clásicos"),
         },
@@ -49,20 +49,20 @@ SERVICE_PAGES = [
         ),
         "blocks": [
             ("h2", t(
-                "Classic Car Repair in Phoenixville: Start With the Car",
-                "Reparación de autos clásicos en Phoenixville: primero, el vehículo"
+                "Old-School Character. Thoughtful Mechanical Care.",
+                "Carácter de otra época. Atención mecánica con criterio."
             )),
             ("p", t(
-                "A classic car is rarely just an older version of a modern daily driver. Its service history may be incomplete, the engine or transmission may have been replaced, and earlier repairs may have changed the original specifications. Two cars of the same model year can need very different work. Before suggesting a repair, it helps to know the vehicle's year, make, model, engine, current condition, modifications and how often it is driven. A car that runs every weekend raises different questions from one that has sat in storage for years.",
-                "Un auto clásico no es simplemente una versión antigua de un vehículo moderno. Puede tener un historial de mantenimiento incompleto, un motor o una transmisión reemplazados y modificaciones hechas durante reparaciones anteriores. Dos autos del mismo año y modelo pueden necesitar trabajos muy distintos. Antes de recomendar una reparación conviene conocer el año, la marca, el modelo, el motor, el estado actual, las modificaciones y la frecuencia de uso. Un auto que sale cada fin de semana no presenta las mismas necesidades que otro guardado durante años."
+                "That familiar engine note. The shape of the dashboard. The feeling of turning a key that has been in the family for decades. A classic deserves attention to what makes it special, but sentiment alone cannot tell you why it stalls, leaks or pulls to one side. Many older vehicles have changed over the years: engines swapped, wiring altered, components rebuilt and service records lost. We begin with the car in front of us—its history, condition, modifications and actual symptoms—rather than assuming that two vehicles of the same year need the same fix.",
+                "El sonido inconfundible del motor. Las formas del tablero. La sensación de girar una llave que ha pasado de una generación a otra. Un clásico merece respeto por su historia, pero ese cariño no explica por qué se apaga, pierde aceite o se desvía al frenar. Muchos vehículos antiguos han cambiado con los años: motores reemplazados, cableado modificado, componentes reconstruidos e historiales incompletos. Empezamos por el auto que tenemos delante: su historia, su estado, sus modificaciones y sus síntomas reales, sin suponer que dos unidades del mismo año necesitan la misma reparación."
             )),
             ("p", t(
-                "Our shop's published mechanical services cover areas such as engines, brakes, steering, suspension, cooling, batteries, electrical problems and fuel systems. That general service list is not a promise that every procedure, vintage component or collector vehicle can be accepted. Older-car parts, equipment requirements and the extent of the job must be reviewed for the individual vehicle before an appointment is confirmed.",
-                "Los servicios mecánicos publicados por el taller incluyen motores, frenos, dirección, suspensión, enfriamiento, baterías, electricidad y sistemas de combustible. Esa lista general no significa que podamos aceptar cualquier vehículo de colección, componente antiguo o procedimiento especializado. Debemos revisar la disponibilidad de piezas, los requisitos del trabajo y las características de cada vehículo antes de confirmar una visita."
+                "Our general mechanical services include engines, brakes, steering, suspension, cooling, batteries, electrical systems and fuel systems. On a classic, the details matter: original or modified components, available parts, and the tools required for the job. We review those details with you before confirming work on an individual older vehicle. Our focus is the mechanical side of keeping a classic usable—not making promises about every model or every rare part.",
+                "Nuestros servicios mecánicos generales incluyen motores, frenos, dirección, suspensión, enfriamiento, baterías, electricidad y combustible. En un clásico importan los detalles: piezas originales o modificadas, disponibilidad de repuestos y herramientas necesarias. Revisamos esos datos con usted antes de confirmar un trabajo en un vehículo antiguo. Nos concentramos en su funcionamiento mecánico, sin prometer atención para cada modelo o pieza poco común."
             )),
             ("h2", t(
-                "Warning Signs on an Older or Collector Car",
-                "Señales de problemas en un auto antiguo o de colección"
+                "When Your Classic Is Trying to Tell You Something",
+                "Cuando su clásico le está avisando que algo falla"
             )),
             ("ul", [
                 t("Hard starting, stalling, hesitation or an uneven idle.", "Dificultad para arrancar, apagones, falta de respuesta o ralentí irregular."),
@@ -77,24 +77,32 @@ SERVICE_PAGES = [
                 "Una señal indica qué sistema conviene revisar, pero no identifica por sí sola la pieza dañada. Algunos autos antiguos no tienen diagnóstico electrónico moderno; un escáner no sustituye una inspección o prueba mecánica. Si detecta una fuga de combustible, frenos inseguros, sobrecalentamiento grave o problemas de presión de aceite, no siga conduciendo. Organice el traslado y describa la falla antes de llevar el auto."
             )),
             ("h2", t(
-                "Mechanical Services to Discuss for Your Classic Car",
-                "Servicios mecánicos que puede consultar para su auto clásico"
+                "Mechanical Care for the Miles Ahead",
+                "Cuidado mecánico para seguir sumando kilómetros"
             )),
             ("ul", [
-                t("Engine concerns, ignition components and tune-up needs.", "Fallas de motor, componentes de encendido y necesidades de afinación."),
-                t("Brake wear, brake fluid, steering and suspension condition.", "Desgaste de frenos, líquido de frenos y estado de la dirección y suspensión."),
-                t("Radiator, cooling hoses, water pump and thermostat concerns.", "Problemas de radiador, mangueras, bomba de agua y termostato."),
-                t("Battery, starting, charging and electrical-system problems.", "Problemas de batería, arranque, carga y sistema eléctrico."),
-                t("Fuel delivery, tank concerns, leaks and exhaust issues.", "Suministro de combustible, tanque, fugas y problemas de escape."),
-                t("Tires, wheel bearings, seals, fluids and routine maintenance.", "Llantas, rodamientos de rueda, juntas, líquidos y mantenimiento rutinario."),
+                t("Engine and ignition — starting, rough idle, oil leaks and tune-up concerns.", "Motor y encendido: arranque, ralentí irregular, fugas de aceite y afinación."),
+                t("Brakes, steering and suspension — pedal feel, pulling, play and worn parts.", "Frenos, dirección y suspensión: respuesta del pedal, desvíos, holguras y desgaste."),
+                t("Cooling — radiator, hoses, water pump, thermostat and overheating symptoms.", "Enfriamiento: radiador, mangueras, bomba, termostato y sobrecalentamiento."),
+                t("Starting and electrical — battery, charging system, lights and wiring issues.", "Arranque y electricidad: batería, sistema de carga, luces y problemas de cableado."),
+                t("Fuel and exhaust — fuel-delivery symptoms, tank concerns and exhaust leaks.", "Combustible y escape: fallas de alimentación, tanque y fugas del escape."),
+                t("Routine care — tires, wheel bearings, seals and fluids suited to the vehicle.", "Mantenimiento: llantas, rodamientos, juntas y líquidos adecuados para el vehículo."),
             ]),
             ("p", t(
                 "These are types of work within Diverse Autoworks' broader mechanical offering, not a fixed classic-car package. Acceptance depends on the vehicle and the specific task. For details, see [engine repair](svc_engine), [brake repair](svc_brakes), [cooling-system repair](svc_cooling), [electrical repair](svc_electrical), [battery service](svc_battery) and [rust and corrosion concerns](svc_rust). Discuss any unusual setup, non-original parts or specialized tools before scheduling.",
                 "Estos trabajos forman parte de la oferta mecánica general de Diverse Autoworks; no constituyen un paquete fijo para autos clásicos. La aceptación depende del vehículo y de la tarea específica. Consulte nuestras páginas de [reparación de motor](svc_engine), [frenos](svc_brakes), [enfriamiento](svc_cooling), [reparación eléctrica](svc_electrical), [baterías](svc_battery) y [óxido y corrosión](svc_rust). Informe sobre modificaciones, piezas no originales o herramientas especiales antes de programar."
             )),
             ("h2", t(
-                "Getting a Classic Car Back on the Road After Storage",
-                "Cómo volver a circular con un auto clásico después de guardarlo"
+                "The Right Oil, the Right Parts, the Right Questions",
+                "El aceite adecuado, las piezas adecuadas y las preguntas correctas"
+            )),
+            ("p", t(
+                "Older engines are not all alike. Some flat-tappet camshaft designs have particular oil and antiwear-additive requirements; others do not need a special high-zinc formula. The correct choice depends on the engine and any rebuild or modification history. Likewise, a low-mileage collector car may have tires that are old even when the tread looks good. Tell us what you know about past work and storage so the appropriate checks and maintenance items can be discussed before a visit.",
+                "No todos los motores antiguos son iguales. Algunos diseños con árbol de levas y taqués planos tienen requisitos específicos de aceite y aditivos antidesgaste; otros no necesitan una fórmula especial con más zinc. La elección depende del motor y de las reconstrucciones o modificaciones realizadas. Además, las llantas de un auto de colección con poco uso pueden haber envejecido aunque la banda de rodadura se vea bien. Cuéntenos qué sabe sobre las reparaciones y el almacenamiento para hablar de las revisiones y el mantenimiento adecuados antes de una visita."
+            )),
+            ("h2", t(
+                "From the Garage Back to the Open Road",
+                "Del garaje de vuelta a la carretera"
             )),
             ("p", t(
                 "A car that has been parked for months or years may need a careful review before its first drive. Fuel can age, seals and hoses can deteriorate, batteries can lose charge, and tire condition may not be obvious from the tread alone. Braking components can also develop problems while a vehicle sits. AAA's vintage-car care guidance recommends checking brakes, tires, belts, hoses, battery and fluids when returning a stored vehicle to use. Start with safety and condition rather than assuming that a running engine makes the car road-ready.",
@@ -105,24 +113,24 @@ SERVICE_PAGES = [
                 "Indique cuánto tiempo estuvo guardado, dónde permaneció, cuándo funcionó por última vez y qué reparaciones ya se intentaron. No arranque un vehículo con una posible fuga de combustible ni conduzca si desconoce el estado de los frenos. Solicite una evaluación inicial antes de planear un viaje largo. La revisión adecuada depende del diseño y el estado del auto; no existe una lista idéntica para todos los modelos antiguos."
             )),
             ("h2", t(
-                "Mechanical Repair Is Different From Full Restoration",
-                "La reparación mecánica no es lo mismo que una restauración completa"
+                "Under the Hood, Not in the Paint Booth",
+                "Bajo el capó, no en el taller de pintura"
             )),
             ("p", t(
                 "A mechanical repair aims to address a specific operating or safety concern. A restoration may involve body fabrication, paint, upholstery, cosmetic refinishing or a complete rebuild to original specifications. Those are separate projects with different equipment, parts and costs. This page discusses mechanical work, not full restoration, concours preparation, collision repair, custom fabrication or a guarantee of original-equipment parts. If your project includes those tasks, explain that scope when you contact the shop so expectations are clear.",
                 "Una reparación mecánica busca resolver una falla de funcionamiento o seguridad. Una restauración puede incluir fabricación de carrocería, pintura, tapicería, acabados o reconstrucción completa según las especificaciones originales. Son proyectos distintos, con equipos, piezas y costos diferentes. Esta página trata sobre trabajos mecánicos; no ofrece restauraciones integrales, preparación para concursos, reparación de choques, fabricación personalizada ni una garantía de piezas originales. Si su proyecto incluye esas tareas, descríbalas al comunicarse con el taller."
             )),
             ("h2", t(
-                "Pennsylvania Classic and Antique Vehicle Inspections",
-                "Inspecciones de autos clásicos y antiguos en Pensilvania"
+                "Classic Plates, Antique Plates & Pennsylvania Inspections",
+                "Placas de clásico, placas de antiguo e inspecciones en Pensilvania"
             )),
             ("p", t(
                 "Pennsylvania uses specific registration categories for classic and antique vehicles, and the plate type matters. Under 67 Pa. Code § 175.4, antique vehicles are excluded from the normal safety-inspection requirement; a vehicle with classic plates does not automatically receive that same exemption. Registration eligibility and permitted use are separate questions from a car's mechanical condition. Check current PennDOT requirements for your exact registration, and see our [Pennsylvania inspection](inspections) and [tag and title](tags) information for related services.",
                 "Pensilvania tiene categorías de registro específicas para vehículos clásicos y antiguos, y el tipo de placa importa. Según 67 Pa. Code § 175.4, los vehículos registrados como antiguos están exentos del requisito habitual de inspección de seguridad; una placa de vehículo clásico no concede automáticamente la misma exención. Las condiciones de registro y uso son distintas del estado mecánico del auto. Consulte las reglas vigentes de PennDOT según su matrícula y revise nuestra información sobre [inspecciones de Pensilvania](inspections) y [trámites de título y placas](tags)."
             )),
             ("h2", t(
-                "Classic Car Service Near Phoenixville and Chester County",
-                "Servicio para autos clásicos en Phoenixville y Chester County"
+                "Your Classic Car, Right Here in Phoenixville",
+                "Su auto clásico, aquí mismo en Phoenixville"
             )),
             ("p", t(
                 "Diverse Autoworks is at 1415 Pawlings Road in Phoenixville, PA. Owners from Spring City, Royersford, Collegeville, Kimberton, Oaks, Chester Springs and nearby communities can contact the shop about their older vehicles. Include the make, model, year, engine, whether it runs, and the repair or symptom you want evaluated. Photographs and maintenance records can help explain an unusual setup. We will discuss the request and confirm service availability for the specific vehicle before you bring it to the shop.",
@@ -175,12 +183,12 @@ SERVICE_PAGES = [
         ],
         "cta": [
             ("h2", t(
-                "Ask About Classic Car Repair in Phoenixville, PA",
-                "Consulte por reparación de autos clásicos en Phoenixville, PA"
+                "Ready for the Next Sunday Drive?",
+                "¿Listo para el próximo paseo de domingo?"
             )),
             ("p", t(
-                "Tell Diverse Autoworks about your classic car before arranging a visit. Include its year, make, model, engine, condition and the work you need. Use [our contact page](contact#request) to request a callback or call the shop to confirm availability.",
-                "Cuéntenos sobre su auto clásico antes de llevarlo al taller. Indique año, marca, modelo, motor, estado y trabajo solicitado. Use [nuestra página de contacto](contact#request) para solicitar que le llamemos o comuníquese con el taller para confirmar disponibilidad."
+                "That next drive starts with a conversation. Tell Diverse Autoworks what you love about your classic—and what it needs right now. Share the year, make, model, engine, modifications and symptoms. [Request a callback](contact#request) or call us to discuss the mechanical work and confirm availability before bringing it in.",
+                "El próximo paseo empieza con una conversación. Cuéntenos qué le gusta de su clásico y qué necesita hoy. Indique año, marca, modelo, motor, modificaciones y síntomas. [Solicite que le llamemos](contact#request) o comuníquese con nosotros para hablar del trabajo mecánico y confirmar disponibilidad antes de llevarlo."
             )),
         ],
         "search": (
@@ -191,10 +199,12 @@ SERVICE_PAGES = [
             ("AAA — How To Care for Your Vintage Car", "https://www.acg.aaa.com/connect/blogs/4c/auto/how-to-care-for-your-vintage-car"),
             ("Hagerty — Your Year-Round Seasonal Guide to Classic Car Maintenance", "https://www.hagerty.com/resources/car-maintenance/seasonal-guide-to-classic-car-maintenance"),
             ("Pennsylvania Code — 67 Pa. Code § 175.4", "https://pacodeandbulletin.gov/secure/pacode/data/067/chapter175/s175.4.html"),
+            ("NHTSA — Tire Safety and Aging", "https://www.nhtsa.gov/vehicle-safety/tires"),
+            ("Petroleum Quality Institute of America — Motor Oils for Classic and Vintage Cars", "https://pqia.org/2021/04/15/motor-oils-for-classic-and-vintage-cars/amp/"),
             ("PennDOT — Specialty Vehicle Title and Registration", "https://www.pa.gov/agencies/dmv/vehicle-services/title-and-registration"),
         ],
         "verify": [
-            "[VERIFY] Joe must confirm Diverse Autoworks accepts classic/vintage vehicles before publication.",
+            "[VERIFY] Classic/vintage vehicle intake and year/model eligibility are handled case by case; do not advertise universal make/model acceptance.",
             "[VERIFY] Confirm scope for carburetors, distributor/points ignition, vintage wiring, parts sourcing and modifications. Do not advertise these as offered yet.",
             "[VERIFY] Do not imply body/paint restoration; body work was explicitly removed from the confirmed service list.",
         ],
