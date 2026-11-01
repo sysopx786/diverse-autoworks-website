@@ -1450,7 +1450,51 @@ def page_service(lang, key):
     trail = f'<a href="{href(lang, key, lang, "services")}">{u["nav"]["services"]}</a> / {esc(L(P["crumb"], lang))}'
     req = f'<p style="margin-top:22px"><a class="btn btn-sign" href="{href(lang, key, lang, "contact", anchor="request")}">{u["request"]}</a></p>'
     faq_h = "Frequently asked questions" if lang == "en" else "Preguntas frecuentes"
-    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + f'''
+    gallery = ""
+    if key == "svc_classic":
+        gallery_title = "Classic Cars. Lasting Character." if lang == "en" else "Autos clásicos. Carácter que perdura."
+        gallery_lead = (
+            "American muscle, vintage trucks and treasured older cars all have a story."
+            if lang == "en" else
+            "Los deportivos estadounidenses, las camionetas clásicas y los autos antiguos tienen su historia."
+        )
+        photos = [
+            ("classic-red-convertible.webp",
+             "Red classic convertible against a dark studio background",
+             "Descapotable clásico rojo sobre un fondo oscuro",
+             "American muscle", "Deportivo clásico estadounidense"),
+            ("classic-truck-and-sedan.webp",
+             "Blue vintage truck beside a dark green classic sedan",
+             "Camioneta antigua azul junto a un sedán clásico verde oscuro",
+             "Old-school favorites", "Favoritos de otra época"),
+            ("classic-blue-truck.webp",
+             "Blue vintage off-road truck with white roof",
+             "Camioneta todoterreno antigua azul con techo blanco",
+             "Built for another era", "Diseño de otra época"),
+        ]
+        figures = []
+        for filename, alt_en, alt_es, cap_en, cap_es in photos:
+            src = asset(lang, key, "img/" + filename)
+            figures.append(
+                f'<figure class="classic-gallery-card">'
+                f'<img src="{src}" width="1200" height="896" loading="lazy" decoding="async" '
+                f'alt="{esc(alt_en if lang == "en" else alt_es, quote=True)}">'
+                f'<figcaption>{esc(cap_en if lang == "en" else cap_es)}</figcaption>'
+                f'</figure>'
+            )
+        note = (
+            "Illustrative images; not customer vehicles or completed shop projects."
+            if lang == "en" else
+            "Imágenes ilustrativas; no son autos de clientes ni trabajos realizados por el taller."
+        )
+        gallery = (
+            f'<section class="sec sec-ink on-dark classic-gallery" id="classic-gallery">'
+            f'<div class="wrap"><div class="sec-head"><h2>{esc(gallery_title)}</h2>'
+            f'<p>{esc(gallery_lead)}</p></div>'
+            f'<div class="classic-gallery-grid">{"".join(figures)}</div>'
+            f'<p class="classic-gallery-note">{esc(note)}</p></div></section>'
+        )
+    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + gallery + f'''
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["blocks"])}</div></div></section>
 <section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": sp["faq"]})}</div></div></section>
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["cta"])}{req}</div></div></section>'''

@@ -8,6 +8,7 @@ on:
       - "tools/build.py"
       - "docs/assets/css/main.css"
       - "docs/assets/img/classic-autoworks.webp"
+      - "docs/assets/img/classic-*.webp"
       - "tools/service_pages_batch*.py"
       - ".github/workflows/build-service-pages.yml"
   workflow_dispatch:
@@ -90,6 +91,25 @@ jobs:
               assert "classic-car-repair/" in html, f"Missing service link: {page}"
           assert Path("docs/assets/img/classic-autoworks.webp").stat().st_size > 30_000
           print("PASS: English and Spanish classic car home feature")
+          PY
+      - name: Verify classic car gallery
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          images = [
+              "classic-red-convertible.webp",
+              "classic-truck-and-sedan.webp",
+              "classic-blue-truck.webp",
+          ]
+          for prefix in ("", "es/"):
+              path = Path("docs") / prefix / "classic-car-repair/index.html"
+              html = path.read_text(encoding="utf-8")
+              assert 'id="classic-gallery"' in html, path
+              assert html.count('class="classic-gallery-card"') == 3, path
+              for name in images:
+                  assert name in html, (path, name)
+                  assert (Path("docs/assets/img") / name).stat().st_size > 10_000
+          print("PASS: all 3 gallery images on English and Spanish pages")
           PY
       - name: Check Spanish content
         run: python tests/es_audit.py
