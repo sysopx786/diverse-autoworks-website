@@ -181,7 +181,7 @@
  },
  "en:services": {
   "date": "2026-11-01",
-  "hash": "dc1d6bebd706f9d3e4961b54193a54754b3d1326"
+  "hash": "63bbe9277adacae051c830773983232f559f76af"
  },
  "en:svc_axle": {
   "date": "2026-10-31",
@@ -198,6 +198,10 @@
  "en:svc_brakes": {
   "date": "2026-10-31",
   "hash": "bb7dfc741988f79ff781d8f47e353dd4cf98085e"
+ },
+ "en:svc_classic": {
+  "date": "2026-11-01",
+  "hash": "f88be47d904b30cec6866831fd77935c1820b489"
  },
  "en:svc_climate": {
   "date": "2026-10-31",
@@ -469,7 +473,7 @@
  },
  "es:services": {
   "date": "2026-11-01",
-  "hash": "25e863671ee940808d2292052264a612e9cbebb2"
+  "hash": "14f329de5b228e361b3f02c1cf8d8af15418fdc6"
  },
  "es:svc_axle": {
   "date": "2026-10-31",
@@ -486,6 +490,10 @@
  "es:svc_brakes": {
   "date": "2026-10-31",
   "hash": "12cfea92346eaae610ff6fe96fcd72e22170d0cd"
+ },
+ "es:svc_classic": {
+  "date": "2026-11-01",
+  "hash": "76d4eba0531e0ce33f7e24f8ed24430e4445ad18"
  },
  "es:svc_climate": {
   "date": "2026-10-31",
