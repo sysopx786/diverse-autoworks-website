@@ -79,6 +79,11 @@ for _b in BRAND_PAGES:
 for _s in SERVICE_PAGES:
     SLUGS[_s["key"]] = _s["slug"]
     PAGES[_s["key"]] = _s["page"]
+# Map a SERVICES id (e.g. "maintenance") to the dedicated page that covers it, when one exists.
+COVERED_BY = {}
+for _s in SERVICE_PAGES:
+    for _cid in _s.get("covers", []):
+        COVERED_BY.setdefault(_cid, _s["key"])
 # the content.py key "fleet" for page copy; map slug key -> PAGES key
 PAGEKEY = {k: k for k in SLUGS}
 
@@ -276,6 +281,8 @@ def learn_href(lang, cur_key, sid):
     if sid == "motorcycle":
         return href(lang, cur_key, lang, "inspections", anchor="motorcycle")
     s = svc_by_id(sid)
+    if not s:
+        return href(lang, cur_key, lang, "services")
     if s.get("page") == "inspections":
         return href(lang, cur_key, lang, "inspections")
     if s.get("page") == "fleet-repairs":
@@ -284,6 +291,8 @@ def learn_href(lang, cur_key, sid):
         return href(lang, cur_key, lang, "tags")
     if s.get("page") == "contact":
         return href(lang, cur_key, lang, "contact", anchor=s.get("anchor", ""))
+    if sid in COVERED_BY:
+        return href(lang, cur_key, lang, COVERED_BY[sid])
     return href(lang, cur_key, lang, "services", anchor=sid)
 
 
@@ -888,7 +897,7 @@ def page_services(lang):
         blocks = []
         for s in svcs:
             acts = [f'<a class="btn btn-navy" style="min-height:44px;font-size:1.15rem" href="{request_href(lang, key, s["id"])}">{u["svc_request"]}</a>']
-            if s.get("page"):
+            if s.get("page") or s["id"] in COVERED_BY:
                 acts.append(f'<a href="{learn_href(lang, key, s["id"])}">{u["svc_details"]}</a>')
             if s["id"] == "inspections":
                 acts.append(f'<a href="{href(lang, key, lang, "moto")}">{esc(L(PAGES["moto"]["more_btn"], lang))}</a>')
