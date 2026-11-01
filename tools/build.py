@@ -904,6 +904,27 @@ def page_services(lang):
             acts.append(f'<a href="{href(lang, key, lang, "faq", anchor=s["faq"])}">{u["faq_related"]}</a>')
             blocks.append(f'<article class="svc" id="{s["id"]}">{G.icon(s["icon"], 56)}<h3>{esc(L(s["title"], lang))}</h3><div>{img(lang, key, SVC_IMG[s["id"]], "svc-img") if s["id"] in SVC_IMG else ""}<p>{esc(L(s["desc"], lang))}</p><div class="svc-acts">{"".join(acts)}</div></div></article>')
         groups.append(f'<section class="svc-group" id="g-{gid}"><h2>{esc(L(gtitle, lang))}</h2>{"".join(blocks)}</section>')
+    # Dedicated classic-vehicle page. This is an inquiry for an individual older car,
+    # not a guarantee that the shop accepts every collector model or restoration job.
+    if "svc_classic" in SERVICE_PAGE_BY_KEY:
+        classic_group = "Classic vehicles" if lang == "en" else "Vehículos clásicos"
+        classic_title = "Classic car repair & maintenance" if lang == "en" else "Reparación y mantenimiento de autos clásicos"
+        classic_desc = (
+            "Have a classic or vintage car? Ask about mechanical service for your specific year, "
+            "make, model and requested repair. The shop will confirm availability before a visit."
+            if lang == "en" else
+            "¿Tiene un auto clásico o antiguo? Consulte por servicio mecánico para su año, marca, "
+            "modelo y reparación solicitada. El taller confirmará la disponibilidad antes de su visita."
+        )
+        classic_more = "Classic car service details" if lang == "en" else "Detalles del servicio para autos clásicos"
+        idx.append(f'<li><a href="#g-classic">{esc(classic_group)}</a></li>')
+        groups.append(
+            f'<section class="svc-group" id="g-classic"><h2>{esc(classic_group)}</h2>'
+            f'<article class="svc">{G.icon("engine", 56)}<h3>{esc(classic_title)}</h3>'
+            f'<div><p>{esc(classic_desc)}</p><div class="svc-acts">'
+            f'<a href="{href(lang, key, lang, "svc_classic")}">{esc(classic_more)}</a>'
+            f'</div></div></article></section>'
+        )
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''<section class="sec sec-paper"><div class="wrap svc-layout">
 <nav aria-label="{u["svc_index"]}"><ul class="svc-index">{"".join(idx)}</ul></nav><div>{"".join(groups)}</div></div></section>'''
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
