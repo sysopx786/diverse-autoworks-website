@@ -35,7 +35,7 @@ jobs:
           from service_pages import SERVICE_PAGES
           from pathlib import Path
           keys, slugs, covers = set(), set(), set()
-          expected = {"svc_engine", "svc_battery", "svc_transmission", "svc_steering", "svc_fuel", "svc_rust", "svc_prepurchase", "svc_hybrid"}
+          expected = {"svc_engine", "svc_battery", "svc_transmission", "svc_steering", "svc_fuel", "svc_rust", "svc_prepurchase", "svc_hybrid", "svc_classic"}
           assert expected.issubset({p["key"] for p in SERVICE_PAGES})
           for p in SERVICE_PAGES:
               assert p["key"] not in keys, p["key"]
@@ -59,7 +59,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           slugs = ["engine-repair", "battery-replacement", "transmission-repair", "steering-components",
-                   "fuel-system-gas-tank", "rust-corrosion-control", "pre-purchase-inspection", "hybrid-ev-service"]
+                   "fuel-system-gas-tank", "rust-corrosion-control", "pre-purchase-inspection", "hybrid-ev-service", "classic-car-repair"]
           for slug in slugs:
               for prefix in ("", "es/"):
                   path = Path("docs") / prefix / slug / "index.html"
@@ -72,7 +72,7 @@ jobs:
           for slug in slugs:
               assert f"https://mydiverseauto.com/{slug}/" in xml, slug
               assert f"https://mydiverseauto.com/es/{slug}/" in xml, slug
-          print("PASS: 16 EN/ES page outputs and sitemap")
+          print(f"PASS: {len(slugs) * 2} EN/ES page outputs and sitemap")
           PY
       - name: Check Spanish content
         run: python tests/es_audit.py
