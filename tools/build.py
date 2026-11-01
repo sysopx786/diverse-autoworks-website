@@ -839,6 +839,42 @@ def page_home(lang):
 {img(lang, key, "about-mechanic", "fig-img fig-wide fig-band")}
 </div></section>'''
 
+    # Classic car feature beneath the home service tiles. The artwork is an
+    # illustrative user-provided scene, not a documented shop photograph.
+    classic_title = "Classic Cars" if lang == "en" else "Autos clásicos"
+    classic_tagline = "Keeping Legends on the Road" if lang == "en" else "Clásicos que siguen rodando"
+    classic_intro = (
+        "Some cars get you from A to B. Others are part of the family."
+        if lang == "en" else
+        "Algunos autos solo sirven para trasladarse. Otros son parte de la familia."
+    )
+    classic_copy = (
+        "From American muscle to European roadsters and cherished weekend cruisers, "
+        "every older car has its own story. Ask Diverse Autoworks about engine, brake, "
+        "cooling, electrical and routine mechanical service for your specific vintage vehicle. "
+        "We'll review the year, model and work you need before confirming the visit."
+        if lang == "en" else
+        "Desde los clásicos deportivos estadounidenses hasta los descapotables europeos "
+        "y los autos de paseo que guarda con cariño, cada vehículo antiguo tiene su historia. "
+        "Consulte en Diverse Autoworks por servicio mecánico de motor, frenos, enfriamiento, "
+        "electricidad y mantenimiento para su vehículo. Revisaremos el año, modelo y trabajo "
+        "solicitado antes de confirmar la visita."
+    )
+    classic_cta = "Explore Classic Car Services" if lang == "en" else "Ver servicios para autos clásicos"
+    classic_alt = (
+        "Illustrative image of a red classic convertible parked outside a Diverse Autoworks-themed building"
+        if lang == "en" else
+        "Imagen ilustrativa de un auto clásico descapotable rojo frente a un edificio con el nombre de Diverse Autoworks"
+    )
+    classic_caption = "Illustrative scene" if lang == "en" else "Imagen ilustrativa"
+    classic = f'''<section class="sec sec-paper classic-feature" id="classic-cars"><div class="wrap">
+<div class="sec-head classic-feature-head"><h2>{esc(classic_title)}</h2><p>{esc(classic_tagline)}</p></div>
+<div class="classic-feature-grid">
+<figure class="classic-feature-photo"><img src="{asset(lang, key, "img/classic-autoworks.webp")}" width="1120" height="751" loading="lazy" decoding="async" alt="{esc(classic_alt, quote=True)}"><figcaption>{esc(classic_caption)}</figcaption></figure>
+<div class="classic-feature-copy"><h3>{esc(classic_intro)}</h3><p>{esc(classic_copy)}</p>
+<a class="btn btn-sign" href="{href(lang, key, lang, "svc_classic")}">{esc(classic_cta)}</a></div>
+</div></div></section>'''
+
     # motorcycle
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
@@ -883,7 +919,7 @@ def page_home(lang):
 <li>{G.icon("mail", 30)}<div><b>{u["close_mail"]}</b><a href="{MAIL}">{B["email"]}</a></div></li>
 </ul>
 {img(lang, key, "home-storefront", "fig-img close-photo")}</div></section>'''
-    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + moto + reviews + duo + close)
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + classic + moto + reviews + duo + close)
 
 
 def page_services(lang):

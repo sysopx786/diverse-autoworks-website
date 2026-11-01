@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - "tools/service_pages.py"
+      - "tools/build.py"
+      - "docs/assets/css/main.css"
+      - "docs/assets/img/classic-autoworks.webp"
       - "tools/service_pages_batch*.py"
       - ".github/workflows/build-service-pages.yml"
   workflow_dispatch:
@@ -73,6 +76,20 @@ jobs:
               assert f"https://mydiverseauto.com/{slug}/" in xml, slug
               assert f"https://mydiverseauto.com/es/{slug}/" in xml, slug
           print(f"PASS: {len(slugs) * 2} EN/ES page outputs and sitemap")
+          PY
+      - name: Verify home classic car feature
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for prefix, label in (("", "Keeping Legends on the Road"), ("es/", "Clásicos que siguen rodando")):
+              page = Path("docs") / prefix / "index.html"
+              html = page.read_text(encoding="utf-8")
+              assert 'id="classic-cars"' in html, f"Missing classic section: {page}"
+              assert "classic-autoworks.webp" in html, f"Missing image: {page}"
+              assert label in html, f"Missing headline: {page}"
+              assert "classic-car-repair/" in html, f"Missing service link: {page}"
+          assert Path("docs/assets/img/classic-autoworks.webp").stat().st_size > 30_000
+          print("PASS: English and Spanish classic car home feature")
           PY
       - name: Check Spanish content
         run: python tests/es_audit.py
