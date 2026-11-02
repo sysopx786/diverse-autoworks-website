@@ -866,11 +866,10 @@ def page_home(lang):
         if lang == "en" else
         "Imagen ilustrativa de un auto clásico descapotable rojo frente a un edificio con el nombre de Diverse Autoworks"
     )
-    classic_caption = "Illustrative scene" if lang == "en" else "Imagen ilustrativa"
     classic = f'''<section class="sec sec-paper classic-feature" id="classic-cars"><div class="wrap">
 <div class="sec-head classic-feature-head"><h2>{esc(classic_title)}</h2><p>{esc(classic_tagline)}</p></div>
 <div class="classic-feature-grid">
-<figure class="classic-feature-photo"><img src="{asset(lang, key, "img/classic-autoworks.webp")}" width="1120" height="751" loading="lazy" decoding="async" alt="{esc(classic_alt, quote=True)}"><figcaption>{esc(classic_caption)}</figcaption></figure>
+<figure class="classic-feature-photo"><img src="{asset(lang, key, "img/classic-autoworks.webp")}" width="1120" height="751" loading="lazy" decoding="async" alt="{esc(classic_alt, quote=True)}"></figure>
 <div class="classic-feature-copy"><h3>{esc(classic_intro)}</h3><p>{esc(classic_copy)}</p>
 <a class="btn btn-sign" href="{href(lang, key, lang, "svc_classic")}">{esc(classic_cta)}</a></div>
 </div></div></section>'''
