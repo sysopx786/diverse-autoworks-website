@@ -156,12 +156,12 @@
   "hash": "ddd7e9a9bedf3a4c82f28a5ab74e7c6238380f4d"
  },
  "en:fleet": {
-  "date": "2026-10-31",
-  "hash": "ad2ca57edd1d35c19590719722981199a879c06b"
+  "date": "2026-11-02",
+  "hash": "9dc1ff2f5c4bfc451ef89d8f7e5147744644b537"
  },
  "en:home": {
   "date": "2026-11-02",
-  "hash": "02e9549d0e3fb9e22fad0be5a4cc5f498681dafe"
+  "hash": "d61f5124236fd5dd00d1c9a335b153290f0e6102"
  },
  "en:inspections": {
   "date": "2026-10-30",
@@ -448,12 +448,12 @@
   "hash": "561d98b2267e8b1eb2e3647e2ac519fae3cce99f"
  },
  "es:fleet": {
-  "date": "2026-10-31",
-  "hash": "42e0cd59c1b4cb47ad9858a6b86c53601ef069d4"
+  "date": "2026-11-02",
+  "hash": "db64a56aa7e1b232e4b12b273383874c0cc433c4"
  },
  "es:home": {
   "date": "2026-11-02",
-  "hash": "69ceeddbc47088b05de929919b23745aaffaaaf0"
+  "hash": "3566106b6c446391bf8c0b2bf575233ebfbe491f"
  },
  "es:inspections": {
   "date": "2026-10-30",
