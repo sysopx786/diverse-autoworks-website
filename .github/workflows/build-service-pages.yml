@@ -115,6 +115,9 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          from html import unescape
+          from urllib.parse import urljoin, urlparse
+          import re
           for prefix, classic, fleet in (
               ("", "Classic Cars", "Fleet Repair"),
               ("es/", "Autos clásicos", "Reparación de flotas"),
@@ -123,9 +126,19 @@ jobs:
                   path = Path("docs") / prefix / slug / "index.html"
                   html = path.read_text(encoding="utf-8")
                   nav = html.split('id="site-nav"', 1)[1].split("</nav>", 1)[0]
-                  assert classic in nav and fleet in nav, path
-                  assert "classic-car-repair/" in nav, path
-                  assert "fleet-repairs/" in nav, path
+                  anchors = re.findall(r'<a\\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', nav, re.S)
+                  labels = {
+                      unescape(re.sub(r"<[^>]+>", "", label)).strip(): href
+                      for href, label in anchors
+                  }
+                  base = f"https://mydiverseauto.com/{prefix}{slug}"
+                  for label, target in (
+                      (classic, f"/{prefix}classic-car-repair/"),
+                      (fleet, f"/{prefix}fleet-repairs/"),
+                  ):
+                      assert label in labels, (path, label)
+                      actual = urlparse(urljoin(base, labels[label])).path
+                      assert actual == target, (path, label, actual, target)
           print("PASS: bilingual navigation on home, Classic Cars and Fleet Repair")
           PY
       - name: Check Spanish content
