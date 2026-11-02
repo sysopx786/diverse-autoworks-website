@@ -104,10 +104,10 @@ ul,ol{margin:0;padding:0}
 .to-top svg{width:24px;height:24px}
 @media (max-width:1180px){
   .menu-btn{display:grid}
-  .nav{position:absolute;left:0;right:0;top:100%;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);display:none;margin:0;padding:8px var(--gut) 20px;max-height:calc(100vh - var(--hdr-full));max-height:calc(100dvh - var(--hdr-full));overflow:auto}
+  .nav{position:absolute;left:0;right:0;top:100%;background:var(--ink);border-bottom:1px solid rgba(255,255,255,.12);display:none;margin:0;padding:6px var(--gut) 10px;max-height:calc(100vh - var(--hdr-full));max-height:calc(100dvh - var(--hdr-full));overflow:auto;overscroll-behavior:contain}
   .nav.open{display:block}
   .nav ul{flex-direction:column;gap:0}
-  .nav a{padding:12px 4px;font-size:1.5rem;border-bottom:1px solid rgba(255,255,255,.08);border-radius:0}
+  .nav a{display:flex;align-items:center;min-height:44px;padding:7px 8px;font-size:1.14rem;line-height:1.2;border-bottom:1px solid rgba(255,255,255,.08);border-radius:0;white-space:normal}
   .nav a[aria-current="page"]::after{display:none}
   .hdr-end{margin-left:auto}
 }
