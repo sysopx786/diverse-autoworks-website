@@ -1522,7 +1522,7 @@ def page_trailer(lang):
         options.append(f'<option value="{index}">{e(category)}</option>')
         for item in entries:
             label = L(item, lang)
-            types.append(f'<li data-category="{index}" data-match="{e((L(item, "en") + " " + L(item, "es") + " " + L(name, "en") + " " + L(name, "es")).lower(), quote=True)}">{e(label)}</li>')
+            types.append(f'<li data-category="{index}" data-match="{e((L(item, lang) + " " + L(name, lang)).lower(), quote=True)}">{e(label)}</li>')
     repairs = "".join(f'<li>{e(L(item, lang))}</li>' for item in tr.REPAIRS)
     faq = faq_list(lang, {"items": tr.FAQ})
     hero = f"""<section class="tr-hero sec-ink on-dark"><div class="wrap tr-hero-grid">
