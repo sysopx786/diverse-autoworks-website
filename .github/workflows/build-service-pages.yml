@@ -7,6 +7,7 @@ on:
       - "tools/service_pages.py"
       - "tools/build.py"
       - "docs/assets/css/main.css"
+      - "docs/assets/js/main.js"
       - "docs/assets/img/classic-autoworks.webp"
       - "docs/assets/img/classic-*.webp"
       - "tools/service_pages_batch*.py"
@@ -143,6 +144,26 @@ jobs:
           PY
       - name: Check Spanish content
         run: python tests/es_audit.py
+      - name: Verify FormSubmit request integration
+        run: |
+          node --check docs/assets/js/main.js
+          python - <<'PY'
+          from pathlib import Path
+          for prefix in ("", "es/"):
+              for slug in ("contact", "fleet-repairs"):
+                  page = Path("docs") / prefix / slug / "index.html"
+                  text = page.read_text(encoding="utf-8")
+                  assert 'data-endpoint="https://formsubmit.co/ajax/Diverseautoworks@verizon.net"' in text, page
+                  assert 'method="POST"' in text, page
+                  assert 'name="_honey"' in text, page
+                  assert 'name="company_site"' not in text, page
+                  assert "Prepare email request" not in text, page
+                  assert "This opens your email app" not in text, page
+          script = Path("docs/assets/js/main.js").read_text(encoding="utf-8")
+          assert 'String(data.success).toLowerCase() !== "true"' in script
+          assert 'body: JSON.stringify(body)' in script
+          print("PASS: bilingual forms, FormSubmit endpoint and safe response handling")
+          PY
       - name: Commit and push generated site
         run: |
           git config user.name "github-actions[bot]"
