@@ -12,7 +12,9 @@ Bilingual (English / Spanish) static site for Diverse Autoworks, Inc., Phoenixvi
 - `tools/content.py` holds all copy (EN + ES). `tools/build.py` builds the site into `docs/`.
 - Rebuild: `SITE_URL=https://mydiverseauto.com python3 tools/build.py` (on Windows: `python`, and set the variable first, e.g. `$env:SITE_URL="https://mydiverseauto.com"` in PowerShell).
 - **Always build with `SITE_URL` set to the live host.** Without it the build leaves out the canonical and hreflang tags, the sitemap and robots.txt sitemap line, and all structured data (JSON-LD) except a bare business block on the home page. Check `docs/index.html` for `rel="canonical"` and `application/ld+json` after building.
-- Env vars: `SITE_URL` (required for production builds: canonical, hreflang, sitemap, structured data) and the optional `FORM_ENDPOINT` (form backend).
+- Env vars: `SITE_URL` (required for production builds: canonical, hreflang, sitemap, structured data), optional `FORM_ENDPOINT` (overrides the default FormSubmit AJAX backend), and optional `FORM_PROVIDER` (privacy-policy label).
+- **Request form delivery (Nov 2, 2026):** The English and Spanish contact and fleet forms use `https://formsubmit.co/ajax/Diverseautoworks@verizon.net`. They post directly from the website and do not open an email app. JavaScript validates the contact fields, sends JSON, requires `success === "true"` from FormSubmit, includes the `_honey` honeypot, and displays the reply on the page.
+- **Activation required:** FormSubmit requires one test submission and one-time confirmation by the recipient at `Diverseautoworks@verizon.net`. The shop must click the activation link in that inbox before normal forwarding begins; check junk/spam if needed. After activation, send another test request and verify its arrival in that inbox. A successful website build alone does not confirm email delivery.
 - Tests: `tests/axe_audit.py` (accessibility), `tests/visual.py` (screenshot compare).
 
 Third-party names and logos (Google, Yelp, CARFAX) belong to their owners and appear only to attribute customer reviews.
