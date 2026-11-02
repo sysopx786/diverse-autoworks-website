@@ -149,7 +149,7 @@
  },
  "en:contact": {
   "date": "2026-11-02",
-  "hash": "0e092eed08498a5d60a5c313b507b6c5bb437484"
+  "hash": "d898837b825dc86297909bb76ae1ed6b282aee1b"
  },
  "en:faq": {
   "date": "2026-11-02",
@@ -157,7 +157,7 @@
  },
  "en:fleet": {
   "date": "2026-11-02",
-  "hash": "8b7e4334334ff2f5899391e78013f07fcc8dc1b5"
+  "hash": "e8374967190bc8e04878f60902a262a87d7c0853"
  },
  "en:home": {
   "date": "2026-11-02",
@@ -290,6 +290,10 @@
  "en:tags": {
   "date": "2026-10-31",
   "hash": "9d77edf40e2a6076b0615d4cd0d27de29d3a5675"
+ },
+ "en:trailer": {
+  "date": "2026-11-02",
+  "hash": "fcb01c4493014daea7e2922402e587620404e8c0"
  },
  "es:about": {
   "date": "2026-10-23",
@@ -441,7 +445,7 @@
  },
  "es:contact": {
   "date": "2026-11-02",
-  "hash": "8b5045470cce0d33d455e0f0faabe1a51daba07d"
+  "hash": "5b7cda30ec46a3d04b7028d61dbeb063b293704d"
  },
  "es:faq": {
   "date": "2026-11-02",
@@ -449,7 +453,7 @@
  },
  "es:fleet": {
   "date": "2026-11-02",
-  "hash": "093a2ec39c1064c3f203d4123443e7cb070cd101"
+  "hash": "89738250fd452180d28607822617161d6957999d"
  },
  "es:home": {
   "date": "2026-11-02",
@@ -582,5 +586,9 @@
  "es:tags": {
   "date": "2026-10-31",
   "hash": "789531aaabffe1078a2b8a49eaca60cbf5dd3995"
+ },
+ "es:trailer": {
+  "date": "2026-11-02",
+  "hash": "29ce3d4bce3219c76f2adfa820ceffd6e03731ea"
  }
 }
