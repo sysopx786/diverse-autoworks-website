@@ -882,6 +882,31 @@ def page_home(lang):
 <a class="btn btn-sign" href="{href(lang, key, lang, "svc_classic")}">{esc(classic_cta)}</a></div>
 </div></div></section>'''
 
+    # A brief trailer feature immediately below the classic-car feature.
+    trailer_title = "Trailer Repair & Maintenance" if lang == "en" else "Reparación y mantenimiento de remolques"
+    trailer_kicker = "MOST MAKES & MODELS" if lang == "en" else "LA MAYORÍA DE MARCAS Y MODELOS"
+    trailer_lead = (
+        "Utility, cargo, landscaping, equipment and car-hauling trailers: "
+        "Diverse Autoworks works on most makes and models weighing 10,000 lb (4,536 kg) or less. "
+        "Tell us about your trailer and the work it needs so we can confirm service."
+        if lang == "en" else
+        "Remolques utilitarios, de carga, jardinería, maquinaria y transporte de autos: "
+        "Diverse Autoworks atiende la mayoría de marcas y modelos que pesan 10,000 lb (4,536 kg) o menos. "
+        "Cuéntenos sobre su remolque y el trabajo que necesita para confirmar el servicio."
+    )
+    trailer_cta = "Explore Trailer Repair" if lang == "en" else "Ver servicios para remolques"
+    trailer_alt = (
+        "Flatbed car-hauling trailer on a dark studio background"
+        if lang == "en" else
+        "Remolque de plataforma para transportar autos sobre un fondo de estudio oscuro"
+    )
+    trailer_feature = f'''<section class="sec sec-white home-trailer" id="trailer-repair"><div class="wrap home-trailer-grid">
+<div class="home-trailer-copy"><p class="home-trailer-kicker">{esc(trailer_kicker)} · 10,000 lb</p>
+<h2>{esc(trailer_title)}</h2><p>{esc(trailer_lead)}</p>
+<a class="btn btn-sign" href="{href(lang, key, lang, "trailer")}">{esc(trailer_cta)}</a></div>
+<figure class="home-trailer-photo"><img src="{asset(lang, key, "img/trailer-flatbed.webp")}" width="450" height="247" loading="lazy" decoding="async" alt="{esc(trailer_alt, quote=True)}"></figure>
+</div></section>'''
+
     # motorcycle
     moto = f'''<section class="sec sec-ink on-dark" id="motorcycle"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["moto_h"], lang))}</h2><p>{esc(L(P["moto_p"], lang))}</p>
@@ -926,7 +951,7 @@ def page_home(lang):
 <li>{G.icon("mail", 30)}<div><b>{u["close_mail"]}</b><a href="{MAIL}">{B["email"]}</a></div></li>
 </ul>
 {img(lang, key, "home-storefront", "fig-img close-photo")}</div></section>'''
-    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + classic + moto + reviews + duo + close)
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + classic + trailer_feature + moto + reviews + duo + close)
 
 
 def page_services(lang):

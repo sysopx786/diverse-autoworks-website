@@ -807,3 +807,20 @@ details.q .a p{margin:0}
  .tr-repair-list,.tr-gallery,.tr-types{grid-template-columns:1fr}
  .tr-inspections .btn{white-space:normal}
 }
+
+
+/* Compact homepage trailer feature, following the Classic Cars section. */
+.home-trailer-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(22px,4vw,52px);align-items:center}
+.home-trailer-kicker{font:700 .95rem var(--body);letter-spacing:.08em;color:var(--navy-2);margin:0 0 12px}
+.home-trailer-copy h2{font-size:clamp(2rem,4vw,3.4rem);margin:0 0 14px}
+.home-trailer-copy>p:not(.home-trailer-kicker){color:var(--steel);font-size:1.12rem;line-height:1.6;margin:0 0 22px}
+.home-trailer-photo{margin:0;min-width:0}
+.home-trailer-photo img{display:block;width:100%;height:auto;aspect-ratio:450/247;object-fit:contain;border-radius:6px;background:var(--ink)}
+@media(max-width:800px){
+ .home-trailer-grid{grid-template-columns:1fr}
+ .home-trailer-photo{grid-row:1}
+ .home-trailer-copy{grid-row:2}
+}
+@media(max-width:540px){
+ .home-trailer-copy .btn{width:100%;white-space:normal;text-align:center}
+}
