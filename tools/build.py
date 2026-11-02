@@ -5,13 +5,13 @@ Static site generator for Diverse Autoworks (English at /, Spanish at /es/).
 Usage:
     python3 tools/build.py                      # builds into ./docs
     SITE_URL=https://example.com python3 tools/build.py
-    FORM_ENDPOINT=https://formspree.io/f/xxxx python3 tools/build.py
+    FORM_ENDPOINT=https://formsubmit.co/ajax/shop@example.com python3 tools/build.py
 
 SITE_URL      Final public address (no trailing slash, include repo path for GitHub Pages
               project sites). When empty, canonical/hreflang/sitemap/og:url are NOT written
               (they must never point at the wrong domain).
-FORM_ENDPOINT Approved form-handling endpoint (e.g. Formspree). When empty, the request form
-              prepares an email to the shop's address instead of posting anywhere.
+FORM_ENDPOINT AJAX form endpoint. Defaults to FormSubmit using the shop email; can be
+              overridden for another approved service.
 """
 import datetime
 import hashlib
@@ -35,8 +35,8 @@ SERVICE_PAGE_BY_KEY = {p["key"]: p for p in SERVICE_PAGES}
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "docs"))
 SITE_URL = os.environ.get("SITE_URL", "").rstrip("/")
-FORM_ENDPOINT = os.environ.get("FORM_ENDPOINT", "").strip()
-FORM_PROVIDER = os.environ.get("FORM_PROVIDER", "Formspree")
+FORM_ENDPOINT = os.environ.get("FORM_ENDPOINT", f"https://formsubmit.co/ajax/{BUSINESS['email']}").strip()
+FORM_PROVIDER = os.environ.get("FORM_PROVIDER", "FormSubmit")
 LANGS = ("en", "es")
 
 B = BUSINESS
@@ -715,9 +715,10 @@ def form_html(lang, key, fleet=False):
     submit = f["submit_post"] if FORM_ENDPOINT else f["submit_mail"]
     mail_note = "" if FORM_ENDPOINT else f'<small>{f["mail_note"]}</small>'
     fleet_attr = ' data-fleet="1"' if fleet else ""
-    return f'''<form class="form" id="request" data-request data-endpoint="{esc(FORM_ENDPOINT, quote=True)}" data-email="{B["email"]}"{fleet_attr} novalidate>
+    form_action = FORM_ENDPOINT.replace("https://formsubmit.co/ajax/", "https://formsubmit.co/")
+    return f'''<form class="form" id="request" action="{esc(form_action, quote=True)}" method="POST" data-request data-endpoint="{esc(FORM_ENDPOINT, quote=True)}" data-email="{B["email"]}"{fleet_attr} novalidate>
 <p class="form-note">{f["notice"]}</p>
-<div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" type="text" name="company_site" tabindex="-1" autocomplete="off"></div>
+<div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
 <div class="grid2">
 <div class="fld"><label for="f-name">{f["name"]}</label><input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name"><span class="err" id="e-name" data-err="name" role="alert"></span></div>
 <div class="fld"><label for="f-phone">{f["phone"]}</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-phone"><span class="err" id="e-phone" data-err="phone" role="alert"></span></div>
