@@ -10,6 +10,8 @@ on:
       - "docs/assets/js/main.js"
       - "docs/assets/img/classic-autoworks.webp"
       - "docs/assets/img/classic-*.webp"
+      - "docs/assets/img/trailer-*.webp"
+      - "tools/trailer_page.py"
       - "tools/service_pages_batch*.py"
       - ".github/workflows/build-service-pages.yml"
   workflow_dispatch:
@@ -64,7 +66,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           slugs = ["engine-repair", "battery-replacement", "transmission-repair", "steering-components",
-                   "fuel-system-gas-tank", "rust-corrosion-control", "pre-purchase-inspection", "hybrid-ev-service", "classic-car-repair"]
+                   "fuel-system-gas-tank", "rust-corrosion-control", "pre-purchase-inspection", "hybrid-ev-service", "classic-car-repair", "trailer-repair"]
           for slug in slugs:
               for prefix in ("", "es/"):
                   path = Path("docs") / prefix / slug / "index.html"

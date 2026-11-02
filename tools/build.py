@@ -29,6 +29,7 @@ import graphics as G
 import reviews_es as RES
 from brand_pages import BRAND_PAGES, BRAND_PAGE_BY_NAME, BRAND_PAGE_BY_KEY  # noqa
 import fleet_page as FLEET  # noqa
+import trailer_page as TRAILER  # noqa
 import tags_page as TAGS  # noqa
 from service_pages import SERVICE_PAGES  # noqa
 SERVICE_PAGE_BY_KEY = {p["key"]: p for p in SERVICE_PAGES}
@@ -68,9 +69,10 @@ DIRECTIONS = "https://www.google.com/maps/search/?api=1&query=" + MAPS_Q.replace
 MAP_EMBED = "https://www.google.com/maps?q=" + MAPS_Q + "&output=embed"
 
 SLUGS = {  # slug -> directory path (English)
-    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs", "tags": "tag-and-title",
+    "home": "", "services": "services", "inspections": "inspections", "moto": "motorcycle-inspection", "fleet": "fleet-repairs", "trailer": "trailer-repair", "tags": "tag-and-title",
     "about": "about", "reviews": "reviews", "faq": "faq", "contact": "contact", "privacy": "privacy", "brands": "brands",
 }
+PAGES["trailer"] = TRAILER.PAGE
 # Dedicated brand pages (/brands/<brand>/): slugs and page copy live in brand_pages.py.
 for _b in BRAND_PAGES:
     SLUGS[_b["key"]] = _b["slug"]
@@ -95,7 +97,7 @@ UI = {
         "status": {"open": "Open now · closes {time}", "soon": "Closing soon · closes {time}", "closed": "Closed · opens {when} {time}",
                    "never": "Closed · call for hours", "today": "today", "tomorrow": "tomorrow", "am": "AM", "pm": "PM", "sample": "Sample",
                    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]},
-        "nav": {"brands": "Brands", "services": "Services", "inspections": "Inspections", "moto": "Motorcycle", "fleet": "Fleet Repair", "svc_classic": "Classic Cars", "about": "About",
+        "nav": {"brands": "Brands", "services": "Services", "inspections": "Inspections", "moto": "Motorcycle", "fleet": "Fleet Repair", "svc_classic": "Classic Cars", "trailer": "Trailer Repair", "about": "About",
                 "reviews": "Reviews", "faq": "FAQs", "contact": "Contact"},
         "call": f"Call {PHONE}", "call_short": "Call", "request": "Request an Appointment", "directions": "Get Directions",
         "home_label": "Diverse Autoworks home", "lang_label": "Language", "main_nav": "Main navigation",
@@ -156,7 +158,7 @@ UI = {
         "status": {"open": "Abierto ahora · cierra a las {time}", "soon": "Cierra pronto · cierra a las {time}", "closed": "Cerrado · abre {when} a las {time}",
                    "never": "Cerrado · llame para conocer el horario", "today": "hoy", "tomorrow": "mañana", "am": "a. m.", "pm": "p. m.", "sample": "Ejemplo",
                    "days": ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"]},
-        "nav": {"brands": "Marcas", "services": "Servicios", "inspections": "Inspecciones", "moto": "Motocicletas", "fleet": "Reparación de flotas", "svc_classic": "Autos clásicos", "about": "Nosotros",
+        "nav": {"brands": "Marcas", "services": "Servicios", "inspections": "Inspecciones", "moto": "Motocicletas", "fleet": "Reparación de flotas", "svc_classic": "Autos clásicos", "trailer": "Remolques", "about": "Nosotros",
                 "reviews": "Reseñas", "faq": "Preguntas", "contact": "Contacto"},
         "call": f"Llamar al {PHONE}", "call_short": "Llamar", "request": "Solicitar una cita", "directions": "Cómo llegar",
         "home_label": "Inicio de Diverse Autoworks", "lang_label": "Idioma", "main_nav": "Navegación principal",
@@ -297,6 +299,7 @@ def learn_href(lang, cur_key, sid):
 
 
 FLEET_COPY = [FLEET.LOOKUP, FLEET.TYPES, FLEET.BLOCKS, FLEET.CTA, FLEET.FAQ, FLEET.VEHICLES]
+TRAILER_COPY = [TRAILER.PAGE, TRAILER.GROUPS, TRAILER.REPAIRS, TRAILER.FAQ]
 TAGS_COPY = [TAGS.PAGE, TAGS.BLOCKS, TAGS.BRING_H, TAGS.BRING, TAGS.BRING_NOTE, TAGS.SRC_LEAD, TAGS.SOURCES, TAGS.SRC_NOTE, TAGS.FAQ, TAGS.CTA]
 
 
@@ -323,7 +326,7 @@ def check_parity():
             for i, v in enumerate(o):
                 walk(v, path + f"[{i}]")
 
-    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES", "FLEET_COPY", "TAGS_COPY"):
+    for name in ("SERVICES", "GROUPS", "PICKER", "MOTO_PARTS", "REVIEWS", "THEMES", "FAQ_CATS", "FAQ_GENERAL", "PAGES", "NOT_FOUND", "MOTORCYCLE_SERVICE", "ASK_FAQ_CATS", "NOTARY", "BRAND_PAGES", "FLEET_COPY", "TAGS_COPY", "TRAILER_COPY"):
         walk(globals()[name], name)
     for k in ("en", "es"):
         pass
@@ -564,6 +567,7 @@ SEARCH_ROWS = [
     ("inspections", "", "State inspections & emissions", "Inspecciones estatales y emisiones", "state inspection emissions sticker car truck trailer", "inspección estatal emisiones calcomanía auto camión remolque"),
     ("moto", "", "Motorcycle inspections (year-round)", "Inspecciones de motocicletas (todo el año)", "motorcycle bike inspection year-round winter act 149", "motocicleta moto inspección todo el año invierno ley 149"),
     ("fleet", "", "Fleet repairs", "Reparaciones de flotas", FLEET.SEARCH[0], FLEET.SEARCH[1]),
+    ("trailer", "", "Trailer repairs & maintenance", "Reparación y mantenimiento de remolques", "trailer repair utility cargo equipment boat car hauler landscaping 10000 pounds", "reparación remolques carga utilitarios barco maquinaria 10000 libras"),
     ("tags", "", "Tag & title service (PennDOT agent)", "Placas y títulos (agente de PennDOT)", TAGS.SEARCH[0], TAGS.SEARCH[1]),
     ("contact", "notary", "Notary services", "Servicios de notario", "notary notarize documents signing", "notario notarizar documentos firma"),
     ("contact", "request", "Request an appointment", "Solicitar una cita", "appointment book schedule quote request", "cita agendar presupuesto solicitud"),
@@ -599,7 +603,7 @@ def header(lang, key):
     u = UI[lang]
     other = "es" if lang == "en" else "en"
     items = []
-    for k in ("brands", "services", "svc_classic", "fleet", "inspections", "moto", "about", "reviews", "faq", "contact"):
+    for k in ("brands", "services", "svc_classic", "fleet", "trailer", "inspections", "moto", "about", "reviews", "faq", "contact"):
         cur = ' aria-current="page"' if (k == key or (k == "brands" and key in BRAND_PAGE_BY_KEY)) else ""
         items.append(f'<li><a href="{href(lang, key, lang, k)}"{cur}>{u["nav"][k]}</a></li>')
     items.append(f'<li class="nav-mob"><a href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_nav"]}</a></li>')
@@ -628,7 +632,7 @@ def header(lang, key):
 
 def footer(lang, key):
     u = UI[lang]
-    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "svc_classic", "fleet", "inspections", "moto", "about", "reviews", "faq", "contact"))
+    pages = "".join(f'<li><a href="{href(lang, key, lang, k)}">{u["nav"][k]}</a></li>' for k in ("brands", "services", "svc_classic", "fleet", "trailer", "inspections", "moto", "about", "reviews", "faq", "contact"))
     return f'''<footer class="foot on-dark"><div class="wrap">
 <div class="foot-grid">
 <div><a class="brand" href="{href(lang, key, lang, "home")}"><img class="brand-logo foot-logo" src="{asset(lang, key, "img/diverse-autoworks-logo.webp")}" width="168" height="88" alt="Diverse Autoworks" loading="lazy"></a>
@@ -708,12 +712,14 @@ def form_html(lang, key, fleet=False):
             opts.append(f'<option value="motorcycle">{esc(L(MOTORCYCLE_SERVICE["title"], lang))}</option>')
         else:
             opts.append(f'<option value="{s["id"]}">{esc(L(s["title"], lang))}</option>')
+    opts.append(f'<option value="trailer">{ "Trailer repair" if lang == "en" else "Reparación de remolques" }</option>')
     opts.append(f'<option value="unsure">{f["svc_unsure"]}</option>')
     opts.append(f'<option value="other">{f["svc_other"]}</option>')
-    sel_default = "fleet" if fleet else ""
+    sel_default = "trailer" if key == "trailer" else ("fleet" if fleet else "")
     options = "".join(opts).replace(f'<option value="{sel_default}">', f'<option value="{sel_default}" selected>') if sel_default else "".join(opts)
     submit = f["submit_post"] if FORM_ENDPOINT else f["submit_mail"]
     mail_note = "" if FORM_ENDPOINT else f'<small>{f["mail_note"]}</small>'
+    weight_field = ('<div class="fld"><label for="tr-weight">' + ("Trailer weight in pounds" if lang == "en" else "Peso del remolque en libras") + '</label><input id="tr-weight" name="trailer_weight_lb" type="number" min="0" step="1" inputmode="numeric" placeholder="10000"></div>') if key == "trailer" else ""
     fleet_attr = ' data-fleet="1"' if fleet else ""
     form_action = FORM_ENDPOINT.replace("https://formsubmit.co/ajax/", "https://formsubmit.co/")
     return f'''<form class="form" id="request" action="{esc(form_action, quote=True)}" method="POST" data-request data-endpoint="{esc(FORM_ENDPOINT, quote=True)}" data-email="{B["email"]}"{fleet_attr} novalidate>
@@ -732,6 +738,7 @@ def form_html(lang, key, fleet=False):
 <div class="fld"><label for="f-vehicle">{f["vehicle"]}</label><input id="f-vehicle" name="vehicle" type="text" autocomplete="off"></div>
 <div class="fld"><label for="f-service">{f["service"]}</label><select id="f-service" name="service">{options}</select></div>
 </div>
+{weight_field}
 <div class="fld"><label for="f-message">{f["msg"]}</label><textarea id="f-message" name="message" aria-describedby="h-msg"></textarea><small id="h-msg">{f["msg_help"]}</small></div>
 <div class="grid2">
 <div class="fld"><label for="f-date">{f["date"]} <span class="opt">({f["optional"]})</span></label><input id="f-date" name="date" type="date"></div>
@@ -1496,7 +1503,112 @@ def page_service(lang, key):
     return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), body)
 
 
-BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet, "tags": page_tags,
+
+def page_trailer(lang):
+    """Search-first trailer landing page; shares all global brand, tracking and SEO."""
+    key = "trailer"
+    tr = TRAILER
+    es = lang == "es"
+    X = lambda en, sp: sp if es else en
+    e = esc
+    src = lambda name: asset(lang, key, "img/" + name)
+    contact = href(lang, key, lang, "contact", anchor="request")
+    insp = href(lang, key, lang, "inspections")
+    fleet = href(lang, key, lang, "fleet")
+    types = []
+    options = []
+    for index, (name, entries) in enumerate(tr.GROUPS):
+        category = L(name, lang)
+        options.append(f'<option value="{index}">{e(category)}</option>')
+        for item in entries:
+            label = L(item, lang)
+            types.append(f'<li data-category="{index}" data-match="{e((L(item, "en") + " " + L(item, "es") + " " + L(name, "en") + " " + L(name, "es")).lower(), quote=True)}">{e(label)}</li>')
+    repairs = "".join(f'<li>{e(L(item, lang))}</li>' for item in tr.REPAIRS)
+    faq = faq_list(lang, {"items": tr.FAQ})
+    hero = f"""<section class="tr-hero sec-ink on-dark"><div class="wrap tr-hero-grid">
+      <div><p class="tr-kicker">{e(X("MOST MAKES & MODELS · UP TO 10,000 LB", "LA MAYORÍA DE MARCAS Y MODELOS · HASTA 10,000 LB"))}</p>
+      <h1>{e(L(tr.PAGE["h1"],lang))}</h1><p class="tr-lead">{e(L(tr.PAGE["lead"],lang))}</p>
+      <div class="tr-actions"><a class="btn btn-sign" href="{TEL}">{e(UI[lang]["call"])}</a><a class="btn btn-line" href="{contact}">{e(X("Request trailer service","Solicitar servicio de remolque"))}</a></div></div>
+      <img src="{src("trailer-flatbed.webp")}" alt="{e(X("Flatbed vehicle trailer on dark studio background","Remolque plataforma para vehículos sobre fondo oscuro"))}" width="450" height="247" fetchpriority="high"></div></section>"""
+    directory = f"""<section class="sec sec-white tr-directory" id="trailer-types"><div class="wrap">
+      <div class="sec-head"><h2>{e(X("Browse Trailer Types", "Explore tipos de remolques"))}</h2>
+      <p>{e(X("Search or filter 54 common trailer types. A listing does not mean every specialty part or repair is offered.", "Busque o filtre 54 tipos comunes. Una categoría no significa que hagamos todas las reparaciones especializadas."))}</p></div>
+      <div class="tr-filter"><label for="tr-category">{e(X("Category","Categoría"))}</label>
+      <select id="tr-category"><option value="all">{e(X("All categories","Todas las categorías"))}</option>{''.join(options)}</select>
+      <output id="tr-count" aria-live="polite"></output></div>
+      <ul class="tr-types" id="tr-types">{''.join(types)}</ul>
+      <button class="btn btn-navy" id="tr-more" type="button">{e(X("Show all trailer types","Mostrar todos los tipos"))}</button>
+      <p class="tr-note">{e(X("Not listed? Ask us. Trailer weight must be 10,000 lb (4,536 kg) or below. Specialty systems such as food equipment, RV appliances and hydraulic machinery are not confirmed services.", "¿No aparece? Consúltenos. El peso del remolque debe ser de 10,000 lb (4,536 kg) o menos. No se han confirmado servicios de equipos de comida, aparatos de RV o maquinaria hidráulica."))}</p>
+    </div></section>"""
+    search = f"""<section class="tr-search sec-ink on-dark" aria-label="{e(X("Find your trailer","Encuentre su remolque"))}"><div class="wrap tr-search-inner">
+      <div><strong>{e(X("Find Your Trailer","Encuentre su remolque"))}</strong><span>{e(X("Search types, such as utility, boat or equipment.", "Busque tipos: utilitario, barco o maquinaria."))}</span></div>
+      <label class="vh" for="tr-search-input">{e(X("Search trailer types","Buscar tipos de remolques"))}</label>
+      <input type="search" id="tr-search-input" autocomplete="off" placeholder="{e(X("Search 54 trailer types…","Buscar entre 54 tipos de remolques…"),quote=True)}" aria-controls="tr-types">
+      <a class="tr-search-jump" href="#trailer-types">{e(X("See results","Ver resultados"))}</a>
+    </div></section>"""
+    feature = f"""<section class="sec sec-paper"><div class="wrap tr-feature">
+      <div><h2>{e(X("Your Trailer Works Hard. Keep It Road-Ready.","Su remolque trabaja duro. Manténgalo listo."))}</h2>
+      <p>{e(X("From utility and landscaping trailers to enclosed cargo and recreational models, trailer problems can interrupt work and travel. Tell us about the issue so we can review it and confirm the next step.", "Desde remolques utilitarios hasta los de carga cerrados y recreativos, una avería puede interrumpir su trabajo o viaje. Describa el problema para que podamos evaluar el siguiente paso."))}</p>
+      <p>{e(X("Trailer repair is separate from maintenance for the trucks and vans that tow them. See our", "La reparación del remolque es distinta del mantenimiento de camiones y furgonetas. Consulte nuestro"))} <a href="{fleet}">{e(X("Fleet Repair","servicio de flotas"))}</a>.</p></div>
+      <div><h2>{e(X("Common Trailer Repair Concerns","Problemas comunes de remolques"))}</h2>
+      <ul class="tr-repair-list">{repairs}</ul>
+      <p class="tr-note">{e(X("These are common issues to ask about. We confirm individual repairs before accepting a job.", "Estos son problemas comunes sobre los que puede consultar. Confirmamos cada reparación antes de aceptar el trabajo."))}</p></div>
+    </div></section>"""
+    cards = f"""<section class="sec sec-white"><div class="wrap">
+      <div class="sec-head"><h2>{e(X("Popular Trailer Types","Tipos de remolques populares"))}</h2></div>
+      <div class="tr-gallery">
+       <figure><img src="{src("trailer-flatbed.webp")}" alt="{e(X("Flatbed car-hauling trailer","Remolque plataforma para autos"))}" loading="lazy" width="450" height="247"><figcaption>{e(X("Utility & car-hauling trailers","Remolques utilitarios y para autos"))}</figcaption></figure>
+       <figure><img src="{src("trailer-landscape.webp")}" alt="{e(X("Open landscaping equipment trailer","Remolque abierto de jardinería"))}" loading="lazy" width="450" height="251"><figcaption>{e(X("Landscaping & equipment trailers","Remolques de jardinería y maquinaria"))}</figcaption></figure>
+      </div></div></section>"""
+    inspections = f"""<section class="sec sec-ink on-dark"><div class="wrap tr-inspections">
+      <div><h2>{e(X("Pennsylvania Trailer Safety Inspections","Inspecciones de seguridad de remolques en Pennsylvania"))}</h2><p>{e(X("Diverse Autoworks lists trailer safety inspections. Requirements vary by classification and weight. Contact us to confirm that your trailer qualifies and to arrange a visit.", "Diverse Autoworks ofrece inspecciones de seguridad de remolques. Los requisitos varían según clasificación y peso. Consúltenos para confirmar el servicio y concertar una visita."))}</p></div>
+      <a class="btn btn-line" href="{insp}">{e(X("PA State Inspections","Inspecciones estatales"))}</a></div></section>"""
+    steps = [
+      X("Tell us the type, make, model and weight.","Indíquenos tipo, marca, modelo y peso."),
+      X("Describe the issue and share photos if helpful.","Describa el problema y comparta fotos si ayudan."),
+      X("We confirm if we can perform the service.","Confirmamos si podemos hacer el trabajo."),
+      X("Our staff confirms scheduling. Requests are not bookings.","Nuestro personal confirma disponibilidad. Las solicitudes no son citas."),
+    ]
+    process = f"""<section class="sec sec-paper"><div class="wrap tr-process"><div>
+      <h2>{e(X("How Trailer Service Works","Cómo funciona el servicio"))}</h2>
+      <ol>{''.join(f'<li>{e(step)}</li>' for step in steps)}</ol>
+      <p class="tr-note">{e(X("If the trailer is unsafe to tow, do not tow it to the shop.", "Si no es seguro remolcarlo, no lo conduzca hasta el taller."))}</p></div>
+      <div><h2>{e(X("Trailer Repair FAQs","Preguntas frecuentes"))}</h2>{faq}</div></div></section>"""
+    request = f"""<section class="sec sec-white"><div class="wrap"><div class="tr-contact">
+      <div><h2>{e(X("Request Trailer Service","Solicitar servicio de remolque"))}</h2>
+      <p>{e(X("1415 Pawlings Road, Phoenixville, PA 19460 · Monday–Friday, 7:30 AM–4:30 PM", "1415 Pawlings Road, Phoenixville, PA 19460 · Lunes a viernes, 7:30 AM–4:30 PM"))}</p>
+      <p>{e(X("Include the trailer weight, make, model, and repair concern. Submission does not confirm an appointment.", "Indique el peso, la marca, el modelo y el problema. Enviar la solicitud no confirma una cita."))}</p></div>
+      <div>{form_html(lang,key)}</div></div></div></section>"""
+    # Every item remains in the HTML for indexing and works without JavaScript.
+    script = """<script>
+(function(){
+  var q=document.getElementById('tr-search-input'), c=document.getElementById('tr-category');
+  var list=document.getElementById('tr-types'), count=document.getElementById('tr-count');
+  var more=document.getElementById('tr-more'); if(!q||!c||!list||!more)return;
+  var rows=Array.from(list.querySelectorAll('li')), expanded=false;
+  function update(){
+    var query=q.value.toLocaleLowerCase().trim(), group=c.value, n=0;
+    rows.forEach(function(row){
+      var ok=(group==='all'||row.dataset.category===group)&&(!query||row.dataset.match.includes(query));
+      if(ok)n++; row.hidden=!ok;
+    });
+    var matching=rows.filter(function(row){return !row.hidden;});
+    if(!expanded&&!query&&group==='all') matching.slice(12).forEach(function(row){row.hidden=true});
+    count.textContent=n+' / '+rows.length;
+    more.hidden=query!==''||group!=='all'||n<=12;
+    more.textContent=expanded?__LESS__:__MORE__;
+    list.classList.toggle('tr-no-results',n===0);
+  }
+  q.addEventListener('input',update);c.addEventListener('change',update);
+  more.addEventListener('click',function(){expanded=!expanded;update()});
+  update();
+})();
+</script>"""
+    script=script.replace("__LESS__",json.dumps(X("Show fewer","Mostrar menos"))).replace("__MORE__",json.dumps(X("Show all trailer types","Mostrar todos los tipos")))
+    body = search + hero + feature + cards + directory + inspections + process + request + script
+    return layout(lang,key,L(tr.PAGE["title"],lang),L(tr.PAGE["desc"],lang),body)
+
+BUILDERS = {"brands": page_brands, "home": page_home, "services": page_services, "inspections": page_inspections, "moto": page_moto, "fleet": page_fleet, "trailer": page_trailer, "tags": page_tags,
             "about": page_about, "reviews": page_reviews, "faq": page_faq, "contact": page_contact, "privacy": page_privacy}
 for _b in BRAND_PAGES:
     BUILDERS[_b["key"]] = (lambda lang, _k=_b["key"]: page_brand(lang, _k))
