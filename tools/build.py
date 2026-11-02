@@ -1482,17 +1482,12 @@ def page_service(lang, key):
                 f'<figcaption>{esc(cap_en if lang == "en" else cap_es)}</figcaption>'
                 f'</figure>'
             )
-        note = (
-            "Illustrative images; not customer vehicles or completed shop projects."
-            if lang == "en" else
-            "Imágenes ilustrativas; no son autos de clientes ni trabajos realizados por el taller."
-        )
         gallery = (
             f'<section class="sec sec-ink on-dark classic-gallery" id="classic-gallery">'
             f'<div class="wrap"><div class="sec-head"><h2>{esc(gallery_title)}</h2>'
             f'<p>{esc(gallery_lead)}</p></div>'
             f'<div class="classic-gallery-grid">{"".join(figures)}</div>'
-            f'<p class="classic-gallery-note">{esc(note)}</p></div></section>'
+            f'</div></section>'
         )
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + gallery + f'''
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["blocks"])}</div></div></section>
