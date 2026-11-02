@@ -882,6 +882,31 @@ def page_home(lang):
 <a class="btn btn-sign" href="{href(lang, key, lang, "svc_classic")}">{esc(classic_cta)}</a></div>
 </div></div></section>'''
 
+    # Fleet repair feature, moved from the former two-panel Fleet/Notary block.
+    fleet_title = "Fleet Repair & Maintenance" if lang == "en" else "Reparación y mantenimiento de flotas"
+    fleet_tagline = "KEEP YOUR BUSINESS MOVING" if lang == "en" else "MANTENGA SU NEGOCIO EN MARCHA"
+    fleet_text = (
+        "From work trucks and commercial vans to company cars, our team helps local "
+        "businesses with maintenance, mechanical repairs and Pennsylvania inspections. "
+        "Tell us about the vehicles in your fleet and the work you need."
+        if lang == "en" else
+        "Desde camionetas de trabajo y furgonetas comerciales hasta autos de empresa, "
+        "ayudamos a los negocios locales con mantenimiento, reparaciones mecánicas e "
+        "inspecciones de Pennsylvania. Cuéntenos qué vehículos tiene y qué servicio necesita."
+    )
+    fleet_cta = "Explore Fleet Repair" if lang == "en" else "Ver reparación de flotas"
+    fleet_alt = (
+        "Illustration of a white commercial work van"
+        if lang == "en" else
+        "Ilustración de una furgoneta comercial blanca"
+    )
+    fleet_feature = f'''<section class="sec sec-ink on-dark home-fleet" id="fleet-repair"><div class="wrap home-fleet-grid">
+<div class="home-fleet-copy"><p class="home-fleet-kicker">{esc(fleet_tagline)}</p><h2>{esc(fleet_title)}</h2>
+<p>{esc(fleet_text)}</p>
+<a class="btn btn-sign" href="{href(lang, key, lang, "fleet")}">{esc(fleet_cta)}</a></div>
+<figure class="home-fleet-photo"><img src="{asset(lang, key, "img/svc-fleet.webp")}" width="800" height="603" loading="lazy" decoding="async" alt="{esc(fleet_alt, quote=True)}"></figure>
+</div></section>'''
+
     # A brief trailer feature immediately below the classic-car feature.
     trailer_title = "Trailer Repair & Maintenance" if lang == "en" else "Reparación y mantenimiento de remolques"
     trailer_kicker = "MOST MAKES & MODELS" if lang == "en" else "LA MAYORÍA DE MARCAS Y MODELOS"
@@ -930,13 +955,16 @@ def page_home(lang):
 <div class="rev-more"><a class="btn btn-navy" href="{href(lang, key, lang, "reviews")}">{u["more_reviews"]}</a></div>
 </div></section>'''
 
-    # duo
-    duo = f'''<section class="duo" aria-label="{u["nav"]["fleet"]} / {L(svc_by_id("notary")["title"], lang)}">
-<div class="panel panel-fleet on-dark">{G.icon("van", 64)}<h2>{esc(L(svc_by_id("fleet")["title"], lang))}</h2><p>{esc(L(P["fleet_p"], lang))}</p>
-<a class="btn btn-sign" href="{href(lang, key, lang, "fleet")}">{u["fleet_btn"]}</a></div>
-<div class="panel panel-notary">{G.icon("seal", 64)}<h2>{esc(L(svc_by_id("notary")["title"], lang))}</h2><p>{esc(L(P["notary_p"], lang))}</p>
-<img class="panel-photo" src="{asset(lang, key, "img/notary-signing.webp")}" width="1168" height="880" alt="{esc(L(NOTARY["photo_alt"], lang), quote=True)}" loading="lazy" decoding="async">
-<a class="btn btn-navy" href="{href(lang, key, lang, "contact", anchor="notary")}">{u["notary_btn"]}</a></div></section>'''
+    # Notary Services moved beneath Motorcycle Inspections, with no Fleet duplicate.
+    notary_title = L(svc_by_id("notary")["title"], lang)
+    notary_kicker = "WEEKDAY NOTARY SERVICES" if lang == "en" else "SERVICIOS DE NOTARIO ENTRE SEMANA"
+    notary_cta = "Notary Hours & Details" if lang == "en" else "Horario y detalles del notario"
+    notary_feature = f'''<section class="sec sec-white home-notary" id="notary-services"><div class="wrap home-notary-grid">
+<figure class="home-notary-photo"><img src="{asset(lang, key, "img/notary-signing.webp")}" width="1168" height="880" loading="lazy" decoding="async" alt="{esc(L(NOTARY["photo_alt"], lang), quote=True)}"></figure>
+<div class="home-notary-copy"><p class="home-notary-kicker">{esc(notary_kicker)}</p><h2>{esc(notary_title)}</h2>
+<p>{esc(L(P["notary_p"], lang))}</p>
+<a class="btn btn-sign" href="{href(lang, key, lang, "contact", anchor="notary")}">{esc(notary_cta)}</a></div>
+</div></section>'''
 
     # close
     close = f'''<section class="sec sec-ink on-dark" id="visit"><div class="wrap close">
@@ -951,7 +979,7 @@ def page_home(lang):
 <li>{G.icon("mail", 30)}<div><b>{u["close_mail"]}</b><a href="{MAIL}">{B["email"]}</a></div></li>
 </ul>
 {img(lang, key, "home-storefront", "fig-img close-photo")}</div></section>'''
-    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + classic + trailer_feature + moto + reviews + duo + close)
+    return layout(lang, key, L(P["title"], lang), L(P["desc"], lang), hero + picker + board + classic + fleet_feature + trailer_feature + moto + notary_feature + reviews + close)
 
 
 def page_services(lang):

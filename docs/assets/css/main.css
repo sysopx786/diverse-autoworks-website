@@ -824,3 +824,24 @@ details.q .a p{margin:0}
 @media(max-width:540px){
  .home-trailer-copy .btn{width:100%;white-space:normal;text-align:center}
 }
+
+
+/* Homepage: fleet immediately after Classic Cars; Notary directly after Motorcycle. */
+.home-fleet-grid,.home-notary-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.home-fleet-copy h2,.home-notary-copy h2{font-size:clamp(2.15rem,4vw,3.45rem);margin:0 0 16px}
+.home-fleet-copy>p:not(.home-fleet-kicker),.home-notary-copy>p:not(.home-notary-kicker){font-size:1.12rem;line-height:1.6;margin:0 0 24px}
+.home-fleet-copy>p:not(.home-fleet-kicker){color:var(--mist)}
+.home-notary-copy>p:not(.home-notary-kicker){color:var(--steel)}
+.home-fleet-kicker,.home-notary-kicker{font:700 .93rem var(--body);letter-spacing:.08em;margin:0 0 12px;color:var(--sign)}
+.home-notary-kicker{color:var(--navy-2)}
+.home-fleet-photo,.home-notary-photo{margin:0;min-width:0;overflow:hidden;border-radius:6px}
+.home-fleet-photo img{display:block;width:100%;height:auto;max-height:390px;object-fit:contain}
+.home-notary-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+@media(max-width:800px){
+  .home-fleet-grid,.home-notary-grid{grid-template-columns:1fr}
+  .home-fleet-photo{grid-row:1}
+  .home-fleet-copy{grid-row:2}
+}
+@media(max-width:540px){
+  .home-fleet-copy .btn,.home-notary-copy .btn{width:100%;white-space:normal;text-align:center}
+}
