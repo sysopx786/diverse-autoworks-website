@@ -370,7 +370,7 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault(); clear(); status.classList.remove("show");
-      if (val("company_site")) return; /* honeypot */
+      if (val("_honey")) return; /* honeypot */
       var ok = true, first = null;
       var flag = function (n, m) { bad(n, m); ok = false; if (!first) first = form.elements[n]; };
       if (!val("name")) flag("name", i18n.name);
@@ -389,9 +389,25 @@
 
       if (endpoint) {
         var btn = $("button[type=submit]", form); btn.disabled = true;
-        var body = new FormData(form); body.delete("company_site");
-        fetch(endpoint, { method: "POST", body: body, headers: { Accept: "application/json" } })
-          .then(function (r) { if (!r.ok) throw new Error("bad"); form.reset(); say("<strong>" + i18n.sent + "</strong> " + i18n.notconf); })
+        var body = Object.fromEntries(new FormData(form).entries());
+        body.service = svcLabel;
+        body.contact = pref === "email" ? i18n.p_email : i18n.p_phone;
+        body._subject = i18n.subject + (form.hasAttribute("data-fleet") ? " (" + i18n.fleet + ")" : "");
+        body._template = "table";
+        body._url = location.origin + location.pathname;
+        if (em) body._replyto = em;
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(body)
+        })
+          .then(function (r) { if (!r.ok) throw new Error("bad"); return r.json(); })
+          .then(function (data) {
+            /* FormSubmit may return HTTP 200 with success: "false"; never display a false confirmation. */
+            if (!data || String(data.success).toLowerCase() !== "true") throw new Error("not accepted");
+            form.reset();
+            say("<strong>" + i18n.sent + "</strong> " + i18n.notconf);
+          })
           .catch(function () { say(i18n.fail, true); })
           .then(function () { btn.disabled = false; });
       } else {
