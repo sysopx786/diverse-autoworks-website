@@ -148,7 +148,7 @@ UI = {
             "opened": "Your email app should open with your request.", "again": "Open the email again",
             "subject": "Appointment request", "fleet": "Fleet inquiry",
         },
-        "pick_ui": {"request": "Request this service", "learn": "See details", "call": f"Call {PHONE}"},
+        "pick_ui": {"request": "Request this service", "learn": "View services", "call": f"Call {PHONE}"},
         "faq_online": "online",
     },
     "es": {
@@ -209,7 +209,7 @@ UI = {
             "opened": "Su aplicación de correo debería abrirse con su solicitud.", "again": "Abrir el correo de nuevo",
             "subject": "Solicitud de cita", "fleet": "Consulta de flota",
         },
-        "pick_ui": {"request": "Solicitar este servicio", "learn": "Ver detalles", "call": f"Llamar al {PHONE}"},
+        "pick_ui": {"request": "Solicitar este servicio", "learn": "Ver servicios", "call": f"Llamar al {PHONE}"},
     },
 }
 
@@ -826,7 +826,7 @@ def page_home(lang):
             "title": esc(L(svc["title"], lang)), "desc": esc(L(svc["desc"], lang)),
             "note": esc(L(it["note"], lang)) if it.get("note") else "",
             "icon": G.icon(it["icon"], 56, "res-ic"),
-            "request": request_href(lang, key, sid), "learn": learn_href(lang, key, sid),
+            "request": request_href(lang, key, sid), "learn": href(lang, key, lang, "services"),
         }
         chips.append(f'<button type="button" class="chip" data-svc="{sid}" aria-pressed="false">{G.icon(it["icon"], 26)}<span>{esc(L(it["chip"], lang))}</span></button>')
     picker = f'''<section class="sec sec-concrete" id="picker"><div class="wrap">
@@ -840,7 +840,7 @@ def page_home(lang):
     tiles = []
     for sid in HOME_CARDS:
         s = svc_by_id(sid)
-        tiles.append(f'<a class="tile" href="{learn_href(lang, key, sid)}">{img(lang, key, SVC_IMG[sid], "tile-img")}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
+        tiles.append(f'<a class="tile" href="{href(lang, key, lang, "services")}">{img(lang, key, SVC_IMG[sid], "tile-img")}<h3>{esc(L(s["card"], lang))}</h3><p>{esc(L(s["line"], lang))}</p></a>')
     board = f'''<section class="sec sec-white" id="services"><div class="wrap">
 <div class="sec-head"><h2>{esc(L(P["svc_h"], lang))}</h2><p>{esc(L(P["svc_p"], lang))}</p></div>
 <div class="board">{"".join(tiles)}<div class="board-foot"><a class="btn btn-sign btn-more" href="{href(lang, key, lang, "services")}">{u["all_big"].format(n=len(SERVICES))}<svg class="ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><p>{u["all_big_sub"]}</p></div></div>
@@ -993,8 +993,7 @@ def page_services(lang):
         blocks = []
         for s in svcs:
             acts = [f'<a class="btn btn-navy" style="min-height:44px;font-size:1.15rem" href="{request_href(lang, key, s["id"])}">{u["svc_request"]}</a>']
-            if s.get("page") or s["id"] in COVERED_BY:
-                acts.append(f'<a href="{learn_href(lang, key, s["id"])}">{u["svc_details"]}</a>')
+            # Individual service detail links remain unpublished in the public navigation.
             if s["id"] == "inspections":
                 acts.append(f'<a href="{href(lang, key, lang, "moto")}">{esc(L(PAGES["moto"]["more_btn"], lang))}</a>')
             acts.append(f'<a href="{href(lang, key, lang, "faq", anchor=s["faq"])}">{u["faq_related"]}</a>')
@@ -1090,16 +1089,16 @@ def fleet_lookup(lang, key):
         if b["name"] in FLEET.LOOKUP_EXCLUDE_BRANDS:
             continue
         models = " ".join(L(v[0], lang) if isinstance(v[0], dict) else v[0] for v in FLEET.VEHICLES if v[1] == b["name"])
-        rows.append([b["name"], L(FLEET.TYPES["brand"], lang), "full", b["name"], href(lang, key, lang, b["key"]),
+        rows.append([b["name"], L(FLEET.TYPES["brand"], lang), "full", b["name"], href(lang, key, lang, "brands"),
                      b["name"] + " " + models + " " + b["search"][0]])
     for name, brand, typ, scope, extra in FLEET.VEHICLES:
         name = L(name, lang) if isinstance(name, dict) else name
         bp = BRAND_PAGE_BY_NAME[brand]
-        rows.append([name, L(FLEET.TYPES[typ], lang), scope, brand, href(lang, key, lang, bp["key"]), name + " " + extra])
+        rows.append([name, L(FLEET.TYPES[typ], lang), scope, brand, href(lang, key, lang, "brands"), name + " " + extra])
     data = {"rows": rows,
             "scope": {k: L(v, lang) for k, v in LK["scope"].items()},
             "badge": {k: L(v, lang) for k, v in LK["badge"].items()},
-            "details": L(LK["details"], lang), "count1": L(LK["count1"], lang), "countn": L(LK["countn"], lang)}
+            "details": ("See all brands" if lang == "en" else "Ver todas las marcas"), "count1": L(LK["count1"], lang), "countn": L(LK["countn"], lang)}
     blob = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     chips = "".join(f'<button type="button" data-vl-chip>{esc(c)}</button>' for c in LK["chips"])
     return f'''<section class="sec sec-paper" aria-labelledby="vl-h"><div class="wrap"><div class="vl" data-vl>
@@ -1452,8 +1451,7 @@ def page_brands(lang):
     u = UI[lang]
     groups = []
     for gtitle, items in BRAND_GROUPS:
-        lis = "".join("<li><span>" + (f'<a href="{href(lang, key, lang, BRAND_PAGE_BY_NAME[name]["key"])}">{esc(name)}</a>' if name in BRAND_PAGE_BY_NAME else esc(name))
-                      + (f" ({esc(L(origin, lang))})" if origin else "") + "</span></li>" for name, origin in items)
+        lis = "".join(f'<li><span>{esc(name)}' + (f" ({esc(L(origin, lang))})" if origin else "") + "</span></li>" for name, origin in items)
         groups.append(f'<section><h2>{esc(L(gtitle, lang))}</h2><ul class="checklist">{lis}</ul></section>')
     body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang)) + f'''
 <section class="sec sec-paper"><div class="wrap"><div style="max-width:820px">{"".join(groups)}
