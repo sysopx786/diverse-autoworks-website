@@ -1557,14 +1557,24 @@ def page_service(lang, key):
             f'</div></section>'
         )
     hero = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req)
-    # Reuse existing site illustrations, styled with red and dark charcoal tints.
-    service_art = {"svc_oil": "svc-oil.webp", "svc_transmission": "svc-drivetrain.webp"}
+    # Keep service photos visible as actual hero images, not dimmed background layers.
+    service_art = {
+        "svc_oil": ("svc-oil.webp",
+                    "Illustration of engine oil flowing into an oil filter",
+                    "Ilustración de aceite de motor entrando en un filtro de aceite"),
+        "svc_transmission": ("svc-drivetrain.webp",
+                             "Illustration of transmission, differential and drive axle components",
+                             "Ilustración de transmisión, diferencial y componentes de ejes motrices"),
+    }
     if key in service_art:
-        photo = (f'<div class="svc-photo-visual" aria-hidden="true"><img '
-                 f'src="{asset(lang, key, "img/" + service_art[key])}" width="800" height="603" '
-                 'alt="" fetchpriority="high" decoding="async"></div>')
-        hero = hero.replace('class="phead on-dark"', 'class="phead on-dark svc-photo-hero"', 1)
-        hero = hero.replace('<div class="wrap">', photo + '<div class="wrap">', 1)
+        filename, alt_en, alt_es = service_art[key]
+        photo = (f'<figure class="svc-feature-image"><img '
+                 f'src="{asset(lang, key, "img/" + filename)}" width="800" height="603" '
+                 f'alt="{esc(alt_en if lang == "en" else alt_es, quote=True)}" '
+                 'fetchpriority="high" decoding="async"></figure>')
+        hero = hero.replace('class="phead on-dark"', 'class="phead on-dark svc-feature-hero"', 1)
+        hero = hero.replace('<div class="wrap">', '<div class="wrap svc-feature-layout"><div class="svc-feature-copy">', 1)
+        hero = hero.replace('</div></section>', '</div>' + photo + '</div></section>', 1)
     body = hero + gallery + f'''
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, sp["blocks"])}</div></div></section>
 <section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": sp["faq"]})}</div></div></section>
