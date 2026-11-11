@@ -846,17 +846,15 @@ details.q .a p{margin:0}
   .home-fleet-copy .btn,.home-notary-copy .btn{width:100%;white-space:normal;text-align:center}
 }
 
-/* Red-charcoal service imagery, reused from the main service catalog. */
-.phead.svc-photo-hero{background:#0f1012;min-height:340px}
-.svc-photo-hero .svc-photo-visual{position:absolute;inset:0 0 0 42%;z-index:0;overflow:hidden}
-.svc-photo-hero .svc-photo-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:grayscale(.22) saturate(.68) contrast(1.14) brightness(.83)}
-.phead.svc-photo-hero::before{z-index:1;background:
-  linear-gradient(90deg,#0f1012 0%,rgba(15,16,18,.98) 26%,rgba(15,16,18,.86) 47%,rgba(15,16,18,.4) 75%,rgba(15,16,18,.3) 100%),
-  radial-gradient(ellipse at 90% 22%,rgba(211,39,33,.58),transparent 69%)}
-.svc-photo-hero .wrap{position:relative;z-index:2}
-.phead.svc-photo-hero::after{z-index:3}
-.svc-photo-hero h1,.svc-photo-hero .wrap>p:not(.crumbs){text-shadow:0 2px 14px rgba(0,0,0,.48)}
-@media(max-width:760px){
-  .svc-photo-hero .svc-photo-visual{inset:0;opacity:.5}
-  .phead.svc-photo-hero::before{background:linear-gradient(90deg,rgba(15,16,18,.97),rgba(15,16,18,.84)),linear-gradient(0deg,rgba(160,24,20,.26),transparent)}
+/* Visible red/charcoal artwork for bilingual oil and transmission landing pages. */
+.phead.svc-feature-hero{background:#0f1012}
+.svc-feature-hero .svc-feature-layout{position:relative;display:grid;grid-template-columns:minmax(0,1.07fr) minmax(0,.93fr);align-items:center;gap:clamp(22px,4vw,52px)}
+.svc-feature-hero .svc-feature-copy{min-width:0}
+.svc-feature-hero .svc-feature-image{margin:0;min-width:0;overflow:hidden;border:2px solid rgba(240,74,66,.56);border-radius:10px;background:#08090a;box-shadow:0 18px 55px rgba(0,0,0,.48)}
+.svc-feature-hero .svc-feature-image img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:center}
+.svc-feature-hero .svc-feature-copy p:not(.crumbs){max-width:59ch}
+@media(max-width:820px){
+  .svc-feature-hero .svc-feature-layout{grid-template-columns:1fr;gap:24px}
+  .svc-feature-hero .svc-feature-image{order:-1;width:100%;max-width:620px;margin-inline:auto}
+  .svc-feature-hero .svc-feature-image img{aspect-ratio:16/9;object-fit:cover}
 }
