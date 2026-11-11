@@ -1494,7 +1494,15 @@ def page_brand(lang, key):
     trail = f'<a href="{href(lang, key, lang, "brands")}">{u["nav"]["brands"]}</a> / {esc(L(P["crumb"], lang))}'
     req = f'<p style="margin-top:22px"><a class="btn btn-sign" href="{href(lang, key, lang, "contact", anchor="request")}">{u["request"]}</a></p>'
     faq_h = f'{bp["name"]} FAQs' if lang == "en" else f'Preguntas frecuentes sobre {bp["name"]}'
-    body = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req) + f'''
+    hero = phead(lang, key, L(P["h1"], lang), L(P["lead"], lang), trail=trail, cta=req)
+    if key == "brand_toyota":
+        # Show Toyota's emblem only on the Toyota brand page, in both languages.
+        alt = "Toyota logo" if lang == "en" else "Logotipo de Toyota"
+        logo = (f'<img src="{asset(lang, key, "img/toyota.svg")}" alt="{alt}" '
+                'width="104" height="104" decoding="async" '
+                'style="display:block;width:104px;height:104px;object-fit:contain;margin:0 0 12px">')
+        hero = hero.replace("<h1>", logo + "<h1>", 1)
+    body = hero + f'''
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, bp["blocks"])}</div></div></section>
 <section class="sec sec-white" id="faq"><div class="wrap"><div class="sec-head"><h2>{esc(faq_h)}</h2></div><div style="max-width:820px">{faq_list(lang, {"items": bp["faq"]})}</div></div></section>
 <section class="sec sec-paper"><div class="wrap"><div class="brand-body">{brand_blocks(lang, key, bp["cta"])}{req}</div></div></section>'''
