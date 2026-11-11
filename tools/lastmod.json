@@ -249,7 +249,7 @@
  },
  "en:svc_oil": {
   "date": "2026-11-11",
-  "hash": "66be0a47cf36689b45d98076a029e45388d41bca"
+  "hash": "e0c1b2d29a022623e178229d11a7071a0394bf54"
  },
  "en:svc_oilleak": {
   "date": "2026-10-31",
@@ -281,7 +281,7 @@
  },
  "en:svc_transmission": {
   "date": "2026-11-11",
-  "hash": "1b9e65b323f1c215c957f471eba89d90f7e4ec35"
+  "hash": "c3e96aa5aa8232c69f37025582742e75c13e5e5d"
  },
  "en:svc_windowlock": {
   "date": "2026-10-31",
@@ -545,7 +545,7 @@
  },
  "es:svc_oil": {
   "date": "2026-11-11",
-  "hash": "e94249d6964543eee6736c4d4bf4a1728c940cca"
+  "hash": "469d7c64f2c51a56615465db9d0a077a5379bb5d"
  },
  "es:svc_oilleak": {
   "date": "2026-10-31",
@@ -577,7 +577,7 @@
  },
  "es:svc_transmission": {
   "date": "2026-11-11",
-  "hash": "284467e3bd979fb0264d82d744c90d003c54533d"
+  "hash": "f8aa3083e411e0c9e96d9c375cfae15f3826f1a2"
  },
  "es:svc_windowlock": {
   "date": "2026-10-31",
