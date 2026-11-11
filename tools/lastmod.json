@@ -16,8 +16,8 @@
   "hash": "666f9dbdccf70f1987b1c2c118838e880dec468d"
  },
  "en:brand_bmw": {
-  "date": "2026-10-30",
-  "hash": "34b8fae5062f32dc4f5dd38032a61662367d34b9"
+  "date": "2026-11-11",
+  "hash": "4cb13de5e7ad91fd1614cd4e7b9e04fc32c1c708"
  },
  "en:brand_buick": {
   "date": "2026-10-30",
@@ -132,8 +132,8 @@
   "hash": "e5b95d023cdfa631cf3dc20501d8a884b68ccdc1"
  },
  "en:brand_toyota": {
-  "date": "2026-10-31",
-  "hash": "b47d1f87524960e1e5944bea748aa9878b594758"
+  "date": "2026-11-11",
+  "hash": "d48a688ccd9e9992c75a4a7b0b6785c67016af5e"
  },
  "en:brand_volkswagen": {
   "date": "2026-10-30",
@@ -248,8 +248,8 @@
   "hash": "4a443f46da66dc9820343580e1bcd5efbfbbb051"
  },
  "en:svc_oil": {
-  "date": "2026-10-31",
-  "hash": "1c2b9601b76ac7998e72c58eee7f85df446e4c30"
+  "date": "2026-11-11",
+  "hash": "66be0a47cf36689b45d98076a029e45388d41bca"
  },
  "en:svc_oilleak": {
   "date": "2026-10-31",
@@ -280,8 +280,8 @@
   "hash": "1cac22c7c7c04e44cabb851d75c9f33ed8273805"
  },
  "en:svc_transmission": {
-  "date": "2026-11-01",
-  "hash": "f740565e41fa12633731f321b13e52943c189e3e"
+  "date": "2026-11-11",
+  "hash": "1b9e65b323f1c215c957f471eba89d90f7e4ec35"
  },
  "en:svc_windowlock": {
   "date": "2026-10-31",
@@ -312,8 +312,8 @@
   "hash": "584133dc656eae2fa9a5d4e513ad185fae44141d"
  },
  "es:brand_bmw": {
-  "date": "2026-10-30",
-  "hash": "9fc81cd168ed5a3d2fe1bf315c911255dbb26acd"
+  "date": "2026-11-11",
+  "hash": "bb174319727e19bdc867fa8bdb0286b69172ba54"
  },
  "es:brand_buick": {
   "date": "2026-10-30",
@@ -428,8 +428,8 @@
   "hash": "d4973ed0fcbede8723a87ed682fb20f63ed278c8"
  },
  "es:brand_toyota": {
-  "date": "2026-10-31",
-  "hash": "d4860f85afd9a47639553c487f195108026e3069"
+  "date": "2026-11-11",
+  "hash": "a1d4f1be2fe60f3a7b3c1231ef767f9576f3c47d"
  },
  "es:brand_volkswagen": {
   "date": "2026-10-30",
@@ -544,8 +544,8 @@
   "hash": "634dab01d4f1f1c2f0c2346d571f9d8c16f1bbd5"
  },
  "es:svc_oil": {
-  "date": "2026-10-31",
-  "hash": "8fa7073609352d788f3b1b1ecda7d62314579b8b"
+  "date": "2026-11-11",
+  "hash": "e94249d6964543eee6736c4d4bf4a1728c940cca"
  },
  "es:svc_oilleak": {
   "date": "2026-10-31",
@@ -576,8 +576,8 @@
   "hash": "0b7fa7b1c9314e87775ec812ba903c9a69cfc010"
  },
  "es:svc_transmission": {
-  "date": "2026-11-01",
-  "hash": "8e14cbf0ce4e69034283612da16f523eef27d971"
+  "date": "2026-11-11",
+  "hash": "284467e3bd979fb0264d82d744c90d003c54533d"
  },
  "es:svc_windowlock": {
   "date": "2026-10-31",
